@@ -1,4 +1,4 @@
-package com.sbnz.recovery;
+package com.sbnz.recovery.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,18 +9,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sbnz.recovery.facts.Item;
+import com.sbnz.recovery.service.ItemService;
 
 @RestController
-public class SampleAppController {
-	private static Logger log = LoggerFactory.getLogger(SampleAppController.class);
+public class ItemController {
 
-	private final SampleAppService sampleService;
-
+	private static Logger log = LoggerFactory.getLogger(ItemController.class);
+	
+	private final ItemService itemService;
+	
 	@Autowired
-	public SampleAppController(SampleAppService sampleService) {
-		this.sampleService = sampleService;
+	public ItemController(ItemService itemService) {
+		this.itemService = itemService;
 	}
-
+	
 	@RequestMapping(value = "/item", method = RequestMethod.GET, produces = "application/json")
 	public Item getQuestions(@RequestParam(required = true) String id, @RequestParam(required = true) String name,
 			@RequestParam(required = true) double cost, @RequestParam(required = true) double salePrice) {
@@ -29,11 +31,8 @@ public class SampleAppController {
 
 		log.debug("Item request received for: " + newItem);
 
-		Item i2 = sampleService.getClassifiedItem(newItem);
+		Item i2 = itemService.getClassifiedItem(newItem);
 
 		return i2;
 	}
-	
-	
-	
 }

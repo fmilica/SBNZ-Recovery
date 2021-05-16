@@ -94,4 +94,10 @@ public class Doctor implements Serializable {
         }
         return true;
     }
+
+	@Override
+	public String toString() {
+		return "Doctor [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name
+				+ ", surname=" + surname + "]";
+	}
 }

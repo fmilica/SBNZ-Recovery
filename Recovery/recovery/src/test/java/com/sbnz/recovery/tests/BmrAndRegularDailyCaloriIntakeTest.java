@@ -30,7 +30,7 @@ public class BmrAndRegularDailyCaloriIntakeTest {
 		KieContainer kContainer = ks
 				.newKieContainer(ks.newReleaseId("com.sbnz", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
 		kieSession = kContainer.newKieSession("rulesSession");
-		//kieSession.getAgenda().getAgendaGroup("bmr").setFocus();
+		kieSession.getAgenda().getAgendaGroup("patient-after-injury").setFocus();
 	}
 
 	@Test

@@ -1,0 +1,69 @@
+package rules;
+
+import com.sbnz.recovery.model.Therapy;
+import com.sbnz.recovery.model.enums.InjuryType;
+import com.sbnz.recovery.model.enums.TherapyType;
+import com.sbnz.recovery.model.enums.Illness;
+
+
+// injuries
+rule "Therapy FRACTURE"
+	lock-on-active true
+	agenda-group "classify-therapy"
+    when
+        $t: Therapy(therapyType != TherapyType.KINESIOTHERAPY, intensity < 6)
+    then
+    	modify ($t) { addApplicableInjuryType(InjuryType.FRACTURE); }
+        System.out.println("Therapy applicable for FRACTURE");
+end
+
+rule "Therapy MUSCLE_STRAIN"
+	lock-on-active true
+	agenda-group "classify-therapy"
+    when
+        $t: Therapy(temperature < 15.0)
+    then
+    	modify ($t) { addApplicableInjuryType(InjuryType.MUSCLE_STRAIN); }
+        System.out.println("Therapy applicable for MUSCLE_STRAIN");
+end
+
+rule "Therapy INTERNAL"
+	lock-on-active true
+	agenda-group "classify-therapy"
+    when
+        $t: Therapy(intensity < 3, therapyType != TherapyType.KINESIOTHERAPY)
+    then
+    	modify ($t) { addApplicableInjuryType(InjuryType.INTERNAL); }
+        System.out.println("Therapy applicable for INTERNAL");
+end
+
+// illnesses
+rule "Therapy DIABETES"
+	lock-on-active true
+	agenda-group "classify-therapy"
+    when
+        $t: Therapy(intensity < 7)
+    then
+    	modify ($t) { addApplicableIllness(Illness.DIABETES); }
+        System.out.println("Therapy applicable for DIABETES");
+end
+
+rule "Therapy HIGH_BLOOD_PRESSURE"
+	lock-on-active true
+	agenda-group "classify-therapy"
+    when
+        $t: Therapy(temperature < 25.0, intensity < 6)
+    then
+    	modify ($t) { addApplicableIllness(Illness.HIGH_BLOOD_PRESSURE); }
+        System.out.println("Therapy applicable for HIGH_BLOOD_PRESSURE");
+end
+
+rule "Therapy LOW_BLOOD_PRESSURE"
+	lock-on-active true
+	agenda-group "classify-therapy"
+    when
+        $t: Therapy(therapyType != TherapyType.MAGNET)
+    then
+    	modify ($t) { addApplicableIllness(Illness.LOW_BLOOD_PRESSURE); }
+        System.out.println("Therapy applicable for LOW_BLOOD_PRESSURE");
+end

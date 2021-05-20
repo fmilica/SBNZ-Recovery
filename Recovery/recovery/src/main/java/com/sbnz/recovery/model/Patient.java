@@ -28,13 +28,15 @@ public class Patient implements Serializable {
 	
 	private PhysicalActivity physicalActivityBeforeInjury;
 	private List<Illness> anamnesis;
+	private List<Injury> medicalHistory;
 	
 	private double bmr;
 	private double regularDailyCaloryIntake;
 	private PhysicalActivity physicalActivityAfterInjury;
 	private double dailyCaloryIntakeAfterInjury;
 	
-	private List<Injury> medicalHistory;
+	private List<AppliedTherapy> therapies;
+	private AppliedTherapy currentTherapy;
 	
 	public Patient() {
 		super();
@@ -55,6 +57,7 @@ public class Patient implements Serializable {
 		this.physicalActivityBeforeInjury = physicalActivityBeforeInjury;
 		this.anamnesis = anamnesis;
 		this.medicalHistory = new ArrayList<Injury>();
+		this.therapies = new ArrayList<AppliedTherapy>();
 	}
 
 	public Patient(Long id, String username, String password, String name, String surname, Gender gender, Date dateOfBirth,
@@ -81,6 +84,10 @@ public class Patient implements Serializable {
 
 	public void addInjury(Injury injury) {
 		this.medicalHistory.add(injury);
+	}
+	
+	public void addTherapy(AppliedTherapy therapy) {
+		this.therapies.add(therapy);
 	}
 	
 	public Long getId() {
@@ -209,6 +216,26 @@ public class Patient implements Serializable {
 
 	public void setDailyCaloryIntakeAfterInjury(double dailyCaloryIntakeAfterInjury) {
 		this.dailyCaloryIntakeAfterInjury = dailyCaloryIntakeAfterInjury;
+	}
+
+	public List<AppliedTherapy> getTherapies() {
+		return therapies;
+	}
+
+	public void setTherapies(List<AppliedTherapy> therapies) {
+		this.therapies = therapies;
+	}
+
+	public AppliedTherapy getCurrentTherapy() {
+		return currentTherapy;
+	}
+
+	public void setCurrentTherapy(AppliedTherapy currentTherapy) {
+		this.currentTherapy = currentTherapy;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	@Override

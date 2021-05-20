@@ -1,7 +1,10 @@
 package com.sbnz.recovery.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.sbnz.recovery.model.enums.Illness;
 import com.sbnz.recovery.model.enums.InjuryType;
 import com.sbnz.recovery.model.enums.TherapyType;
 
@@ -13,34 +16,48 @@ public class Therapy implements Serializable {
 	private String name;
 	private TherapyType therapyType;
 	private int maximumMonthlyApplication;
-	private InjuryType injuryType;
 	private double temperature;
+	private int intensity;
+	
+	private List<Illness> applicableIllness;
+	private List<InjuryType> applicableInjury;
 	
 	public Therapy() {
 		super();
 	}
 
-	public Therapy(String name, TherapyType therapyType, int maximumMonthlyApplication, InjuryType injuryType,
-			double temperature) {
+	public Therapy(String name, TherapyType therapyType, int maximumMonthlyApplication,
+			double temperature, int intensity) {
 		super();
 		this.name = name;
 		this.therapyType = therapyType;
 		this.maximumMonthlyApplication = maximumMonthlyApplication;
-		this.injuryType = injuryType;
 		this.temperature = temperature;
+		this.intensity = intensity;
+		this.applicableIllness = new ArrayList<Illness>();
+		this.applicableInjury = new ArrayList<InjuryType>();
 	}
 
-	public Therapy(Long id, String name, TherapyType therapyType, int maximumMonthlyApplication, InjuryType injuryType,
+	public Therapy(Long id, String name, TherapyType therapyType, int maximumMonthlyApplication,
 			double temperature) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.therapyType = therapyType;
 		this.maximumMonthlyApplication = maximumMonthlyApplication;
-		this.injuryType = injuryType;
 		this.temperature = temperature;
 	}
 
+	
+	public void addApplicableIllness(Illness illness) {
+		this.applicableIllness.add(illness);
+	}
+	
+	public void addApplicableInjuryType(InjuryType injuryType) {
+		this.applicableInjury.add(injuryType);
+	}
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -65,28 +82,44 @@ public class Therapy implements Serializable {
 		this.therapyType = therapyType;
 	}
 
-	public int getmaximumMonthlyApplication() {
-		return maximumMonthlyApplication;
-	}
-
-	public void setmaximumMonthlyApplication(int maximumMonthlyApplication) {
-		this.maximumMonthlyApplication = maximumMonthlyApplication;
-	}
-
-	public InjuryType getInjuryType() {
-		return injuryType;
-	}
-
-	public void setInjuryType(InjuryType injuryType) {
-		this.injuryType = injuryType;
-	}
-
 	public double getTemperature() {
 		return temperature;
 	}
 
 	public void setTemperature(double temperature) {
 		this.temperature = temperature;
+	}
+	
+	public int getMaximumMonthlyApplication() {
+		return maximumMonthlyApplication;
+	}
+
+	public void setMaximumMonthlyApplication(int maximumMonthlyApplication) {
+		this.maximumMonthlyApplication = maximumMonthlyApplication;
+	}
+
+	public List<Illness> getApplicableIllness() {
+		return applicableIllness;
+	}
+
+	public void setApplicableIllness(List<Illness> applicableIllness) {
+		this.applicableIllness = applicableIllness;
+	}
+
+	public List<InjuryType> getApplicableInjury() {
+		return applicableInjury;
+	}
+
+	public void setApplicableInjury(List<InjuryType> applicableInjury) {
+		this.applicableInjury = applicableInjury;
+	}
+
+	public int getIntensity() {
+		return intensity;
+	}
+
+	public void setIntensity(int intensity) {
+		this.intensity = intensity;
 	}
 
 	@Override
@@ -102,8 +135,6 @@ public class Therapy implements Serializable {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
-			return false;
-		if (injuryType != other.injuryType)
 			return false;
 		if (maximumMonthlyApplication != other.maximumMonthlyApplication)
 			return false;
@@ -122,6 +153,6 @@ public class Therapy implements Serializable {
 	@Override
 	public String toString() {
 		return "Therapy [id=" + id + ", name=" + name + ", therapyType=" + therapyType + ", maximumMonthlyApplication="
-				+ maximumMonthlyApplication + ", injuryType=" + injuryType + ", temperature=" + temperature + "]";
+				+ maximumMonthlyApplication + ", temperature=" + temperature + "]";
 	}
 }

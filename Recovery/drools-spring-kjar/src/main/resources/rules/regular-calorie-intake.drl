@@ -14,6 +14,7 @@ import com.sbnz.recovery.utility.DateUtility;
 */
 
 rule "Calculate Regular Daily Calorie Intake - SENDENTARY"
+	agenda-group "patient-after-injury"
     when
         $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.SEDENTARY, regularDailyCaloryIntake == 0,
         	$activity : physicalActivityBeforeInjury, $bmr : bmr )
@@ -23,6 +24,7 @@ rule "Calculate Regular Daily Calorie Intake - SENDENTARY"
 end
 
 rule "Calculate Regular Daily Calorie Intake - LIGHT_ACTIVE"
+	agenda-group "patient-after-injury"
     when
         $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.LIGHT_ACTIVE, regularDailyCaloryIntake == 0,
         	$activity : physicalActivityBeforeInjury, $bmr : bmr )
@@ -32,6 +34,7 @@ rule "Calculate Regular Daily Calorie Intake - LIGHT_ACTIVE"
 end
 
 rule "Calculate Regular Daily Calorie Intake - MODERATE"
+	agenda-group "patient-after-injury"
     when
         $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.MODERATE, regularDailyCaloryIntake == 0,
         	$activity : physicalActivityBeforeInjury, $bmr : bmr )
@@ -41,6 +44,7 @@ rule "Calculate Regular Daily Calorie Intake - MODERATE"
 end
 
 rule "Calculate Regular Daily Calorie Intake - VERY_ACTIVE"
+	agenda-group "patient-after-injury"
     when
         $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.VERY_ACTIVE, regularDailyCaloryIntake == 0,
         	$activity : physicalActivityBeforeInjury, $bmr : bmr )
@@ -50,6 +54,7 @@ rule "Calculate Regular Daily Calorie Intake - VERY_ACTIVE"
 end
 
 rule "Calculate Regular Daily Calorie Intake - EXTRA_ACTIVE"
+	agenda-group "patient-after-injury"
     when
         $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.EXTRA_ACTIVE, regularDailyCaloryIntake == 0,
         $activity : physicalActivityBeforeInjury, $bmr : bmr )

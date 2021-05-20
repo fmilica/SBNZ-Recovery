@@ -5,6 +5,7 @@ import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.utility.DateUtility;
 
 rule "Calculate BMR - Male"
+	agenda-group "patient-after-injury"
     when
         $p: Patient( gender == Gender.MALE, bmr == 0, $height : height, $weight : weight, $age : DateUtility.getDiffYears(dateOfBirth) )
     then
@@ -13,6 +14,7 @@ rule "Calculate BMR - Male"
 end
 
 rule "Calculate BMR - Female"
+	agenda-group "patient-after-injury"
     when
         $p: Patient( gender == Gender.FEMALE, bmr == 0, $height : height, $weight : weight, $age : DateUtility.getDiffYears(dateOfBirth) )
     then

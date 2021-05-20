@@ -27,7 +27,7 @@ public class KnowledgeSessionService {
     public KieSession getRulesSession() {
     	if (this.rulesSession == null) {
     		log.info("Initialized session");
-        	rulesSession = kieContainer.newKieSession("rulesSession");	
+        	rulesSession = kieContainer.newKieSession("rulesSession");
     	}
         return rulesSession;
     }

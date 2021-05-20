@@ -34,7 +34,7 @@ public class NewActivityLevelTest {
 		KieContainer kContainer = ks
 				.newKieContainer(ks.newReleaseId("com.sbnz", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
 		kieSession = kContainer.newKieSession("rulesSession");
-		//kieSession.getAgenda().getAgendaGroup("bmr").setFocus();
+		kieSession.getAgenda().getAgendaGroup("patient-after-injury").setFocus();
 	}
 
 	@Test
@@ -210,7 +210,7 @@ public class NewActivityLevelTest {
 		Patient patient = new Patient("username", "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
 		
-		patient.addInjury(injury);
+		patient.setMedicalHistory(injuries);
 		
 		kieSession.insert(patient);
 		

@@ -1,0 +1,35 @@
+/*package rules;
+
+import java.time.LocalDate;
+
+import com.sbnz.recovery.model.Patient;
+import com.sbnz.recovery.model.enums.Gender;
+import com.sbnz.recovery.utility.DateUtility;
+
+
+rule "Rank therapy for patient"
+	agenda-group "rank-therapy"
+	salience ($matchedIllness + $matchedInjury)
+    when
+    	$p: Patient(currentTherapy == null, $therapies: therapies, $illnesses: anamnesis)
+    	$t: Therapy($til: applicableIllness, $tin: applicableInjury)
+    	$activeInjuries : List() from collect(
+				Injury(this.getEndDate() == null) 
+				from $p.medicalHistory
+		)
+    	$matchedIllness : Number(intValue > $illnesses.size() / 2) from accumulate(
+    													Illness($illness : this) from $illnesses
+    													and Illness(this == $illness) from $til,
+    													count($illness))
+    	$matchedInjury : Number(intValue > $activeInjuries.size() / 2) from accumulate(
+    													Injury($injuryType : injuryType) from $activeInjuries
+    													and InjuryType(this == $injuryType) from $tin,
+    													count($injuryType))
+   		Number(intValue < $t.maximumMonthlyApplication) from accumulate(
+   			AppliedTherapy($at : this, therapy == $t, $d: applicationDate, $d.isAfter(LocalDate.now().minusDays(30)) from $therapies
+   			count($at))
+   		// posebno pravilo za kinezi terapiju -> sme poceti ne pre 14 dana nakon povrede
+    then
+    	System.out.println("Assigned therapy " + $t.name + " to patient " + $p.name + " " + $p.surname);
+    	modify($p) { setCurrentTherapy($t); }
+end*/

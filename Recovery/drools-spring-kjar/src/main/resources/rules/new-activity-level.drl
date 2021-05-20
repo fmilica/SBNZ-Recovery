@@ -16,6 +16,7 @@ import com.sbnz.recovery.utility.DateUtility;
 
 rule "Kidney injury"
 	salience 3
+	agenda-group "patient-after-injury"
     when
     	$p : Patient( physicalActivityAfterInjury == null )
 		$kidneyInjuries : List(size > 0) 
@@ -30,6 +31,7 @@ end
 
 rule "Liver injury"
 	salience 3
+	agenda-group "patient-after-injury"
     when
     	$p : Patient( physicalActivityAfterInjury == null )
 		$liverInjuries : List(size > 0) 
@@ -46,6 +48,7 @@ end
 
 rule "Muscle strain + > 50 + ARM, WRIST, LEG, KNEE, ANKLE injury -> SEDENTARY"
     salience 3
+	agenda-group "patient-after-injury"
     when
     	$p : Patient( 
     		$age : DateUtility.getDiffYears(dateOfBirth) > 50, 
@@ -64,6 +67,7 @@ end
 
 rule "Muscle strain + <= 50 + ARM, WRIST, LEG, KNEE, ANKLE injury -> LIGHT_ACTIVE"
     salience 2
+	agenda-group "patient-after-injury"
     when
     	$p : Patient( 
     		DateUtility.getDiffYears(dateOfBirth) > 20, 
@@ -83,6 +87,7 @@ end
 
 rule "Muscle strain + <= 20 + ARM, WRIST, LEG, KNEE, ANKLE injury -> MODERATE"
     salience 1
+	agenda-group "patient-after-injury"
     when
     	$p : Patient( $age : DateUtility.getDiffYears(dateOfBirth) <= 20, 
     		physicalActivityAfterInjury == null )
@@ -102,6 +107,7 @@ end
 
 rule "Fracute + <= 30 + ARM, WRIST injury -> MODERATE"
     salience 1
+	agenda-group "patient-after-injury"
     when
     	$p : Patient( $age : DateUtility.getDiffYears(dateOfBirth) <= 30, 
     		physicalActivityAfterInjury == null )
@@ -121,6 +127,7 @@ end
 
 rule "Fracute + > 30 + ARM, WRIST injury -> LIGHT_ACTIVE"
     salience 2
+	agenda-group "patient-after-injury"
     when
     	$p : Patient( $age : DateUtility.getDiffYears(dateOfBirth) > 30, 
     		physicalActivityAfterInjury == null )
@@ -142,6 +149,7 @@ end
 
 rule "Lower body injury"
 	salience 3
+	agenda-group "patient-after-injury"
     when
     	$p : Patient( physicalActivityAfterInjury == null )
 		$liverInjuries : List(size > 0) 
@@ -155,3 +163,34 @@ rule "Lower body injury"
     	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.SEDENTARY); }
     	System.out.println("Set physical activity level after upper body FRACTURE injury to SEDENTARY.");
 end
+
+
+
+// proba
+
+/*
+rule "Lower body injury"
+	salience 3
+	agenda-group "patient-after-injury"
+    when
+    	$ir : InjuryRequirement($godine : godine, $tip : tipPovrede, $deoTela : deloviTela, $novaAkt : aktivnost)
+    	$p : Patient( physicalActivityAfterInjury == null, 
+    		 $godine contains starost)
+		$liverInjuries : List(size > 0) 
+			from collect(
+				Injury($tip contains injuryType,
+						$deoTela contains injuryBodyPart,
+						this.getEndDate() == null) 
+				from $p.medicalHistory
+			)
+    then
+    	modify ($p) { setPhysicalActivityAfterInjury($novaAkt); }
+    	System.out.println("Set physical activity level after upper body FRACTURE injury to SEDENTARY.");
+end
+*/
+
+
+
+
+
+

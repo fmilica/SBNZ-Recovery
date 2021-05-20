@@ -32,7 +32,7 @@ public class TestController {
 	public ResponseEntity<Patient> getQuestions(@RequestBody PatientDTO patientDto) {
 
 		Patient newPatient = new Patient(patientDto.getUsername(), patientDto.getPassword(), patientDto.getName(), patientDto.getSurname(),
-				patientDto.getGender(), patientDto.getAge(), patientDto.getHeight(), patientDto.getWeight(), patientDto.getPhysicalActivity(),
+				patientDto.getGender(), patientDto.getDateOfBirth(), patientDto.getHeight(), patientDto.getWeight(), patientDto.getPhysicalActivity(),
 				patientDto.getAnamnesis());
 
 		log.debug("Test request received for patient: " + newPatient);

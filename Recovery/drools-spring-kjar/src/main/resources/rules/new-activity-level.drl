@@ -1,0 +1,157 @@
+package rules;
+
+import java.util.List;
+import com.sbnz.recovery.model.Patient;
+import com.sbnz.recovery.model.Injury;
+import com.sbnz.recovery.model.enums.Gender;
+import com.sbnz.recovery.model.enums.PhysicalActivity;
+import com.sbnz.recovery.model.enums.InjuryBodyPart;
+import com.sbnz.recovery.model.enums.InjuryType;
+import com.sbnz.recovery.utility.DateUtility;
+
+// NAPOMENA:
+// MOZDA IZMENITI PRAVILA TAKO DA NE BUDE != NEGO NEKO ITERIRANJE KROZ USLOVE ILI ||
+
+// internal injuries -> SEDENTEARY
+
+rule "Kidney injury"
+	salience 3
+    when
+    	$p : Patient( physicalActivityAfterInjury == null )
+		$kidneyInjuries : List(size > 0) 
+			from collect(
+				Injury(injuryBodyPart == InjuryBodyPart.KIDNEY, this.getEndDate() == null) 
+				from $p.medicalHistory
+			)
+    then
+    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.SEDENTARY); }
+    	System.out.println("Set physical activity level after KIDNEY injury to SEDENTARY.");
+end
+
+rule "Liver injury"
+	salience 3
+    when
+    	$p : Patient( physicalActivityAfterInjury == null )
+		$liverInjuries : List(size > 0) 
+			from collect(
+				Injury(injuryBodyPart == InjuryBodyPart.LIVER, this.getEndDate() == null) 
+				from $p.medicalHistory
+			)
+    then
+    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.SEDENTARY); }
+    	System.out.println("Set physical activity level after LIVER injury to SEDENTARY.");
+end
+
+// MUSCLE_STRAIN -> SEDENTARY OR LIGHT_ACTIVE OR MODERATE
+
+rule "Muscle strain + > 50 + ARM, WRIST, LEG, KNEE, ANKLE injury -> SEDENTARY"
+    salience 3
+    when
+    	$p : Patient( 
+    		$age : DateUtility.getDiffYears(dateOfBirth) > 50, 
+    		physicalActivityAfterInjury == null )
+		$muscleStrains : List(size > 0) 
+			from collect(
+				Injury(injuryType == InjuryType.MUSCLE_STRAIN, 
+					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
+					this.getEndDate() == null) 
+				from $p.medicalHistory
+			)
+    then
+    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.SEDENTARY); }
+    	System.out.println("Set physical activity level for > 50 patient after MUSCLE_STRAIN injury to SEDENTARY.");
+end
+
+rule "Muscle strain + <= 50 + ARM, WRIST, LEG, KNEE, ANKLE injury -> LIGHT_ACTIVE"
+    salience 2
+    when
+    	$p : Patient( 
+    		DateUtility.getDiffYears(dateOfBirth) > 20, 
+    		DateUtility.getDiffYears(dateOfBirth) <= 50, 
+    		physicalActivityAfterInjury == null )
+		$muscleStrains : List(size > 0) 
+			from collect(
+				Injury(injuryType == InjuryType.MUSCLE_STRAIN, 
+					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
+					this.getEndDate() == null) 
+				from $p.medicalHistory
+			)
+    then
+    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.LIGHT_ACTIVE); }
+    	System.out.println("Set physical activity level for 20 < patient <= 50 after MUSCLE_STRAIN injury to LIGHT_ACTIVE.");
+end
+
+rule "Muscle strain + <= 20 + ARM, WRIST, LEG, KNEE, ANKLE injury -> MODERATE"
+    salience 1
+    when
+    	$p : Patient( $age : DateUtility.getDiffYears(dateOfBirth) <= 20, 
+    		physicalActivityAfterInjury == null )
+		$muscleStrains : List(size > 0) 
+			from collect(
+				Injury(injuryType == InjuryType.MUSCLE_STRAIN, 
+					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
+					this.getEndDate() == null) 
+				from $p.medicalHistory
+			)
+    then
+    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.MODERATE); }
+    	System.out.println("Set physical activity level for patient <= 20 after MUSCLE_STRAIN injury to MODERATE.");
+end
+
+// UPPER BODY FRACTURE -> LIGHT_ACTIVE OR MODERATE
+
+rule "Fracute + <= 30 + ARM, WRIST injury -> MODERATE"
+    salience 1
+    when
+    	$p : Patient( $age : DateUtility.getDiffYears(dateOfBirth) <= 30, 
+    		physicalActivityAfterInjury == null )
+		$muscleStrains : List(size > 0) 
+			from collect(
+				Injury(injuryType == InjuryType.FRACTURE, 
+					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
+					injuryBodyPart != InjuryBodyPart.LEG, injuryBodyPart != InjuryBodyPart.KNEE,
+					injuryBodyPart != InjuryBodyPart.ANKLE, 
+					this.getEndDate() == null) 
+				from $p.medicalHistory
+			)
+    then
+    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.MODERATE); }
+    	System.out.println("Set physical activity level for patient <= 30 after upper body FRACTURE injury to MODERATE.");
+end
+
+rule "Fracute + > 30 + ARM, WRIST injury -> LIGHT_ACTIVE"
+    salience 2
+    when
+    	$p : Patient( $age : DateUtility.getDiffYears(dateOfBirth) > 30, 
+    		physicalActivityAfterInjury == null )
+		$muscleStrains : List(size > 0) 
+			from collect(
+				Injury(injuryType == InjuryType.FRACTURE, 
+					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
+					injuryBodyPart != InjuryBodyPart.LEG, injuryBodyPart != InjuryBodyPart.KNEE,
+					injuryBodyPart != InjuryBodyPart.ANKLE, 
+					this.getEndDate() == null) 
+				from $p.medicalHistory
+			)
+    then
+    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.LIGHT_ACTIVE); }
+    	System.out.println("Set physical activity level for patient > 30 after upper body FRACTURE injury to LIGHT_ACTIVE.");
+end
+
+// LOWER BODY FRACTURE -> SEDENTARY
+
+rule "Lower body injury"
+	salience 3
+    when
+    	$p : Patient( physicalActivityAfterInjury == null )
+		$liverInjuries : List(size > 0) 
+			from collect(
+				Injury(injuryType ==  InjuryType.FRACTURE, 
+					injuryBodyPart == InjuryBodyPart.LEG || injuryBodyPart == InjuryBodyPart.KNEE || injuryBodyPart == InjuryBodyPart.ANKLE, 
+					this.getEndDate() == null) 
+				from $p.medicalHistory
+			)
+    then
+    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.SEDENTARY); }
+    	System.out.println("Set physical activity level after upper body FRACTURE injury to SEDENTARY.");
+end

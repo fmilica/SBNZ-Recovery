@@ -1,0 +1,20 @@
+package rules;
+
+import com.sbnz.recovery.model.Patient;
+import com.sbnz.recovery.model.enums.Gender;
+import com.sbnz.recovery.model.enums.PhysicalActivity;
+import com.sbnz.recovery.utility.DateUtility;
+
+rule "Calculate new daily calorie intake after injury"
+	when
+		$p: Patient( bmr != 0, regularDailyCaloryIntake != 0, physicalActivityAfterInjury != null, 
+			$regularCalories : regularDailyCaloryIntake, 
+			$activityBefore : physicalActivityBeforeInjury, 
+			$activityAfter : physicalActivityAfterInjury )
+	then
+		modify ($p) { setDailyCaloryIntakeAfterInjury(
+				(1 - (java.lang.Math.abs(
+					$activityBefore.getActivityCode() - $activityAfter.getActivityCode()
+				) / 10.0)) * $regularCalories); }
+        System.out.println("Calculated new daily calorie intake after injury: " + $p.getDailyCaloryIntakeAfterInjury());
+end

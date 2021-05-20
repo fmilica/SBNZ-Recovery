@@ -1,5 +1,6 @@
 package com.sbnz.recovery.dto;
 
+import java.util.Date;
 import java.util.List;
 
 import com.sbnz.recovery.model.enums.Gender;
@@ -17,7 +18,7 @@ public class PatientDTO {
 	private String surname;
 	
 	private Gender gender;
-	private int age;
+	private Date dateOfBirth;
 	private int height;
 	private double weight;
 	
@@ -28,7 +29,7 @@ public class PatientDTO {
 		super();
 	}
 
-	public PatientDTO(String username, String password, String name, String surname, Gender gender, int age, int height,
+	public PatientDTO(String username, String password, String name, String surname, Gender gender, Date dateOfBirth, int height,
 			double weight, PhysicalActivity physicalActivity, List<Illness> anamnesis) {
 		super();
 		this.username = username;
@@ -36,7 +37,7 @@ public class PatientDTO {
 		this.name = name;
 		this.surname = surname;
 		this.gender = gender;
-		this.age = age;
+		this.dateOfBirth = dateOfBirth;
 		this.height = height;
 		this.weight = weight;
 		this.physicalActivity = physicalActivity;
@@ -79,11 +80,11 @@ public class PatientDTO {
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
-	public int getAge() {
-		return age;
+	public Date getDateOfBirth() {
+		return dateOfBirth;
 	}
-	public void setAge(int age) {
-		this.age = age;
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 	public int getHeight() {
 		return height;

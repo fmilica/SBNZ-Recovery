@@ -1,6 +1,8 @@
 package com.sbnz.recovery.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.sbnz.recovery.model.enums.Gender;
@@ -20,14 +22,13 @@ public class Patient implements Serializable {
 	private String surname;
 	
 	private Gender gender;
-	private int age;
+	private Date dateOfBirth;
 	private int height;
 	private double weight;
 	
 	private PhysicalActivity physicalActivityBeforeInjury;
 	private List<Illness> anamnesis;
 	
-	private double bmi;
 	private double bmr;
 	private double regularDailyCaloryIntake;
 	private PhysicalActivity physicalActivityAfterInjury;
@@ -40,7 +41,7 @@ public class Patient implements Serializable {
 	}
 
 	// kreiranje pacijenta
-	public Patient(String username, String password, String name, String surname, Gender gender, int age, int height,
+	public Patient(String username, String password, String name, String surname, Gender gender, Date dateOfBirth, int height,
 			double weight, PhysicalActivity physicalActivityBeforeInjury, List<Illness> anamnesis) {
 		super();
 		this.username = username;
@@ -48,15 +49,16 @@ public class Patient implements Serializable {
 		this.name = name;
 		this.surname = surname;
 		this.gender = gender;
-		this.age = age;
+		this.dateOfBirth = dateOfBirth;
 		this.height = height;
 		this.weight = weight;
 		this.physicalActivityBeforeInjury = physicalActivityBeforeInjury;
 		this.anamnesis = anamnesis;
+		this.medicalHistory = new ArrayList<Injury>();
 	}
 
-	public Patient(Long id, String username, String password, String name, String surname, Gender gender, int age,
-			int height, double weight, PhysicalActivity physicalActivityBeforeInjury, double bmi, double bmr,
+	public Patient(Long id, String username, String password, String name, String surname, Gender gender, Date dateOfBirth,
+			int height, double weight, PhysicalActivity physicalActivityBeforeInjury, double bmr,
 			double regularDailyCaloryIntake, PhysicalActivity physicalActivityAfterInjury,
 			double dailyCaloryIntakeAfterInjury, List<Injury> medicalHistory) {
 		super();
@@ -66,11 +68,10 @@ public class Patient implements Serializable {
 		this.name = name;
 		this.surname = surname;
 		this.gender = gender;
-		this.age = age;
+		this.dateOfBirth = dateOfBirth;
 		this.height = height;
 		this.weight = weight;
 		this.physicalActivityBeforeInjury = physicalActivityBeforeInjury;
-		this.bmi = bmi;
 		this.bmr = bmr;
 		this.regularDailyCaloryIntake = regularDailyCaloryIntake;
 		this.physicalActivityAfterInjury = physicalActivityAfterInjury;
@@ -78,6 +79,10 @@ public class Patient implements Serializable {
 		this.medicalHistory = medicalHistory;
 	}
 
+	public void addInjury(Injury injury) {
+		this.medicalHistory.add(injury);
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -126,12 +131,12 @@ public class Patient implements Serializable {
 		this.gender = gender;
 	}
 
-	public int getAge() {
-		return age;
+	public Date getDateOfBirth() {
+		return dateOfBirth;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setAge(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	public int getHeight() {
@@ -172,14 +177,6 @@ public class Patient implements Serializable {
 	
 	public void setAnamnesis(List<Illness> anamnesis) {
 		this.anamnesis = anamnesis;
-	}
-
-	public double getBmi() {
-		return bmi;
-	}
-
-	public void setBmi(double bmi) {
-		this.bmi = bmi;
 	}
 
 	public double getBmr() {
@@ -223,7 +220,7 @@ public class Patient implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Patient other = (Patient) obj;
-		if (age != other.age)
+		if (dateOfBirth != other.dateOfBirth)
 			return false;
 		if (gender != other.gender)
 			return false;
@@ -269,7 +266,7 @@ public class Patient implements Serializable {
 	@Override
 	public String toString() {
 		return "Patient [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name
-				+ ", surname=" + surname + ", gender=" + gender + ", age=" + age + ", height=" + height + ", weight="
+				+ ", surname=" + surname + ", gender=" + gender + ", dateOfBirth=" + dateOfBirth + ", height=" + height + ", weight="
 				+ weight + ", physicalActivityBeforeInjury=" + physicalActivityBeforeInjury
 				+ ", physicalActivityAfterInjury=" + physicalActivityAfterInjury + ", medicalHistory=" + medicalHistory
 				+ "]";

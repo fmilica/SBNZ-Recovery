@@ -1,7 +1,7 @@
 package com.sbnz.recovery.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
 import com.sbnz.recovery.model.enums.InjuryType;
@@ -22,9 +22,17 @@ public class Injury implements Serializable{
 		super();
 	}
 	
+	public Injury(String name, Date date, String description, InjuryType injuryType,
+			InjuryBodyPart injuryBodyPart) {
+		this.name = name;
+		this.startDate = date;
+		this.description = description;
+		this.injuryType = injuryType;
+		this.injuryBodyPart = injuryBodyPart;
+	}
+
 	public Injury(String name, Date startDate, Date endDate, String description, InjuryType injuryType,
 			InjuryBodyPart injuryBodyPart) {
-		super();
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -35,7 +43,6 @@ public class Injury implements Serializable{
 	
 	public Injury(Long id, String name, Date startDate, Date endDate, String description, InjuryType injuryType,
 			InjuryBodyPart injuryBodyPart) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.startDate = startDate;

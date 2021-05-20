@@ -1,4 +1,4 @@
-package sbnz.integracija;
+/*package rules;
 
 import com.sbnz.recovery.model.Patient;
 
@@ -7,7 +7,5 @@ rule "Patient existance"
     when
         $p: Patient( )
     then
-    	$p.setBmi(20.0);
-    	update($p);
         System.out.println("Patient exists in memory");
-end
+end*/

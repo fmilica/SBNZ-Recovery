@@ -1,0 +1,59 @@
+package rules;
+
+import com.sbnz.recovery.model.Patient;
+import com.sbnz.recovery.model.enums.Gender;
+import com.sbnz.recovery.model.enums.PhysicalActivity;
+import com.sbnz.recovery.utility.DateUtility;
+
+/*
+ * Sedentary (little or no exercise) : Calorie-Calculation = BMR x 1.2
+ * Lightly active (light exercise/sports 1-3 days/week) : Calorie-Calculation = BMR x 1.375
+ * Moderately active (moderate exercise/sports 3-5 days/week) : Calorie-Calculation = BMR x 1.55
+ * Very active (hard exercise/sports 6-7 days a week) : Calorie-Calculation = BMR x 1.725
+ * Extra active (very hard exercise/sports & a physical job) : Calorie-Calculation = BMR x 1.9
+*/
+
+rule "Calculate Regular Daily Calorie Intake - SENDENTARY"
+    when
+        $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.SEDENTARY, regularDailyCaloryIntake == 0,
+        	$activity : physicalActivityBeforeInjury, $bmr : bmr )
+    then
+    	modify ($p) { setRegularDailyCaloryIntake($bmr * 1.2); }
+        System.out.println("Calculated Regular Daily Calorie Intake for SENDENTARY patient: " + $p.getRegularDailyCaloryIntake());
+end
+
+rule "Calculate Regular Daily Calorie Intake - LIGHT_ACTIVE"
+    when
+        $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.LIGHT_ACTIVE, regularDailyCaloryIntake == 0,
+        	$activity : physicalActivityBeforeInjury, $bmr : bmr )
+    then
+    	modify ($p) { setRegularDailyCaloryIntake($bmr * 1.375); }
+        System.out.println("Calculated Regular Daily Calorie Intake for LIGHT_ACTIVE patient: " + $p.getRegularDailyCaloryIntake());
+end
+
+rule "Calculate Regular Daily Calorie Intake - MODERATE"
+    when
+        $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.MODERATE, regularDailyCaloryIntake == 0,
+        	$activity : physicalActivityBeforeInjury, $bmr : bmr )
+    then
+    	modify ($p) { setRegularDailyCaloryIntake($bmr * 1.55); }
+        System.out.println("Calculated Regular Daily Calorie Intake for MODERATE patient: " + $p.getRegularDailyCaloryIntake());
+end
+
+rule "Calculate Regular Daily Calorie Intake - VERY_ACTIVE"
+    when
+        $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.VERY_ACTIVE, regularDailyCaloryIntake == 0,
+        	$activity : physicalActivityBeforeInjury, $bmr : bmr )
+    then
+    	modify ($p) { setRegularDailyCaloryIntake($bmr * 1.725); }
+        System.out.println("Calculated Regular Daily Calorie Intake for VERY_ACTIVE patient: " + $p.getRegularDailyCaloryIntake());
+end
+
+rule "Calculate Regular Daily Calorie Intake - EXTRA_ACTIVE"
+    when
+        $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.EXTRA_ACTIVE, regularDailyCaloryIntake == 0,
+        $activity : physicalActivityBeforeInjury, $bmr : bmr )
+    then
+    	modify ($p) { setRegularDailyCaloryIntake($bmr * 1.9); }
+        System.out.println("Calculated Regular Daily Calorie Intake for EXTRA_ACTIVE patient: " + $p.getRegularDailyCaloryIntake());
+end

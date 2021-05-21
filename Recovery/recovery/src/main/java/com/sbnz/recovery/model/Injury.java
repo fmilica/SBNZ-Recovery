@@ -1,6 +1,7 @@
 package com.sbnz.recovery.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
@@ -12,8 +13,8 @@ public class Injury implements Serializable{
 
 	private Long id;
 	private String name;
-	private Date startDate;
-	private Date endDate;
+	private LocalDate startDate;
+	private LocalDate endDate;
 	private String description;
 	private InjuryType injuryType;
 	private InjuryBodyPart injuryBodyPart;
@@ -22,7 +23,7 @@ public class Injury implements Serializable{
 		super();
 	}
 	
-	public Injury(String name, Date date, String description, InjuryType injuryType,
+	public Injury(String name, LocalDate date, String description, InjuryType injuryType,
 			InjuryBodyPart injuryBodyPart) {
 		this.name = name;
 		this.startDate = date;
@@ -31,7 +32,7 @@ public class Injury implements Serializable{
 		this.injuryBodyPart = injuryBodyPart;
 	}
 
-	public Injury(String name, Date startDate, Date endDate, String description, InjuryType injuryType,
+	public Injury(String name, LocalDate startDate, LocalDate endDate, String description, InjuryType injuryType,
 			InjuryBodyPart injuryBodyPart) {
 		this.name = name;
 		this.startDate = startDate;
@@ -41,7 +42,7 @@ public class Injury implements Serializable{
 		this.injuryBodyPart = injuryBodyPart;
 	}
 	
-	public Injury(Long id, String name, Date startDate, Date endDate, String description, InjuryType injuryType,
+	public Injury(Long id, String name, LocalDate startDate, LocalDate endDate, String description, InjuryType injuryType,
 			InjuryBodyPart injuryBodyPart) {
 		this.id = id;
 		this.name = name;
@@ -68,19 +69,19 @@ public class Injury implements Serializable{
 		this.name = name;
 	}
 	
-	public Date getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 	
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 	
-	public Date getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 	
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 	

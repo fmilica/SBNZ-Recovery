@@ -1,0 +1,36 @@
+package rules;
+
+import java.time.LocalDate;
+import com.sbnz.recovery.model.*;
+import com.sbnz.recovery.model.enums.*;
+
+rule "Potential abuse"
+	when
+		$p: Patient($injuries: medicalHistory)
+        Number(intValue > 3) accumulate(
+        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(6)), injuryType == InjuryType.FRACTURE) from $injuries,
+         	count($i)
+         )
+	then
+end 
+
+//rule "Potential atrophy"
+	//when
+		//$p: Patient($therapies : therapies)
+        //Number(size > 4) accumulate(
+        	//AppliedTherapy($at: this, $applicationDate: applicationDate, $applicationDate.isAfter(LocalDate.now().minusMonths(12)), ) from $therapies,
+         	//count($at)
+         //)
+	//then
+//end 
+
+
+rule "Potential eating dissorder"
+	when
+		$p: Patient($injuries: medicalHistory, weight/(height * height) < 18.5)
+        Number(intValue >= 2) accumulate(
+        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(3)), injuryType == InjuryType.FRACTURE) from $injuries,
+         	count($i)
+         )
+	then
+end 

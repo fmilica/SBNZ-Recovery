@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -42,7 +43,7 @@ public class NewActivityLevelTest {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
 		ArrayList<Injury> injuries = new ArrayList<Injury>();
-		Injury injury = new Injury("povreda bubrega", new Date(), "opis", InjuryType.INTERNAL, InjuryBodyPart.KIDNEY);
+		Injury injury = new Injury("povreda bubrega", LocalDate.now(), "opis", InjuryType.INTERNAL, InjuryBodyPart.KIDNEY);
 		injuries.add(injury);
 		
 		Patient patient = new Patient("username", "password", "name", "surname",
@@ -62,7 +63,7 @@ public class NewActivityLevelTest {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
 		ArrayList<Injury> injuries = new ArrayList<Injury>();
-		Injury injury = new Injury("povreda jetre", new Date(), "opis", InjuryType.INTERNAL, InjuryBodyPart.LIVER);
+		Injury injury = new Injury("povreda jetre", LocalDate.now(), "opis", InjuryType.INTERNAL, InjuryBodyPart.LIVER);
 		injuries.add(injury);
 		
 		Patient patient = new Patient("username", "password", "name", "surname",
@@ -82,7 +83,7 @@ public class NewActivityLevelTest {
 		Date dateOfBirth = format.parse("2003/10/10");
 		
 		ArrayList<Injury> injuries = new ArrayList<Injury>();
-		Injury injury = new Injury("istegnuce noge", new Date(), "opis", InjuryType.MUSCLE_STRAIN, InjuryBodyPart.ARM);
+		Injury injury = new Injury("istegnuce noge", LocalDate.now(), "opis", InjuryType.MUSCLE_STRAIN, InjuryBodyPart.ARM);
 		injuries.add(injury);
 		
 		Patient patient = new Patient("username", "password", "name", "surname",
@@ -102,7 +103,7 @@ public class NewActivityLevelTest {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
 		ArrayList<Injury> injuries = new ArrayList<Injury>();
-		Injury injury = new Injury("istegnuce noge", new Date(), "opis", InjuryType.MUSCLE_STRAIN, InjuryBodyPart.ARM);
+		Injury injury = new Injury("istegnuce noge", LocalDate.now(), "opis", InjuryType.MUSCLE_STRAIN, InjuryBodyPart.ARM);
 		injuries.add(injury);
 		
 		Patient patient = new Patient("username", "password", "name", "surname",
@@ -122,7 +123,7 @@ public class NewActivityLevelTest {
 		Date dateOfBirth = format.parse("1968/10/10");
 		
 		ArrayList<Injury> injuries = new ArrayList<Injury>();
-		Injury injury = new Injury("istegnuce noge", new Date(), "opis", InjuryType.MUSCLE_STRAIN, InjuryBodyPart.ARM);
+		Injury injury = new Injury("istegnuce noge", LocalDate.now(), "opis", InjuryType.MUSCLE_STRAIN, InjuryBodyPart.ARM);
 		injuries.add(injury);
 		
 		Patient patient = new Patient("username", "password", "name", "surname",
@@ -142,7 +143,7 @@ public class NewActivityLevelTest {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
 		ArrayList<Injury> injuries = new ArrayList<Injury>();
-		Injury injury = new Injury("prelom noge", new Date(), "opis", InjuryType.FRACTURE, InjuryBodyPart.LEG);
+		Injury injury = new Injury("prelom noge", LocalDate.now(), "opis", InjuryType.FRACTURE, InjuryBodyPart.LEG);
 		injuries.add(injury);
 		
 		Patient patient = new Patient("username", "password", "name", "surname",
@@ -162,7 +163,7 @@ public class NewActivityLevelTest {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
 		ArrayList<Injury> injuries = new ArrayList<Injury>();
-		Injury injury = new Injury("prelom ruke", new Date(), "opis", InjuryType.FRACTURE, InjuryBodyPart.ARM);
+		Injury injury = new Injury("prelom ruke", LocalDate.now(), "opis", InjuryType.FRACTURE, InjuryBodyPart.ARM);
 		injuries.add(injury);
 		
 		Patient patient = new Patient("username", "password", "name", "surname",
@@ -182,7 +183,7 @@ public class NewActivityLevelTest {
 		Date dateOfBirth = format.parse("1968/10/10");
 		
 		ArrayList<Injury> injuries = new ArrayList<Injury>();
-		Injury injury = new Injury("prelom ruke", new Date(), "opis", InjuryType.FRACTURE, InjuryBodyPart.ARM);
+		Injury injury = new Injury("prelom ruke", LocalDate.now(), "opis", InjuryType.FRACTURE, InjuryBodyPart.ARM);
 		injuries.add(injury);
 		
 		Patient patient = new Patient("username", "password", "name", "surname",
@@ -202,9 +203,9 @@ public class NewActivityLevelTest {
 		Date dateOfBirth = format.parse("1968/10/10");
 		
 		ArrayList<Injury> injuries = new ArrayList<Injury>();
-		Injury injury = new Injury("prelom ruke", new Date(), "opis", InjuryType.FRACTURE, InjuryBodyPart.ARM);
+		Injury injury = new Injury("prelom ruke", LocalDate.now(), "opis", InjuryType.FRACTURE, InjuryBodyPart.ARM);
 		injuries.add(injury);
-		Injury liverInjury = new Injury("povreda jetre", new Date(), "opis", InjuryType.INTERNAL, InjuryBodyPart.LIVER);
+		Injury liverInjury = new Injury("povreda jetre", LocalDate.now(), "opis", InjuryType.INTERNAL, InjuryBodyPart.LIVER);
 		injuries.add(liverInjury);
 		
 		Patient patient = new Patient("username", "password", "name", "surname",

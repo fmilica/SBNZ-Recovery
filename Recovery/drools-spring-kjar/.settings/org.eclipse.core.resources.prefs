@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
 encoding//src/main/resources/rules/new-activity-level.drl=UTF-8
 encoding//src/main/resources/rules/regular-calorie-intake.drl=UTF-8
+encoding//src/main/resources/rules/reports.drl=UTF-8
 encoding//src/main/resources/rules/therapy.drl=UTF-8

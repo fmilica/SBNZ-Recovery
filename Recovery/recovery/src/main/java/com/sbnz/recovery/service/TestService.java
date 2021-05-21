@@ -4,6 +4,7 @@ import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sbnz.recovery.model.Ingredient;
 import com.sbnz.recovery.model.Patient;
 
 @Service

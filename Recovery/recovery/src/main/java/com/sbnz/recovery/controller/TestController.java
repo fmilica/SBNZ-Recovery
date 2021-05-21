@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sbnz.recovery.dto.PatientDTO;
+import com.sbnz.recovery.model.Ingredient;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.service.TestService;
 

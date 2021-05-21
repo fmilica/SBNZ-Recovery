@@ -1,6 +1,10 @@
 package com.sbnz.recovery.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.sbnz.recovery.model.enums.Illness;
 
 public class Ingredient implements Serializable {
 	
@@ -15,9 +19,11 @@ public class Ingredient implements Serializable {
 	private double sugars;
 	private double fibers;
 	private double fat;
+	private List<Illness> illnesses;
 	
 	public Ingredient() {
 		super();
+		this.illnesses = new ArrayList<Illness>();
 	}
 
 	public Ingredient(String name, double calories, double waterPercentage, double proteins, double carbohydrates, double sugars,
@@ -31,6 +37,16 @@ public class Ingredient implements Serializable {
 		this.sugars = sugars;
 		this.fibers = fibers;
 		this.fat = fat;
+		this.illnesses = new ArrayList<Illness>();
+	}
+	
+	public Ingredient(double calories, double carbohydrates, double sugars, double fat) {
+		super();
+		this.calories = calories;
+		this.carbohydrates = carbohydrates;
+		this.sugars = sugars;
+		this.fat = fat;
+		this.illnesses = new ArrayList<Illness>();
 	}
 
 	public Ingredient(Long id, String name, double calories, double waterPercentage, double proteins, double carbohydrates,
@@ -45,6 +61,7 @@ public class Ingredient implements Serializable {
 		this.sugars = sugars;
 		this.fibers = fibers;
 		this.fat = fat;
+		this.illnesses = new ArrayList<Illness>();
 	}
 
 	public Long getId() {
@@ -119,6 +136,18 @@ public class Ingredient implements Serializable {
 		this.fat = fat;
 	}
 
+	public List<Illness> getIllnesses() {
+		return illnesses;
+	}
+
+	public void setIllnesses(List<Illness> illnesses) {
+		this.illnesses = illnesses;
+	}
+	
+	public void addIllness(Illness illness) {
+		this.illnesses.add(illness);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -157,7 +186,7 @@ public class Ingredient implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Nutrition [id=" + id + ", name=" + name + ", calories=" + calories + ", waterPercentage="
+		return "Ingredient [id=" + id + ", name=" + name + ", calories=" + calories + ", waterPercentage="
 				+ waterPercentage + ", proteins=" + proteins + ", carbohydrates=" + carbohydrates + ", sugars=" + sugars
 				+ ", fibers=" + fibers + ", fat=" + fat + "]";
 	}

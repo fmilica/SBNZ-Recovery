@@ -1,0 +1,48 @@
+package rules;
+
+import com.sbnz.recovery.model.Ingredient;
+import com.sbnz.recovery.model.Meal;
+import com.sbnz.recovery.model.enums.Illness;
+import java.util.Map.Entry;
+
+rule "Diabetes Classify Ingredient"
+	lock-on-active true
+    when
+        $i: Ingredient(calories < 200.00, carbohydrates < 100.00, sugars < 100.00, fat < 50.00)
+    then
+    	modify ($i) { addIllness(Illness.DIABETES) }
+    	System.out.println("Added diabetes in illnesses.");
+end
+
+rule "High Blood Pressure Classify Ingredient"
+	lock-on-active true
+    when
+        $i: Ingredient(calories < 100.00, sugars < 50.00, fat < 50.00)
+    then
+    	modify ($i) { addIllness(Illness.HIGH_BLOOD_PRESSURE) }
+    	System.out.println("Added high blood pressure in illnesses.");
+end
+
+rule "Low Blood Pressure Classify Ingredient"
+	lock-on-active true
+    when
+        $i: Ingredient(calories < 50.00, sugars < 100.00, fat < 20.00)
+    then
+    	modify ($i) { addIllness(Illness.LOW_BLOOD_PRESSURE) }
+    	System.out.println("Added low blood pressure in illnesses.");
+end
+
+rule "Calculate Total Calories"
+	lock-on-active true
+    when
+        $m: Meal($ingredients : ingredients)
+        $countCalories : Double() from accumulate(
+        	Entry($key : key, $value : value) from $ingredients.entrySet(),
+        	init(double count = 0.0;),
+        	action(count += (((Ingredient)$key).getCalories()) * ((Double)$value);),
+        	result(count)
+        )
+    then
+        modify ($m) { setTotalCalories($countCalories); }
+    	System.out.println("Total Calories of a Meal Calculated.    " + $countCalories);
+end

@@ -1,40 +1,73 @@
 package rules;
 
+import java.util.List;
+
 import java.time.LocalDate;
 import com.sbnz.recovery.model.*;
 import com.sbnz.recovery.model.enums.*;
 
+global List<Patient> patientReport;
+
 rule "Potential abuse"
+	agenda-group "abuse-report"
 	when
-		$p: Patient($injuries: medicalHistory)
-        Number(intValue > 3) from accumulate(
-        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(6)), injuryType == InjuryType.FRACTURE) from $injuries,
-         	count($i)
-         )
+		accumulate(
+			Patient($p: this, $injuries: medicalHistory) and
+	        Number(intValue > 3) from accumulate(
+	        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(6)), injuryType == InjuryType.FRACTURE) from $injuries,
+	         	count($i)
+	        ),
+	        $potentialAbuse : collectList($p)
+	    )
 	then
+		patientReport = $potentialAbuse;
+		System.out.println("Created report for potentially abused patients");
 end 
 
 rule "Potential atrophy"
+	agenda-group "abuse-atrophy"
 	when
-		$p: Patient($injuries : medicalHistory)
-        Number(intValue > 4) from accumulate(
-        	Injury($appliedTherapies : appliedTherapies, startDate.isAfter(LocalDate.now().minusMonths(12))) from $injuries and
-        	$restPerInjury : Number(intValue > 0) from accumulate(
-        		AppliedTherapy($at: this, therapy.therapyType == TherapyType.REST) from $appliedTherapies,
-        		count($at)
-        	),
-        	count($restPerInjury)
+		accumulate(
+			Patient($p: this, $injuries : medicalHistory) and
+	        Number(intValue > 4) from accumulate(
+	        	Injury($appliedTherapies : appliedTherapies, startDate.isAfter(LocalDate.now().minusMonths(12))) from $injuries and
+	        	$restPerInjury : Number(intValue > 0) from accumulate(
+	        		AppliedTherapy($at: this, therapy.therapyType == TherapyType.REST) from $appliedTherapies,
+	        		count($at)
+	        	),
+	        	count($restPerInjury)
+			),
+			$potentialAtrophy : collectList($p)
 		)
 	then
+		patientReport = $potentialAtrophy;
+		System.out.println("Created report for patients with potential muscle atrophy");
 end 
 
 
 rule "Potential eating dissorder"
+	agenda-group "abuse-eating"
 	when
-		$p: Patient($injuries: medicalHistory, weight/(height * height) < 18.5)
-        Number(intValue >= 2) from accumulate(
-        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(3)), injuryType == InjuryType.FRACTURE) from $injuries,
-         	count($i)
-         )
+		accumulate(
+			Patient($p: this, $injuries: medicalHistory, weight/(height * height) < 18.5) and
+	        Number(intValue >= 2) from accumulate(
+	        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(3)), injuryType == InjuryType.FRACTURE) from $injuries,
+	         	count($i)
+	        ),
+	        $potentialEatingDisorder : collectList($p)
+        )
 	then
-end 
+		patientReport = $potentialEatingDisorder;
+		System.out.println("Created report for patients with a potential eating disorder");
+end
+
+
+
+
+
+
+
+
+
+
+

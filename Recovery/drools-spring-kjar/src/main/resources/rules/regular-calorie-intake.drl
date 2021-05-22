@@ -5,6 +5,8 @@ import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 import com.sbnz.recovery.utility.DateUtility;
 
+global String currentPatient;
+
 /*
  * Sedentary (little or no exercise) : Calorie-Calculation = BMR x 1.2
  * Lightly active (light exercise/sports 1-3 days/week) : Calorie-Calculation = BMR x 1.375
@@ -14,51 +16,71 @@ import com.sbnz.recovery.utility.DateUtility;
 */
 
 rule "Calculate Regular Daily Calorie Intake - SENDENTARY"
-	agenda-group "patient-after-injury"
+	agenda-group "bmr-regular-calorie"
+	salience 1
     when
-        $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.SEDENTARY, regularDailyCaloryIntake == 0,
-        	$activity : physicalActivityBeforeInjury, $bmr : bmr )
+        $p: Patient( username == currentPatient,
+        	physicalActivityBeforeInjury == PhysicalActivity.SEDENTARY, 
+        	$bmr : bmr ) @Watch(!regularDailyCaloryIntake)
     then
     	modify ($p) { setRegularDailyCaloryIntake($bmr * 1.2); }
         System.out.println("Calculated Regular Daily Calorie Intake for SENDENTARY patient: " + $p.getRegularDailyCaloryIntake());
 end
 
 rule "Calculate Regular Daily Calorie Intake - LIGHT_ACTIVE"
-	agenda-group "patient-after-injury"
+	agenda-group "bmr-regular-calorie"
+	salience 1
     when
-        $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.LIGHT_ACTIVE, regularDailyCaloryIntake == 0,
-        	$activity : physicalActivityBeforeInjury, $bmr : bmr )
+        $p: Patient( username == currentPatient,
+        	physicalActivityBeforeInjury == PhysicalActivity.LIGHT_ACTIVE, 
+        	$bmr : bmr ) @Watch(!regularDailyCaloryIntake)
     then
     	modify ($p) { setRegularDailyCaloryIntake($bmr * 1.375); }
         System.out.println("Calculated Regular Daily Calorie Intake for LIGHT_ACTIVE patient: " + $p.getRegularDailyCaloryIntake());
 end
 
 rule "Calculate Regular Daily Calorie Intake - MODERATE"
-	agenda-group "patient-after-injury"
+	agenda-group "bmr-regular-calorie"
+	salience 1
     when
-        $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.MODERATE, regularDailyCaloryIntake == 0,
-        	$activity : physicalActivityBeforeInjury, $bmr : bmr )
+        $p: Patient( username == currentPatient,
+        	physicalActivityBeforeInjury == PhysicalActivity.MODERATE, 
+        	$bmr : bmr ) @Watch(!regularDailyCaloryIntake)
     then
     	modify ($p) { setRegularDailyCaloryIntake($bmr * 1.55); }
         System.out.println("Calculated Regular Daily Calorie Intake for MODERATE patient: " + $p.getRegularDailyCaloryIntake());
 end
 
 rule "Calculate Regular Daily Calorie Intake - VERY_ACTIVE"
-	agenda-group "patient-after-injury"
+	agenda-group "bmr-regular-calorie"
+	salience 1
     when
-        $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.VERY_ACTIVE, regularDailyCaloryIntake == 0,
-        	$activity : physicalActivityBeforeInjury, $bmr : bmr )
+        $p: Patient( username == currentPatient,
+        	physicalActivityBeforeInjury == PhysicalActivity.VERY_ACTIVE, 
+        	$bmr : bmr ) @Watch(!regularDailyCaloryIntake)
     then
     	modify ($p) { setRegularDailyCaloryIntake($bmr * 1.725); }
         System.out.println("Calculated Regular Daily Calorie Intake for VERY_ACTIVE patient: " + $p.getRegularDailyCaloryIntake());
 end
 
 rule "Calculate Regular Daily Calorie Intake - EXTRA_ACTIVE"
-	agenda-group "patient-after-injury"
+	agenda-group "bmr-regular-calorie"
+	salience 1
     when
-        $p: Patient( bmr != 0, physicalActivityBeforeInjury == PhysicalActivity.EXTRA_ACTIVE, regularDailyCaloryIntake == 0,
-        $activity : physicalActivityBeforeInjury, $bmr : bmr )
+        $p: Patient( username == currentPatient,
+        	physicalActivityBeforeInjury == PhysicalActivity.EXTRA_ACTIVE, 
+        	$bmr : bmr ) @Watch(!regularDailyCaloryIntake)
     then
     	modify ($p) { setRegularDailyCaloryIntake($bmr * 1.9); }
         System.out.println("Calculated Regular Daily Calorie Intake for EXTRA_ACTIVE patient: " + $p.getRegularDailyCaloryIntake());
+end
+
+rule "Change agenda-group to new-activity-level"
+	agenda-group "bmr-regular-calorie"
+	salience -1
+	when
+		exists(Patient())
+	then
+		System.out.println("Changed agenda-group from bmr-regular-calorie to new-activity-level");
+		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("new-activity-level").setFocus();
 end

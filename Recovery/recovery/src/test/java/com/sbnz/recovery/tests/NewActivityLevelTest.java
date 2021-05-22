@@ -25,6 +25,7 @@ import com.sbnz.recovery.model.enums.PhysicalActivity;
 public class NewActivityLevelTest {
 
 	private final SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+	private final String currentPatient = "username";
 
 	private KieSession kieSession;
 
@@ -35,7 +36,8 @@ public class NewActivityLevelTest {
 		KieContainer kContainer = ks
 				.newKieContainer(ks.newReleaseId("com.sbnz", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
 		kieSession = kContainer.newKieSession("rulesSession");
-		kieSession.getAgenda().getAgendaGroup("patient-after-injury").setFocus();
+		kieSession.setGlobal("currentPatient", currentPatient);
+		kieSession.getAgenda().getAgendaGroup("new-activity-level").setFocus();
 	}
 
 	@Test
@@ -46,7 +48,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("povreda bubrega", LocalDate.now(), null, "opis", InjuryType.INTERNAL, InjuryBodyPart.KIDNEY);
 		injuries.add(injury);
 		
-		Patient patient = new Patient("username", "password", "name", "surname",
+		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
 		
 		patient.addInjury(injury);
@@ -54,7 +56,7 @@ public class NewActivityLevelTest {
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(4, firedRules);
+		assertEquals(2, firedRules);
 		assertEquals(PhysicalActivity.SEDENTARY, patient.getPhysicalActivityAfterInjury());
 	}
 	
@@ -66,7 +68,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("povreda jetre", LocalDate.now(), null, "opis", InjuryType.INTERNAL, InjuryBodyPart.LIVER);
 		injuries.add(injury);
 		
-		Patient patient = new Patient("username", "password", "name", "surname",
+		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
 		
 		patient.addInjury(injury);
@@ -74,7 +76,7 @@ public class NewActivityLevelTest {
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(4, firedRules);
+		assertEquals(2, firedRules);
 		assertEquals(PhysicalActivity.SEDENTARY, patient.getPhysicalActivityAfterInjury());
 	}
 	
@@ -86,7 +88,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("istegnuce noge", LocalDate.now(), null, "opis", InjuryType.MUSCLE_STRAIN, InjuryBodyPart.ARM);
 		injuries.add(injury);
 		
-		Patient patient = new Patient("username", "password", "name", "surname",
+		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
 		
 		patient.addInjury(injury);
@@ -94,7 +96,7 @@ public class NewActivityLevelTest {
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(4, firedRules);
+		assertEquals(2, firedRules);
 		assertEquals(PhysicalActivity.MODERATE, patient.getPhysicalActivityAfterInjury());
 	}
 	
@@ -106,7 +108,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("istegnuce noge", LocalDate.now(), null, "opis", InjuryType.MUSCLE_STRAIN, InjuryBodyPart.ARM);
 		injuries.add(injury);
 		
-		Patient patient = new Patient("username", "password", "name", "surname",
+		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
 		
 		patient.addInjury(injury);
@@ -114,7 +116,7 @@ public class NewActivityLevelTest {
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(4, firedRules);
+		assertEquals(2, firedRules);
 		assertEquals(PhysicalActivity.LIGHT_ACTIVE, patient.getPhysicalActivityAfterInjury());
 	}
 	
@@ -126,7 +128,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("istegnuce noge", LocalDate.now(), null, "opis", InjuryType.MUSCLE_STRAIN, InjuryBodyPart.ARM);
 		injuries.add(injury);
 		
-		Patient patient = new Patient("username", "password", "name", "surname",
+		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
 		
 		patient.addInjury(injury);
@@ -134,7 +136,7 @@ public class NewActivityLevelTest {
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(4, firedRules);
+		assertEquals(2, firedRules);
 		assertEquals(PhysicalActivity.SEDENTARY, patient.getPhysicalActivityAfterInjury());
 	}
 	
@@ -146,7 +148,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("prelom noge", LocalDate.now(), null, "opis", InjuryType.FRACTURE, InjuryBodyPart.LEG);
 		injuries.add(injury);
 		
-		Patient patient = new Patient("username", "password", "name", "surname",
+		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
 		
 		patient.addInjury(injury);
@@ -154,7 +156,7 @@ public class NewActivityLevelTest {
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(4, firedRules);
+		assertEquals(2, firedRules);
 		assertEquals(PhysicalActivity.SEDENTARY, patient.getPhysicalActivityAfterInjury());
 	}
 	
@@ -166,7 +168,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("prelom ruke", LocalDate.now(), null, "opis", InjuryType.FRACTURE, InjuryBodyPart.ARM);
 		injuries.add(injury);
 		
-		Patient patient = new Patient("username", "password", "name", "surname",
+		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
 		
 		patient.addInjury(injury);
@@ -174,7 +176,7 @@ public class NewActivityLevelTest {
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(4, firedRules);
+		assertEquals(2, firedRules);
 		assertEquals(PhysicalActivity.MODERATE, patient.getPhysicalActivityAfterInjury());
 	}
 	
@@ -186,7 +188,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("prelom ruke", LocalDate.now(), null, "opis", InjuryType.FRACTURE, InjuryBodyPart.ARM);
 		injuries.add(injury);
 		
-		Patient patient = new Patient("username", "password", "name", "surname",
+		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
 		
 		patient.addInjury(injury);
@@ -194,7 +196,7 @@ public class NewActivityLevelTest {
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(4, firedRules);
+		assertEquals(2, firedRules);
 		assertEquals(PhysicalActivity.LIGHT_ACTIVE, patient.getPhysicalActivityAfterInjury());
 	}
 	
@@ -208,7 +210,7 @@ public class NewActivityLevelTest {
 		Injury liverInjury = new Injury("povreda jetre", LocalDate.now(), null, "opis", InjuryType.INTERNAL, InjuryBodyPart.LIVER);
 		injuries.add(liverInjury);
 		
-		Patient patient = new Patient("username", "password", "name", "surname",
+		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
 		
 		patient.setMedicalHistory(injuries);
@@ -216,7 +218,7 @@ public class NewActivityLevelTest {
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(4, firedRules);
+		assertEquals(2, firedRules);
 		assertEquals(PhysicalActivity.SEDENTARY, patient.getPhysicalActivityAfterInjury());
 	}
 	
@@ -224,13 +226,13 @@ public class NewActivityLevelTest {
 	public void DetermineActivityLevelAfterInjuryShouldNotFire() throws ParseException {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
-		Patient patient = new Patient("username", "password", "name", "surname",
+		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.MALE, dateOfBirth, 172, 68, PhysicalActivity.SEDENTARY, new ArrayList<>());
 	
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(2, firedRules);
+		assertEquals(1, firedRules);
 		assertEquals(null, patient.getPhysicalActivityAfterInjury());
 	}
 }

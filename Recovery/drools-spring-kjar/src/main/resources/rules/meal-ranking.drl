@@ -1,0 +1,43 @@
+package rules;
+
+import java.util.Map;
+import java.util.List;
+
+import com.sbnz.recovery.model.Patient;
+import com.sbnz.recovery.model.Meal;
+import com.sbnz.recovery.model.Ingredient;
+import com.sbnz.recovery.model.enums.Illness;
+
+global String chosenPatientUsername;
+global List<Meal> mealList;
+
+rule "Rank meal for patient"
+	agenda-group "rank-meal"
+	salience $goodIngredientCount
+	when
+		$p: Patient(username == chosenPatientUsername, $anamnesis: anamnesis)
+		$m: Meal($ingredients : ingredients, $mealName : name)
+        $goodIngredientCount : Number(intValue >= $ingredients.size() / 2) from accumulate(
+        	Ingredient($i : this, $illnesses : illnesses) from $ingredients.keySet() and
+        	$matchedIllnessCount : Number(intValue >= $illnesses.size() / 2) from accumulate(
+	        	Illness($illness : this) from $illnesses
+				and Illness(this == $illness) from $anamnesis,
+				count($illness)
+			),
+        	count($matchedIllnessCount)
+        )
+	then
+        mealList.add($m);
+		System.out.println("Added meal " + $mealName + 
+		" for patient " + chosenPatientUsername + 
+		" with number of good ingredients: " + $goodIngredientCount);
+end
+
+
+
+
+
+
+
+
+

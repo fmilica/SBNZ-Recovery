@@ -9,19 +9,17 @@ import com.sbnz.recovery.model.enums.InjuryBodyPart;
 import com.sbnz.recovery.model.enums.InjuryType;
 import com.sbnz.recovery.utility.DateUtility;
 
-// NAPOMENA:
-// MOZDA IZMENITI PRAVILA TAKO DA NE BUDE != NEGO NEKO ITERIRANJE KROZ USLOVE ILI ||
+global String currentPatient;
 
 // internal injuries -> SEDENTEARY
-
 rule "Kidney injury"
 	salience 3
-	agenda-group "patient-after-injury"
+	agenda-group "new-activity-level"
     when
-    	$p : Patient( physicalActivityAfterInjury == null )
+    	$p : Patient( username == currentPatient, physicalActivityAfterInjury == null )
 		$kidneyInjuries : List(size > 0) 
 			from collect(
-				Injury(injuryBodyPart == InjuryBodyPart.KIDNEY, this.getEndDate() == null) 
+				Injury(injuryBodyPart == InjuryBodyPart.KIDNEY, endDate == null) 
 				from $p.medicalHistory
 			)
     then
@@ -31,9 +29,9 @@ end
 
 rule "Liver injury"
 	salience 3
-	agenda-group "patient-after-injury"
+	agenda-group "new-activity-level"
     when
-    	$p : Patient( physicalActivityAfterInjury == null )
+    	$p : Patient( username == currentPatient, physicalActivityAfterInjury == null )
 		$liverInjuries : List(size > 0) 
 			from collect(
 				Injury(injuryBodyPart == InjuryBodyPart.LIVER, this.getEndDate() == null) 
@@ -48,11 +46,11 @@ end
 
 rule "Muscle strain + > 50 + ARM, WRIST, LEG, KNEE, ANKLE injury -> SEDENTARY"
     salience 3
-	agenda-group "patient-after-injury"
+	agenda-group "new-activity-level"
     when
-    	$p : Patient( 
-    		$age : DateUtility.getDiffYears(dateOfBirth) > 50, 
-    		physicalActivityAfterInjury == null )
+    	$p : Patient( username == currentPatient, 
+    		physicalActivityAfterInjury == null, 
+    		$age : DateUtility.getDiffYears(dateOfBirth) > 50 )
 		$muscleStrains : List(size > 0) 
 			from collect(
 				Injury(injuryType == InjuryType.MUSCLE_STRAIN, 
@@ -67,12 +65,12 @@ end
 
 rule "Muscle strain + <= 50 + ARM, WRIST, LEG, KNEE, ANKLE injury -> LIGHT_ACTIVE"
     salience 2
-	agenda-group "patient-after-injury"
+	agenda-group "new-activity-level"
     when
-    	$p : Patient( 
+    	$p : Patient( username == currentPatient,
+    		physicalActivityAfterInjury == null, 
     		DateUtility.getDiffYears(dateOfBirth) > 20, 
-    		DateUtility.getDiffYears(dateOfBirth) <= 50, 
-    		physicalActivityAfterInjury == null )
+    		DateUtility.getDiffYears(dateOfBirth) <= 50 ) @Watch(!physicalActivityAfterInjury)
 		$muscleStrains : List(size > 0) 
 			from collect(
 				Injury(injuryType == InjuryType.MUSCLE_STRAIN, 
@@ -87,10 +85,11 @@ end
 
 rule "Muscle strain + <= 20 + ARM, WRIST, LEG, KNEE, ANKLE injury -> MODERATE"
     salience 1
-	agenda-group "patient-after-injury"
+	agenda-group "new-activity-level"
     when
-    	$p : Patient( $age : DateUtility.getDiffYears(dateOfBirth) <= 20, 
-    		physicalActivityAfterInjury == null )
+    	$p : Patient( username == currentPatient,
+    		physicalActivityAfterInjury == null, 
+    		$age : DateUtility.getDiffYears(dateOfBirth) <= 20 ) @Watch(!physicalActivityAfterInjury)
 		$muscleStrains : List(size > 0) 
 			from collect(
 				Injury(injuryType == InjuryType.MUSCLE_STRAIN, 
@@ -107,10 +106,11 @@ end
 
 rule "Fracute + <= 30 + ARM, WRIST injury -> MODERATE"
     salience 1
-	agenda-group "patient-after-injury"
+	agenda-group "new-activity-level"
     when
-    	$p : Patient( $age : DateUtility.getDiffYears(dateOfBirth) <= 30, 
-    		physicalActivityAfterInjury == null )
+    	$p : Patient( username == currentPatient, 
+    		physicalActivityAfterInjury == null, 
+    		$age : DateUtility.getDiffYears(dateOfBirth) <= 30 ) @Watch(!physicalActivityAfterInjury)
 		$muscleStrains : List(size > 0) 
 			from collect(
 				Injury(injuryType == InjuryType.FRACTURE, 
@@ -127,10 +127,11 @@ end
 
 rule "Fracute + > 30 + ARM, WRIST injury -> LIGHT_ACTIVE"
     salience 2
-	agenda-group "patient-after-injury"
+	agenda-group "new-activity-level"
     when
-    	$p : Patient( $age : DateUtility.getDiffYears(dateOfBirth) > 30, 
-    		physicalActivityAfterInjury == null )
+    	$p : Patient( username == currentPatient, 
+    		physicalActivityAfterInjury == null, 
+    		$age : DateUtility.getDiffYears(dateOfBirth) > 30 )
 		$muscleStrains : List(size > 0) 
 			from collect(
 				Injury(injuryType == InjuryType.FRACTURE, 
@@ -149,9 +150,9 @@ end
 
 rule "Lower body injury"
 	salience 3
-	agenda-group "patient-after-injury"
+	agenda-group "new-activity-level"
     when
-    	$p : Patient( physicalActivityAfterInjury == null )
+    	$p : Patient( username == currentPatient, physicalActivityAfterInjury == null )
 		$liverInjuries : List(size > 0) 
 			from collect(
 				Injury(injuryType ==  InjuryType.FRACTURE, 
@@ -164,7 +165,22 @@ rule "Lower body injury"
     	System.out.println("Set physical activity level after upper body FRACTURE injury to SEDENTARY.");
 end
 
+rule "Change agenda-group to calories-after-injury"
+	agenda-group "new-activity-level"
+	salience -1
+	when
+		exists(Patient())
+	then
+		System.out.println("Changed agenda-group from new-activity-level to calories-after-injury");
+		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("calories-after-injury").setFocus();
+end
 
+
+
+
+
+// NAPOMENA:
+// MOZDA IZMENITI PRAVILA TAKO DA NE BUDE != NEGO NEKO ITERIRANJE KROZ USLOVE ILI ||
 
 // proba
 

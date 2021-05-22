@@ -20,6 +20,7 @@ import com.sbnz.recovery.model.enums.PhysicalActivity;
 public class BmrAndRegularDailyCaloriIntakeTest {
 
 	private final SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+	private final String currentPatient = "username";
 
 	private KieSession kieSession;
 
@@ -30,20 +31,21 @@ public class BmrAndRegularDailyCaloriIntakeTest {
 		KieContainer kContainer = ks
 				.newKieContainer(ks.newReleaseId("com.sbnz", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
 		kieSession = kContainer.newKieSession("rulesSession");
-		kieSession.getAgenda().getAgendaGroup("patient-after-injury").setFocus();
+		kieSession.setGlobal("currentPatient", currentPatient);
+		kieSession.getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
 	}
 
 	@Test
 	public void CalculateBmrAndDailyCalorieIntakeRuleFemale() throws ParseException {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
-		Patient patient = new Patient("username", "password", "name", "surname",
+		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<>());
 	
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(2, firedRules);
+		assertEquals(4, firedRules);
 		assertEquals(1484.0, patient.getBmr(), 0.9);
 		assertEquals(2040.5, patient.getRegularDailyCaloryIntake(), 0.9);
 	}
@@ -58,7 +60,7 @@ public class BmrAndRegularDailyCaloriIntakeTest {
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(2, firedRules);
+		assertEquals(4, firedRules);
 		assertEquals(1650.0, patient.getBmr(), 0.9);
 		assertEquals(1980.0, patient.getRegularDailyCaloryIntake(), 0.9);
 	}

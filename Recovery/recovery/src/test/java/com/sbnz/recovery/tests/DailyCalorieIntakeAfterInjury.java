@@ -20,6 +20,7 @@ import com.sbnz.recovery.model.enums.PhysicalActivity;
 public class DailyCalorieIntakeAfterInjury {
 
 	private final SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+	private final String currentPatient = "username";
 
 	private KieSession kieSession;
 
@@ -30,14 +31,15 @@ public class DailyCalorieIntakeAfterInjury {
 		KieContainer kContainer = ks
 				.newKieContainer(ks.newReleaseId("com.sbnz", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
 		kieSession = kContainer.newKieSession("rulesSession");
-		kieSession.getAgenda().getAgendaGroup("patient-after-injury").setFocus();
+		kieSession.setGlobal("currentPatient", currentPatient);
+		kieSession.getAgenda().getAgendaGroup("calories-after-injury").setFocus();
 	}
 
 	@Test
 	public void CalculateCalorieIntakeAfterInjuryLAToSedentary() throws ParseException {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
-		Patient patient = new Patient("username", "password", "name", "surname",
+		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<>());
 	
 		patient.setBmr(1484.0);
@@ -54,7 +56,7 @@ public class DailyCalorieIntakeAfterInjury {
 	public void CalculateCalorieIntakeAfterInjuryEAToSedentary() throws ParseException {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
-		Patient patient = new Patient("username", "password", "name", "surname",
+		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.EXTRA_ACTIVE, new ArrayList<>());
 	
 		patient.setBmr(1484.0);
@@ -71,7 +73,7 @@ public class DailyCalorieIntakeAfterInjury {
 	public void CalculateCalorieIntakeAfterInjuryVAToLA() throws ParseException {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
-		Patient patient = new Patient("username", "password", "name", "surname",
+		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.VERY_ACTIVE, new ArrayList<>());
 	
 		patient.setBmr(1484.0);

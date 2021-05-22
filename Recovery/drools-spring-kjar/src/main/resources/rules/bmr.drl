@@ -4,19 +4,27 @@ import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.utility.DateUtility;
 
+global String currentPatient;
+
 rule "Calculate BMR - Male"
-	agenda-group "patient-after-injury"
+	agenda-group "bmr-regular-calorie"
+	salience 2
     when
-        $p: Patient( gender == Gender.MALE, bmr == 0, $height : height, $weight : weight, $age : DateUtility.getDiffYears(dateOfBirth) )
+        $p: Patient( username == currentPatient, gender == Gender.MALE, 
+        	$height : height, $weight : weight, 
+        	$age : DateUtility.getDiffYears(dateOfBirth) ) @Watch(!bmr)
     then
     	modify ($p) { setBmr(10 * $weight + 6.25 * $height - 5 * $age + 5); }
         System.out.println("Calculated BMR for MALE patient: " + $p.getBmr());
 end
 
 rule "Calculate BMR - Female"
-	agenda-group "patient-after-injury"
+	agenda-group "bmr-regular-calorie"
+	salience 2
     when
-        $p: Patient( gender == Gender.FEMALE, bmr == 0, $height : height, $weight : weight, $age : DateUtility.getDiffYears(dateOfBirth) )
+        $p: Patient( username == currentPatient, gender == Gender.FEMALE, 
+        	$height : height, $weight : weight, 
+        	$age : DateUtility.getDiffYears(dateOfBirth) ) @Watch(!bmr)
     then
     	modify ($p) { setBmr(10 * $weight + 6.25 * $height - 5 * $age - 161); }
         System.out.println("Calculated BMR for FEMALE patient: " + $p.getBmr());

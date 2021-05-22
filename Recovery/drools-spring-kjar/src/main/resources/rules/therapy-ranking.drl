@@ -14,11 +14,13 @@ declare ApplicableTherapy
 	therapy: Therapy
 end
 
+declare DeterminedTherapy
+end
+
 
 rule "Rank therapy for patient"
 	agenda-group "rank-therapy"
 	no-loop
-	//salience ($matchedIllnessCount + $matchedInjuryCount)
 	salience ($matchedIllnessCount + $matchedInjuries.size())
     when
     	$p: Patient(username == chosenPatientUsername, $illnesses: anamnesis)
@@ -40,16 +42,11 @@ rule "Rank therapy for patient"
 			$matchedInjuries : collectList($injury)
     	)
     	eval($matchedInjuries.size() >= $activeInjuries.size() / 2)
-    	//$matchedInjuryCount : Number($matchedInjuries.size() >= $activeInjuries.size() / 2)
-    	//$matchedInjuryCount : Number(intValue >= $activeInjuries.size() / 2) from accumulate(
-    		//											Injury($injuryType : injuryType) from $activeInjuries
-    			//										and InjuryType(this == $injuryType) from $tin,
-    				//									count($injuryType)
-    					//								)
-   		// posebno pravilo za kinezi terapiju -> sme poceti ne pre 14 dana nakon povrede
+    	//not(DeterminedTherapy())
     then
     	System.out.println("Assigned therapy " + $therapyName + " to patient " + chosenPatientUsername);
     	modify($p) { addTherapyForInjury(new AppliedTherapy(LocalDate.now(), $t), (Injury)$matchedInjuries.get(0)); }
+		//insert(new DeterminedTherapy());
 end
 
 
@@ -83,3 +80,9 @@ rule "Change agenda group after finding all applicable therapies"
 		System.out.println("Focus set to rank-therapy agenda-group");
 		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("rank-therapy").setFocus();
 end;*/
+    	//$matchedInjuryCount : Number($matchedInjuries.size() >= $activeInjuries.size() / 2)
+    	//$matchedInjuryCount : Number(intValue >= $activeInjuries.size() / 2) from accumulate(
+    		//											Injury($injuryType : injuryType) from $activeInjuries
+    			//										and InjuryType(this == $injuryType) from $tin,
+    				//									count($injuryType)
+    					//								)

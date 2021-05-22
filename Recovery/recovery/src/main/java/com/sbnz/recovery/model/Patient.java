@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.kie.api.definition.type.PropertyReactive;
+
 import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.Illness;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 
+@PropertyReactive
 public class Patient implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -25,8 +28,8 @@ public class Patient implements Serializable {
 	private Date dateOfBirth;
 	private int height;
 	private double weight;
-	
 	private PhysicalActivity physicalActivityBeforeInjury;
+	
 	private List<Illness> anamnesis;
 	private List<Injury> medicalHistory;
 	

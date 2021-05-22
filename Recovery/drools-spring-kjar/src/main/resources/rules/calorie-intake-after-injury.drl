@@ -5,10 +5,14 @@ import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 import com.sbnz.recovery.utility.DateUtility;
 
+global String currentPatient;
+
 rule "Calculate new daily calorie intake after injury"
-	agenda-group "patient-after-injury"
+	agenda-group "calories-after-injury"
+	lock-on-active true
 	when
-		$p: Patient( bmr != 0, regularDailyCaloryIntake != 0, physicalActivityAfterInjury != null, 
+		$p: Patient( username == currentPatient, 
+			bmr != 0, physicalActivityAfterInjury != null,
 			$regularCalories : regularDailyCaloryIntake, 
 			$activityBefore : physicalActivityBeforeInjury, 
 			$activityAfter : physicalActivityAfterInjury )

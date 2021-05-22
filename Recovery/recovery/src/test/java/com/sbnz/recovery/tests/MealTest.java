@@ -74,9 +74,9 @@ public class MealTest {
 		Ingredient ing2 = new Ingredient(90.00, 200.00, 30.00, 5.00);
 		Ingredient ing3 = new Ingredient(20.00, 200.00, 70.00, 5.00);
 		HashMap<Ingredient, Double> ingredients = new HashMap<Ingredient, Double>();
-		ingredients.put(ing1, 1.00);
-		ingredients.put(ing2, 1.00);
-		ingredients.put(ing3, 1.00);
+		ingredients.put(ing1, 100.00);
+		ingredients.put(ing2, 100.00);
+		ingredients.put(ing3, 100.00);
 		
 		Meal meal = new Meal("Apple soup", ingredients, "Low cooking");
 		

@@ -42,9 +42,7 @@ rule "Calculate Total Calories"
         $m: Meal($ingredients : ingredients)
         $countCalories : Double() from accumulate(
         	Entry($key : key, $value : value) from $ingredients.entrySet(),
-        	init(double count = 0.0;),
-        	action(count += (((Ingredient)$key).getCalories()) * ((Double)$value);),
-        	result(count)
+        	sum((((Ingredient)$key).getCalories() / 100.0) * ((Double)$value))
         )
     then
         modify ($m) { setTotalCalories($countCalories); }

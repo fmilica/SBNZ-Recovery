@@ -28,7 +28,6 @@ import com.sbnz.recovery.model.enums.TherapyType;
 public class RankTherapyTest {
 
 	private final SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-	
 	private final String chosenPatientUsername = "username";
 	
 	private KieSession kieSession;

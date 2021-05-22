@@ -19,6 +19,7 @@ public class Ingredient implements Serializable {
 	private double sugars;
 	private double fibers;
 	private double fat;
+	
 	private List<Illness> illnesses;
 	
 	public Ingredient() {

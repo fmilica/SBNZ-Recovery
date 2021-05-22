@@ -1,35 +1,85 @@
-/*package rules;
+package rules;
 
 import java.time.LocalDate;
 
 import com.sbnz.recovery.model.Patient;
+import com.sbnz.recovery.model.AppliedTherapy;
 import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.utility.DateUtility;
+
+global String chosenPatientUsername;
+
+declare ApplicableTherapy
+	patientUsername: String
+	therapy: Therapy
+end
 
 
 rule "Rank therapy for patient"
 	agenda-group "rank-therapy"
-	salience ($matchedIllness + $matchedInjury)
+	no-loop
+	//salience ($matchedIllnessCount + $matchedInjuryCount)
+	salience ($matchedIllnessCount + $matchedInjuries.size())
     when
-    	$p: Patient(currentTherapy == null, $therapies: therapies, $illnesses: anamnesis)
-    	$t: Therapy($til: applicableIllness, $tin: applicableInjury)
+    	$p: Patient(username == chosenPatientUsername, $illnesses: anamnesis)
+    	$at: ApplicableTherapy(patientUsername == chosenPatientUsername, 
+    		$t: therapy, $therapyName : therapy.name, 
+    		$til: therapy.applicableIllness, $tin: therapy.applicableInjury)
     	$activeInjuries : List() from collect(
 				Injury(this.getEndDate() == null) 
 				from $p.medicalHistory
 		)
-    	$matchedIllness : Number(intValue > $illnesses.size() / 2) from accumulate(
+    	$matchedIllnessCount : Number(intValue >= $illnesses.size() / 2) from accumulate(
     													Illness($illness : this) from $illnesses
     													and Illness(this == $illness) from $til,
-    													count($illness))
-    	$matchedInjury : Number(intValue > $activeInjuries.size() / 2) from accumulate(
-    													Injury($injuryType : injuryType) from $activeInjuries
-    													and InjuryType(this == $injuryType) from $tin,
-    													count($injuryType))
-   		Number(intValue < $t.maximumMonthlyApplication) from accumulate(
-   			AppliedTherapy($at : this, therapy == $t, $d: applicationDate, $d.isAfter(LocalDate.now().minusDays(30)) from $therapies
-   			count($at))
+    													count($illness)
+    													)
+    	accumulate(
+    		Injury($injury: this, $injuryType : injuryType) from $activeInjuries
+			and InjuryType(this == $injuryType) from $tin,
+			$matchedInjuries : collectList($injury)
+    	)
+    	eval($matchedInjuries.size() >= $activeInjuries.size() / 2)
+    	//$matchedInjuryCount : Number($matchedInjuries.size() >= $activeInjuries.size() / 2)
+    	//$matchedInjuryCount : Number(intValue >= $activeInjuries.size() / 2) from accumulate(
+    		//											Injury($injuryType : injuryType) from $activeInjuries
+    			//										and InjuryType(this == $injuryType) from $tin,
+    				//									count($injuryType)
+    					//								)
    		// posebno pravilo za kinezi terapiju -> sme poceti ne pre 14 dana nakon povrede
     then
-    	System.out.println("Assigned therapy " + $t.name + " to patient " + $p.name + " " + $p.surname);
-    	modify($p) { setCurrentTherapy($t); }
-end*/
+    	System.out.println("Assigned therapy " + $therapyName + " to patient " + chosenPatientUsername);
+    	modify($p) { addTherapyForInjury(new AppliedTherapy(LocalDate.now(), $t), (Injury)$matchedInjuries.get(0)); }
+end
+
+
+rule "Find all applicable therapies for patient"
+	agenda-group "find-therapy"
+	salience 1
+	when
+		$p: Patient(username == chosenPatientUsername, $injuries : medicalHistory)
+		$t: Therapy($maximumApplication : maximumMonthlyApplication, $name : name)
+		Number(intValue < $maximumApplication) from accumulate(
+			Injury($appliedTherapies : appliedTherapies) from $injuries and
+			$applicationPerInjury : Number(intValue > 0) from accumulate(
+				AppliedTherapy($at : this,
+					$date : applicationDate, $date.isAfter(LocalDate.now().minusDays(30)),
+					therapy == $t) from $appliedTherapies,
+				count($at)
+			),
+			sum($applicationPerInjury)
+		)
+	then
+		System.out.println("Therapy " + $name + " is applicable for patient with username: " + chosenPatientUsername);
+		insert(new ApplicableTherapy(chosenPatientUsername, $t));
+end;
+/*
+rule "Change agenda group after finding all applicable therapies"
+	agenda-group "find-therapy"
+	salience 0
+	when
+		ApplicableTherapy( )
+	then
+		System.out.println("Focus set to rank-therapy agenda-group");
+		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("rank-therapy").setFocus();
+end;*/

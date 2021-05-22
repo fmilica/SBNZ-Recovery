@@ -67,3 +67,18 @@ rule "Therapy LOW_BLOOD_PRESSURE"
     	modify ($t) { addApplicableIllness(Illness.LOW_BLOOD_PRESSURE); }
         System.out.println("Therapy applicable for LOW_BLOOD_PRESSURE");
 end
+
+rule "Therapy REST"
+	lock-on-active true
+	agenda-group "classify-therapy"
+	when
+		$t: Therapy(therapyType == TherapyType.REST)
+	then
+		modify($t) { addApplicableIllness(Illness.LOW_BLOOD_PRESSURE),
+					addApplicableIllness(Illness.HIGH_BLOOD_PRESSURE),
+					addApplicableIllness(Illness.DIABETES),
+					addApplicableInjuryType(InjuryType.INTERNAL),
+					addApplicableInjuryType(InjuryType.MUSCLE_STRAIN),
+					addApplicableInjuryType(InjuryType.FRACTURE); }
+        System.out.println("Therapy REST applicable for everything");
+end

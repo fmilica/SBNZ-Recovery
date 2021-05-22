@@ -1,5 +1,5 @@
 package com.sbnz.recovery.model.enums;
 
 public enum TherapyType {
-	ELECTRICITY, KINESIOTHERAPY, MAGNET
+	REST, ELECTRICITY, KINESIOTHERAPY, MAGNET
 }

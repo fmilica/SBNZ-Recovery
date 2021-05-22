@@ -7,28 +7,32 @@ import com.sbnz.recovery.model.enums.*;
 rule "Potential abuse"
 	when
 		$p: Patient($injuries: medicalHistory)
-        Number(intValue > 3) accumulate(
+        Number(intValue > 3) from accumulate(
         	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(6)), injuryType == InjuryType.FRACTURE) from $injuries,
          	count($i)
          )
 	then
 end 
 
-//rule "Potential atrophy"
-	//when
-		//$p: Patient($therapies : therapies)
-        //Number(size > 4) accumulate(
-        	//AppliedTherapy($at: this, $applicationDate: applicationDate, $applicationDate.isAfter(LocalDate.now().minusMonths(12)), ) from $therapies,
-         	//count($at)
-         //)
-	//then
-//end 
+rule "Potential atrophy"
+	when
+		$p: Patient($injuries : medicalHistory)
+        Number(intValue > 4) from accumulate(
+        	Injury($appliedTherapies : appliedTherapies, startDate.isAfter(LocalDate.now().minusMonths(12))) from $injuries and
+        	$restPerInjury : Number(intValue > 0) from accumulate(
+        		AppliedTherapy($at: this, therapy.therapyType == TherapyType.REST) from $appliedTherapies,
+        		count($at)
+        	),
+        	count($restPerInjury)
+		)
+	then
+end 
 
 
 rule "Potential eating dissorder"
 	when
 		$p: Patient($injuries: medicalHistory, weight/(height * height) < 18.5)
-        Number(intValue >= 2) accumulate(
+        Number(intValue >= 2) from accumulate(
         	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(3)), injuryType == InjuryType.FRACTURE) from $injuries,
          	count($i)
          )

@@ -2,7 +2,8 @@ package com.sbnz.recovery.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
 import com.sbnz.recovery.model.enums.InjuryType;
@@ -19,17 +20,10 @@ public class Injury implements Serializable{
 	private InjuryType injuryType;
 	private InjuryBodyPart injuryBodyPart;
 	
+	private List<AppliedTherapy> appliedTherapies;
+	
 	public Injury() {
 		super();
-	}
-	
-	public Injury(String name, LocalDate date, String description, InjuryType injuryType,
-			InjuryBodyPart injuryBodyPart) {
-		this.name = name;
-		this.startDate = date;
-		this.description = description;
-		this.injuryType = injuryType;
-		this.injuryBodyPart = injuryBodyPart;
 	}
 
 	public Injury(String name, LocalDate startDate, LocalDate endDate, String description, InjuryType injuryType,
@@ -40,6 +34,7 @@ public class Injury implements Serializable{
 		this.description = description;
 		this.injuryType = injuryType;
 		this.injuryBodyPart = injuryBodyPart;
+		this.appliedTherapies = new ArrayList<AppliedTherapy>();
 	}
 	
 	public Injury(Long id, String name, LocalDate startDate, LocalDate endDate, String description, InjuryType injuryType,
@@ -51,6 +46,10 @@ public class Injury implements Serializable{
 		this.description = description;
 		this.injuryType = injuryType;
 		this.injuryBodyPart = injuryBodyPart;
+	}
+	
+	public void addAppliedTherapy(AppliedTherapy appliedTherapy) {
+		this.appliedTherapies.add(appliedTherapy);
 	}
 	
 	public Long getId() {
@@ -107,6 +106,14 @@ public class Injury implements Serializable{
 	
 	public void setInjuryBodyPart(InjuryBodyPart injuryBodyPart) {
 		this.injuryBodyPart = injuryBodyPart;
+	}
+	
+	public List<AppliedTherapy> getAppliedTherapies() {
+		return appliedTherapies;
+	}
+
+	public void setAppliedTherapies(List<AppliedTherapy> appliedTherapies) {
+		this.appliedTherapies = appliedTherapies;
 	}
 
 	@Override

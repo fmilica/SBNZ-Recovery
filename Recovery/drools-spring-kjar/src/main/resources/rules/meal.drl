@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 rule "Diabetes Classify Ingredient"
 	lock-on-active true
+	agenda-group "classify-ingredient"
     when
         $i: Ingredient(calories < 200.00, carbohydrates < 100.00, sugars < 100.00, fat < 50.00)
     then
@@ -16,6 +17,7 @@ end
 
 rule "High Blood Pressure Classify Ingredient"
 	lock-on-active true
+	agenda-group "classify-ingredient"
     when
         $i: Ingredient(calories < 100.00, sugars < 50.00, fat < 50.00)
     then
@@ -25,6 +27,7 @@ end
 
 rule "Low Blood Pressure Classify Ingredient"
 	lock-on-active true
+	agenda-group "classify-ingredient"
     when
         $i: Ingredient(calories < 50.00, sugars < 100.00, fat < 20.00)
     then
@@ -34,6 +37,7 @@ end
 
 rule "Calculate Total Calories"
 	lock-on-active true
+	agenda-group "meal"
     when
         $m: Meal($ingredients : ingredients)
         $countCalories : Double() from accumulate(

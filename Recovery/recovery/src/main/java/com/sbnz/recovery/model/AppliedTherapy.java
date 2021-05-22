@@ -1,25 +1,25 @@
 package com.sbnz.recovery.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class AppliedTherapy {
 
-	private Date applicationDate;
+	private LocalDate applicationDate;
 	private Therapy therapy;
 	
 	public AppliedTherapy() {
 	}
 
-	public AppliedTherapy(Date applicationDate, Therapy therapy) {
+	public AppliedTherapy(LocalDate applicationDate, Therapy therapy) {
 		super();
 		this.applicationDate = applicationDate;
 		this.therapy = therapy;
 	}
 	
-	public Date getApplicationDate() {
+	public LocalDate getApplicationDate() {
 		return applicationDate;
 	}
-	public void setApplicationDate(Date applicationDate) {
+	public void setApplicationDate(LocalDate applicationDate) {
 		this.applicationDate = applicationDate;
 	}
 	public Therapy getTherapy() {

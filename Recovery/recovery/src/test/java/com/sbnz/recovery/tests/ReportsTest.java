@@ -69,7 +69,7 @@ public class ReportsTest {
 		patient.addInjury(injury1);
 		patient.addInjury(injury2);
 		patient.addInjury(injury3);
-
+		
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();

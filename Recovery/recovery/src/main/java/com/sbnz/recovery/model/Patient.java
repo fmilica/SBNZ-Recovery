@@ -1,6 +1,7 @@
 package com.sbnz.recovery.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,9 +39,6 @@ public class Patient implements Serializable {
 	private PhysicalActivity physicalActivityAfterInjury;
 	private double dailyCaloryIntakeAfterInjury;
 	
-	//private List<AppliedTherapy> therapies;
-	//private AppliedTherapy currentTherapy;
-	
 	public Patient() {
 		super();
 	}
@@ -60,7 +58,6 @@ public class Patient implements Serializable {
 		this.physicalActivityBeforeInjury = physicalActivityBeforeInjury;
 		this.anamnesis = anamnesis;
 		this.medicalHistory = new ArrayList<Injury>();
-		//this.therapies = new ArrayList<AppliedTherapy>();
 	}
 
 	public Patient(Long id, String username, String password, String name, String surname, Gender gender, Date dateOfBirth,
@@ -88,6 +85,11 @@ public class Patient implements Serializable {
 	public void addTherapyForInjury(AppliedTherapy appliedTherapy, Injury injury) {
 		this.medicalHistory.get(this.medicalHistory.indexOf(injury)).addAppliedTherapy(appliedTherapy);
 	}
+
+	public void finalizeInjury(Injury injury, LocalDate endDate) {
+		this.medicalHistory.get(this.medicalHistory.indexOf(injury)).setEndDate(endDate);
+		this.physicalActivityAfterInjury = null;
+	}
 	
 	public void addIllness(Illness illness) {
 		this.anamnesis.add(illness);
@@ -95,11 +97,8 @@ public class Patient implements Serializable {
 	
 	public void addInjury(Injury injury) {
 		this.medicalHistory.add(injury);
+		this.physicalActivityAfterInjury = null;
 	}
-	
-	/*public void addTherapy(AppliedTherapy therapy) {
-		this.therapies.add(therapy);
-	}*/
 	
 	public Long getId() {
 		return id;
@@ -228,22 +227,6 @@ public class Patient implements Serializable {
 	public void setDailyCaloryIntakeAfterInjury(double dailyCaloryIntakeAfterInjury) {
 		this.dailyCaloryIntakeAfterInjury = dailyCaloryIntakeAfterInjury;
 	}
-
-	/*public List<AppliedTherapy> getTherapies() {
-		return therapies;
-	}
-
-	public void setTherapies(List<AppliedTherapy> therapies) {
-		this.therapies = therapies;
-	}
-
-	public AppliedTherapy getCurrentTherapy() {
-		return currentTherapy;
-	}
-
-	public void setCurrentTherapy(AppliedTherapy currentTherapy) {
-		this.currentTherapy = currentTherapy;
-	}*/
 
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;

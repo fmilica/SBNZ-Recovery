@@ -13,23 +13,24 @@ rule "Potential abuse"
 	when
 		accumulate(
 			Patient($p: this, $injuries: medicalHistory) and
-	        Number(intValue > 3) from accumulate(
+	        Number(intValue >= 3) from accumulate(
 	        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(6)), injuryType == InjuryType.FRACTURE) from $injuries,
 	         	count($i)
-	        ),
-	        $potentialAbuse : collectList($p)
+	        ), 
+	        $potentialAbuse: collectList($p)
 	    )
+	    eval($potentialAbuse.size() > 0)
 	then
-		patientReport = $potentialAbuse;
+		patientReport.addAll($potentialAbuse);
 		System.out.println("Created report for potentially abused patients");
 end 
 
 rule "Potential atrophy"
-	agenda-group "abuse-atrophy"
+	agenda-group "atrophy-report"
 	when
 		accumulate(
 			Patient($p: this, $injuries : medicalHistory) and
-	        Number(intValue > 4) from accumulate(
+	        Number(intValue >= 4) from accumulate(
 	        	Injury($appliedTherapies : appliedTherapies, startDate.isAfter(LocalDate.now().minusMonths(12))) from $injuries and
 	        	$restPerInjury : Number(intValue > 0) from accumulate(
 	        		AppliedTherapy($at: this, therapy.therapyType == TherapyType.REST) from $appliedTherapies,
@@ -39,25 +40,27 @@ rule "Potential atrophy"
 			),
 			$potentialAtrophy : collectList($p)
 		)
+		eval($potentialAtrophy.size() > 0)
 	then
-		patientReport = $potentialAtrophy;
+		patientReport.addAll($potentialAtrophy);
 		System.out.println("Created report for patients with potential muscle atrophy");
 end 
 
 
 rule "Potential eating dissorder"
-	agenda-group "abuse-eating"
+	agenda-group "eating-report"
 	when
 		accumulate(
-			Patient($p: this, $injuries: medicalHistory, weight/(height * height) < 18.5) and
+			Patient($p: this, $injuries: medicalHistory, (weight/(height * height)) * 10000 < 18.5) and
 	        Number(intValue >= 2) from accumulate(
 	        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(3)), injuryType == InjuryType.FRACTURE) from $injuries,
 	         	count($i)
 	        ),
 	        $potentialEatingDisorder : collectList($p)
         )
+		eval($potentialEatingDisorder.size() > 0)
 	then
-		patientReport = $potentialEatingDisorder;
+		patientReport.addAll($potentialEatingDisorder);
 		System.out.println("Created report for patients with a potential eating disorder");
 end
 

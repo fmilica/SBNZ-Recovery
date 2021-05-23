@@ -26,7 +26,7 @@ public class Patient implements Serializable {
 	
 	private Gender gender;
 	private Date dateOfBirth;
-	private int height;
+	private double height;
 	private double weight;
 	private PhysicalActivity physicalActivityBeforeInjury;
 	
@@ -157,11 +157,11 @@ public class Patient implements Serializable {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public int getHeight() {
+	public double getHeight() {
 		return height;
 	}
 
-	public void setHeight(int height) {
+	public void setHeight(double height) {
 		this.height = height;
 	}
 

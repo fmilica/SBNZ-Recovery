@@ -1,6 +1,7 @@
 package com.sbnz.recovery.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,8 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-
-import org.kie.api.definition.type.PropertyReactive;
 
 import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
@@ -83,7 +82,7 @@ public class Patient implements Serializable {
 	
 	//private List<AppliedTherapy> therapies;
 	//private AppliedTherapy currentTherapy;
-	
+
 	public Patient() {
 		super();
 	}
@@ -103,11 +102,13 @@ public class Patient implements Serializable {
 		this.physicalActivityBeforeInjury = physicalActivityBeforeInjury;
 		this.anamnesis = anamnesis;
 		this.medicalHistory = new ArrayList<Injury>();
+
 		//this.therapies = new ArrayList<AppliedTherapy>();
 //		this.meals = new ArrayList<Meal>();
+
 	}
 
-	public Patient(String email, String password, String name, String surname, Gender gender, Date dateOfBirth,
+	public Patient(String username, String password, String name, String surname, Gender gender, Date dateOfBirth,
 			double height, double weight, PhysicalActivity physicalActivityBeforeInjury, double bmr,
 			double regularDailyCaloryIntake, PhysicalActivity physicalActivityAfterInjury,
 			double dailyCaloryIntakeAfterInjury, List<Injury> medicalHistory) {
@@ -132,6 +133,11 @@ public class Patient implements Serializable {
 	public void addTherapyForInjury(AppliedTherapy appliedTherapy, Injury injury) {
 		this.medicalHistory.get(this.medicalHistory.indexOf(injury)).addAppliedTherapy(appliedTherapy);
 	}
+
+	public void finalizeInjury(Injury injury, LocalDate endDate) {
+		this.medicalHistory.get(this.medicalHistory.indexOf(injury)).setEndDate(endDate);
+		this.physicalActivityAfterInjury = null;
+	}
 	
 	public void addIllness(Illness illness) {
 		this.anamnesis.add(illness);
@@ -139,15 +145,12 @@ public class Patient implements Serializable {
 	
 	public void addInjury(Injury injury) {
 		this.medicalHistory.add(injury);
+		this.physicalActivityAfterInjury = null;
 	}
 	
 	/*public void addTherapy(AppliedTherapy therapy) {
 		this.therapies.add(therapy);
 	}*/
-
-	public String getName() {
-		return name;
-	}
 
 	public Long getId() {
 		return id;
@@ -171,6 +174,10 @@ public class Patient implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 	public void setName(String name) {
@@ -272,22 +279,6 @@ public class Patient implements Serializable {
 	public void setDailyCaloryIntakeAfterInjury(double dailyCaloryIntakeAfterInjury) {
 		this.dailyCaloryIntakeAfterInjury = dailyCaloryIntakeAfterInjury;
 	}
-
-	/*public List<AppliedTherapy> getTherapies() {
-		return therapies;
-	}
-
-	public void setTherapies(List<AppliedTherapy> therapies) {
-		this.therapies = therapies;
-	}
-
-	public AppliedTherapy getCurrentTherapy() {
-		return currentTherapy;
-	}
-
-	public void setCurrentTherapy(AppliedTherapy currentTherapy) {
-		this.currentTherapy = currentTherapy;
-	}*/
 
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;

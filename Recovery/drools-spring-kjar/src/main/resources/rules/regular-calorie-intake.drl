@@ -79,7 +79,7 @@ rule "Change agenda-group to new-activity-level"
 	agenda-group "bmr-regular-calorie"
 	salience -1
 	when
-		exists(Patient())
+		Patient()
 	then
 		System.out.println("Changed agenda-group from bmr-regular-calorie to new-activity-level");
 		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("new-activity-level").setFocus();

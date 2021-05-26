@@ -1,0 +1,29 @@
+package rules;
+
+import java.time.LocalDate;
+
+import com.sbnz.recovery.model.Patient;
+import com.sbnz.recovery.model.Injury;
+
+global String currentPatient;
+global Long injuryId;
+
+rule "Finalize injury"
+	agenda-group "finalize-injury"
+    when
+        $p: Patient( username == currentPatient, $injuries: medicalHistory )
+        $i: Injury( id == injuryId, endDate == null, $injuryName: name ) from $injuries;
+    then
+    	modify ($p) { finalizeInjury($i, LocalDate.now()); }
+        System.out.println("Finalized injury " + $injuryName + " for patient " + currentPatient);
+		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
+end
+
+rule "Add new injury"
+	agenda-group "new-injury"
+    when
+        $p: Patient( username == currentPatient )
+    then
+        System.out.println("Added new injury for patient " + currentPatient);
+		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
+end

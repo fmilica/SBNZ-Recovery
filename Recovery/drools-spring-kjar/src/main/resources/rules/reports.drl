@@ -22,6 +22,7 @@ rule "Potential abuse"
 	    eval($potentialAbuse.size() > 0)
 	then
 		patientReport.addAll($potentialAbuse);
+		System.out.println($potentialAbuse);
 		System.out.println("Created report for potentially abused patients");
 end 
 
@@ -44,8 +45,7 @@ rule "Potential atrophy"
 	then
 		patientReport.addAll($potentialAtrophy);
 		System.out.println("Created report for patients with potential muscle atrophy");
-end 
-
+end
 
 rule "Potential eating disorder"
 	agenda-group "eating-report"

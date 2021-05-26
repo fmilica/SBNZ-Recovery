@@ -71,6 +71,18 @@ public class Injury implements Serializable{
 	}
 	
 	public Injury(Long id, String name, LocalDate startDate, LocalDate endDate, String description, InjuryType injuryType,
+			InjuryBodyPart injuryBodyPart) {
+		this.id = id;
+		this.name = name;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.description = description;
+		this.injuryType = injuryType;
+		this.injuryBodyPart = injuryBodyPart;
+		this.appliedTherapies = new ArrayList<AppliedTherapy>();
+	}
+	
+	public Injury(Long id, String name, LocalDate startDate, LocalDate endDate, String description, InjuryType injuryType,
 			InjuryBodyPart injuryBodyPart, Patient patient) {
 		this.id = id;
 		this.name = name;

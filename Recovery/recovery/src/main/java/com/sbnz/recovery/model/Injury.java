@@ -5,22 +5,55 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sbnz.recovery.model.enums.InjuryBodyPart;
-import com.sbnz.recovery.model.enums.InjuryType;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
+import com.sbnz.recovery.model.enums.InjuryBodyPart;
+
+@Entity
 public class Injury implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(name="name")
 	private String name;
+	
+	@Column(name="start_date")
 	private LocalDate startDate;
+	
+	@Column(name="end_date")
 	private LocalDate endDate;
+	
+	@Column(name="description")
 	private String description;
+	
+//	@Column(name="injury_type")
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "injury_type_id", referencedColumnName = "id")
 	private InjuryType injuryType;
+	
+	@Column(name="injury_body_parts")
 	private InjuryBodyPart injuryBodyPart;
 	
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "injury")
 	private List<AppliedTherapy> appliedTherapies;
+	
+	@ManyToOne
+	@JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false)
+	private Patient patient;
 	
 	public Injury() {
 		super();
@@ -38,7 +71,7 @@ public class Injury implements Serializable{
 	}
 	
 	public Injury(Long id, String name, LocalDate startDate, LocalDate endDate, String description, InjuryType injuryType,
-			InjuryBodyPart injuryBodyPart) {
+			InjuryBodyPart injuryBodyPart, Patient patient) {
 		this.id = id;
 		this.name = name;
 		this.startDate = startDate;
@@ -46,6 +79,7 @@ public class Injury implements Serializable{
 		this.description = description;
 		this.injuryType = injuryType;
 		this.injuryBodyPart = injuryBodyPart;
+		this.patient = patient;
 	}
 	
 	public void addAppliedTherapy(AppliedTherapy appliedTherapy) {
@@ -114,6 +148,14 @@ public class Injury implements Serializable{
 
 	public void setAppliedTherapies(List<AppliedTherapy> appliedTherapies) {
 		this.appliedTherapies = appliedTherapies;
+	}
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 
 	@Override

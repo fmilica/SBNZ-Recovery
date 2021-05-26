@@ -6,7 +6,8 @@ import java.util.List;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Meal;
 import com.sbnz.recovery.model.Ingredient;
-import com.sbnz.recovery.model.enums.Illness;
+import com.sbnz.recovery.model.IngredientAmount;
+import com.sbnz.recovery.model.Illness;
 
 global String chosenPatientUsername;
 global List<Meal> mealList;
@@ -18,7 +19,7 @@ rule "Rank meal for patient"
 		$p: Patient(username == chosenPatientUsername, $anamnesis: anamnesis)
 		$m: Meal($ingredients : ingredients, $mealName : name)
         $goodIngredientCount : Number(intValue >= $ingredients.size() / 2) from accumulate(
-        	Ingredient($i : this, $illnesses : illnesses) from $ingredients.keySet() and
+        	IngredientAmount($i : ingredient, $illnesses : ingredient.illnesses) from $ingredients and
         	$matchedIllnessCount : Number(intValue >= $illnesses.size() / 2) from accumulate(
 	        	Illness($illness : this) from $illnesses
 				and Illness(this == $illness) from $anamnesis,

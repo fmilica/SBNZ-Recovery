@@ -19,9 +19,9 @@ import com.sbnz.recovery.model.Injury;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.model.enums.Gender;
-import com.sbnz.recovery.model.enums.Illness;
+import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
-import com.sbnz.recovery.model.enums.InjuryType;
+import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 import com.sbnz.recovery.model.enums.TherapyType;
 
@@ -32,9 +32,21 @@ public class RankTherapyTest {
 	
 	private KieSession kieSession;
 	
+	private InjuryType fracture;
+	private InjuryType internal;
+	private InjuryType muscle;
+	private Illness diabetes;
+	private Illness hbp;
+	private Illness lbp;
+	
 	@Before
 	public void setUp() {
-
+		fracture = new InjuryType(1L, "FRACTURE");
+		muscle = new InjuryType(2L, "MUSCLE_STRAIN");
+		internal = new InjuryType(3L, "INTERNAL");
+		diabetes = new Illness(1L, "DIABETES");
+		hbp = new Illness(2L, "HIGH_BLOOD_PRESSURE");
+		lbp = new Illness(3L, "LOW_BLOOD_PRESSURE");
 		KieServices ks = KieServices.Factory.get();
 		KieContainer kContainer = ks
 				.newKieContainer(ks.newReleaseId("com.sbnz", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
@@ -45,15 +57,16 @@ public class RankTherapyTest {
 	
 	@Test
 	public void rankTherapy() throws ParseException {
+		
 		Therapy therapy1 = new Therapy("T1", TherapyType.ELECTRICITY, 10, 25.0, 3);
-		therapy1.addApplicableIllness(Illness.LOW_BLOOD_PRESSURE);
-		therapy1.addApplicableIllness(Illness.HIGH_BLOOD_PRESSURE);
-		therapy1.addApplicableInjuryType(InjuryType.FRACTURE);
+		therapy1.addApplicableIllness(lbp);
+		therapy1.addApplicableIllness(hbp);
+		therapy1.addApplicableInjuryType(fracture);
 		
 		Therapy therapy2 = new Therapy("T2", TherapyType.ELECTRICITY, 20, 25.0, 3);
-		therapy2.addApplicableIllness(Illness.DIABETES);
-		therapy2.addApplicableIllness(Illness.LOW_BLOOD_PRESSURE);
-		therapy2.addApplicableInjuryType(InjuryType.FRACTURE);
+		therapy2.addApplicableIllness(diabetes);
+		therapy2.addApplicableIllness(lbp);
+		therapy2.addApplicableInjuryType(fracture);
 		
 		Date dateOfBirth = format.parse("1998/10/10");
 		Patient patient = new Patient("username", "password", "name", "surname",
@@ -63,21 +76,21 @@ public class RankTherapyTest {
 		patient.setPhysicalActivityAfterInjury(PhysicalActivity.SEDENTARY);
 		patient.setDailyCaloryIntakeAfterInjury(1836.45);
 		// bolesti
-		patient.addIllness(Illness.LOW_BLOOD_PRESSURE);
+		patient.addIllness(lbp);
 		// povreda 1
-		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 1), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.LEG);
+		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 1), null, "desc", fracture, InjuryBodyPart.LEG);
 		// primenjene terapije
 		injury1.addAppliedTherapy(new AppliedTherapy(LocalDate.of(2021, 5, 3), therapy1));
 		injury1.addAppliedTherapy(new AppliedTherapy(LocalDate.of(2021, 5, 5), therapy2));
 		patient.addInjury(injury1);
 		// povreda 2
-		Injury injury2 = new Injury("I2", LocalDate.of(2021, 5, 12), null, "desc", InjuryType.MUSCLE_STRAIN, InjuryBodyPart.ARM);
+		Injury injury2 = new Injury("I2", LocalDate.of(2021, 5, 12), null, "desc", muscle, InjuryBodyPart.ARM);
 		// primenjene terapije
 		injury2.addAppliedTherapy(new AppliedTherapy(LocalDate.of(2021, 5, 15), therapy1));
 		injury2.addAppliedTherapy(new AppliedTherapy(LocalDate.of(2021, 5, 17), therapy1));
 		patient.addInjury(injury2);
 		// NEAKTIVNA povreda 3
-		Injury injury3 = new Injury("I3", LocalDate.of(2021, 5, 4), LocalDate.of(2021, 5, 7), "desc", InjuryType.MUSCLE_STRAIN, InjuryBodyPart.ARM);
+		Injury injury3 = new Injury("I3", LocalDate.of(2021, 5, 4), LocalDate.of(2021, 5, 7), "desc", muscle, InjuryBodyPart.ARM);
 		// primenjene terapije
 		injury3.addAppliedTherapy(new AppliedTherapy(LocalDate.of(2021, 5, 5), therapy1));
 		injury3.addAppliedTherapy(new AppliedTherapy(LocalDate.of(2021, 5, 6), therapy1));

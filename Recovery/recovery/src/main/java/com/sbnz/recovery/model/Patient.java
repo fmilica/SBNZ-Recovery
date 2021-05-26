@@ -5,38 +5,81 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
 import org.kie.api.definition.type.PropertyReactive;
 
 import com.sbnz.recovery.model.enums.Gender;
-import com.sbnz.recovery.model.enums.Illness;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 
-@PropertyReactive
+@Entity
 public class Patient implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-
-	private Long id;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(name = "username", nullable = false)
 	private String username;
+
+	@Column(name = "password", nullable = false)
 	private String password;
 	
+	@Column(name="name")
 	private String name;
+	
+	@Column(name="surname")
 	private String surname;
 	
+	@Column(name="gender")
 	private Gender gender;
+	
+	@Column(name="date_of_birth")
 	private Date dateOfBirth;
+	
+	@Column(name="height")
 	private double height;
+	
+	@Column(name="weight")
 	private double weight;
+	
+	@Column(name="physical_activity_before_injury")
 	private PhysicalActivity physicalActivityBeforeInjury;
 	
+//	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "patient")
+//	@Transient
+	@ManyToMany(mappedBy = "patients")
 	private List<Illness> anamnesis;
+	
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "patient")
+//	@Transient
 	private List<Injury> medicalHistory;
 	
+	@Column(name="bmr")
 	private double bmr;
+	
+	@Column(name="regular_daily_calory_intake")
 	private double regularDailyCaloryIntake;
+	
+	@Column(name="physical_activity_after_injury")
 	private PhysicalActivity physicalActivityAfterInjury;
+	
+	@Column(name="daily_calory_intake_after_injury")
 	private double dailyCaloryIntakeAfterInjury;
+	
+//	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "patient")
+//	@Transient
+//	private List<Meal> meals;
 	
 	//private List<AppliedTherapy> therapies;
 	//private AppliedTherapy currentTherapy;
@@ -46,7 +89,7 @@ public class Patient implements Serializable {
 	}
 
 	// kreiranje pacijenta
-	public Patient(String username, String password, String name, String surname, Gender gender, Date dateOfBirth, int height,
+	public Patient(String username, String password, String name, String surname, Gender gender, Date dateOfBirth, double height,
 			double weight, PhysicalActivity physicalActivityBeforeInjury, List<Illness> anamnesis) {
 		super();
 		this.username = username;
@@ -61,14 +104,14 @@ public class Patient implements Serializable {
 		this.anamnesis = anamnesis;
 		this.medicalHistory = new ArrayList<Injury>();
 		//this.therapies = new ArrayList<AppliedTherapy>();
+//		this.meals = new ArrayList<Meal>();
 	}
 
-	public Patient(Long id, String username, String password, String name, String surname, Gender gender, Date dateOfBirth,
-			int height, double weight, PhysicalActivity physicalActivityBeforeInjury, double bmr,
+	public Patient(String email, String password, String name, String surname, Gender gender, Date dateOfBirth,
+			double height, double weight, PhysicalActivity physicalActivityBeforeInjury, double bmr,
 			double regularDailyCaloryIntake, PhysicalActivity physicalActivityAfterInjury,
 			double dailyCaloryIntakeAfterInjury, List<Injury> medicalHistory) {
 		super();
-		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -83,6 +126,7 @@ public class Patient implements Serializable {
 		this.physicalActivityAfterInjury = physicalActivityAfterInjury;
 		this.dailyCaloryIntakeAfterInjury = dailyCaloryIntakeAfterInjury;
 		this.medicalHistory = medicalHistory;
+//		this.meals = new ArrayList<Meal>();
 	}
 
 	public void addTherapyForInjury(AppliedTherapy appliedTherapy, Injury injury) {
@@ -100,7 +144,11 @@ public class Patient implements Serializable {
 	/*public void addTherapy(AppliedTherapy therapy) {
 		this.therapies.add(therapy);
 	}*/
-	
+
+	public String getName() {
+		return name;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -123,10 +171,6 @@ public class Patient implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public void setName(String name) {
@@ -249,6 +293,18 @@ public class Patient implements Serializable {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+//	public List<Meal> getMeals() {
+//		return meals;
+//	}
+//
+//	public void setMeals(List<Meal> meals) {
+//		this.meals = meals;
+//	}
+//	
+//	public void addMeal(Meal meal) {
+//		this.meals.add(meal);
+//	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -264,11 +320,6 @@ public class Patient implements Serializable {
 			return false;
 		if (height != other.height)
 			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
 		if (medicalHistory == null) {
 			if (other.medicalHistory != null)
 				return false;
@@ -279,22 +330,12 @@ public class Patient implements Serializable {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
 		if (physicalActivityBeforeInjury != other.physicalActivityBeforeInjury)
 			return false;
 		if (surname == null) {
 			if (other.surname != null)
 				return false;
 		} else if (!surname.equals(other.surname))
-			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
 			return false;
 		if (Double.doubleToLongBits(weight) != Double.doubleToLongBits(other.weight))
 			return false;
@@ -303,10 +344,11 @@ public class Patient implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Patient [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name
-				+ ", surname=" + surname + ", gender=" + gender + ", dateOfBirth=" + dateOfBirth + ", height=" + height + ", weight="
-				+ weight + ", physicalActivityBeforeInjury=" + physicalActivityBeforeInjury
-				+ ", physicalActivityAfterInjury=" + physicalActivityAfterInjury + ", medicalHistory=" + medicalHistory
-				+ "]";
+		return "Patient [name=" + name + ", surname=" + surname + ", gender=" + gender + ", dateOfBirth=" + dateOfBirth
+				+ ", height=" + height + ", weight=" + weight + ", physicalActivityBeforeInjury="
+				+ physicalActivityBeforeInjury + ", anamnesis=" + anamnesis + ", medicalHistory=" + medicalHistory
+				+ ", bmr=" + bmr + ", regularDailyCaloryIntake=" + regularDailyCaloryIntake
+				+ ", physicalActivityAfterInjury=" + physicalActivityAfterInjury + ", dailyCaloryIntakeAfterInjury="
+				+ dailyCaloryIntakeAfterInjury + "]";
 	}
 }

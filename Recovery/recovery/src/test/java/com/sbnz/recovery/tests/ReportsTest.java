@@ -20,9 +20,9 @@ import com.sbnz.recovery.model.Injury;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.model.enums.Gender;
-import com.sbnz.recovery.model.enums.Illness;
+import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
-import com.sbnz.recovery.model.enums.InjuryType;
+import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 import com.sbnz.recovery.model.enums.TherapyType;
 
@@ -34,8 +34,21 @@ public class ReportsTest {
 	
 	private KieSession kieSession;
 	
+	private InjuryType fracture;
+	private InjuryType internal;
+	private InjuryType muscle;
+	private Illness diabetes;
+	private Illness hbp;
+	private Illness lbp;
+	
 	@Before
 	public void setUp() throws ParseException {
+		fracture = new InjuryType(1L, "FRACTURE");
+		muscle = new InjuryType(2L, "MUSCLE_STRAIN");
+		internal = new InjuryType(3L, "INTERNAL");
+		diabetes = new Illness(1L, "DIABETES");
+		hbp = new Illness(2L, "HIGH_BLOOD_PRESSURE");
+		lbp = new Illness(3L, "LOW_BLOOD_PRESSURE");
 		patientReport = new ArrayList<Patient>();
 		KieServices ks = KieServices.Factory.get();
 		KieContainer kContainer = ks
@@ -59,13 +72,13 @@ public class ReportsTest {
 		kieSession.getAgenda().getAgendaGroup("abuse-report").setFocus();
 		
 		// bolesti
-		patient.addIllness(Illness.LOW_BLOOD_PRESSURE);
+		patient.addIllness(lbp);
 		// povreda 1
-		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 1), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.LEG);
+		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 1), null, "desc", fracture, InjuryBodyPart.LEG);
 		// povreda 2
-		Injury injury2 = new Injury("I2", LocalDate.of(2021, 4, 12), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.ARM);
+		Injury injury2 = new Injury("I2", LocalDate.of(2021, 4, 12), null, "desc", fracture, InjuryBodyPart.ARM);
 		// povreda 3
-		Injury injury3 = new Injury("I3", LocalDate.of(2021, 1, 12), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.ARM);
+		Injury injury3 = new Injury("I3", LocalDate.of(2021, 1, 12), null, "desc", fracture, InjuryBodyPart.ARM);
 		patient.addInjury(injury1);
 		patient.addInjury(injury2);
 		patient.addInjury(injury3);
@@ -82,13 +95,13 @@ public class ReportsTest {
 	public void potentialAbuseTestNegative() throws ParseException {
 		kieSession.getAgenda().getAgendaGroup("abuse-report").setFocus();
 		// bolesti
-		patient.addIllness(Illness.LOW_BLOOD_PRESSURE);
+		patient.addIllness(lbp);
 		// povreda 1
-		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 1), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.LEG);
+		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 1), null, "desc", fracture, InjuryBodyPart.LEG);
 		// povreda 2
-		Injury injury2 = new Injury("I2", LocalDate.of(2021, 4, 12), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.ARM);
+		Injury injury2 = new Injury("I2", LocalDate.of(2021, 4, 12), null, "desc", fracture, InjuryBodyPart.ARM);
 		// povreda 3
-		Injury injury3 = new Injury("I3", LocalDate.of(2020, 1, 12), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.ARM);
+		Injury injury3 = new Injury("I3", LocalDate.of(2020, 1, 12), null, "desc", fracture, InjuryBodyPart.ARM);
 		patient.addInjury(injury1);
 		patient.addInjury(injury2);
 		patient.addInjury(injury3);
@@ -106,20 +119,20 @@ public class ReportsTest {
 		kieSession.getAgenda().getAgendaGroup("atrophy-report").setFocus();
 		// REST terapija
 		Therapy therapy1 = new Therapy("T1", TherapyType.REST, 10, 25.0, 3);
-		therapy1.addApplicableIllness(Illness.LOW_BLOOD_PRESSURE);
-		therapy1.addApplicableIllness(Illness.HIGH_BLOOD_PRESSURE);
-		therapy1.addApplicableInjuryType(InjuryType.FRACTURE);
+		therapy1.addApplicableIllness(lbp);
+		therapy1.addApplicableIllness(hbp);
+		therapy1.addApplicableInjuryType(fracture);
 		
 		// bolesti
-		patient.addIllness(Illness.LOW_BLOOD_PRESSURE);
+		patient.addIllness(lbp);
 		// povreda 1
-		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 1), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.LEG);
+		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 1), null, "desc", fracture, InjuryBodyPart.LEG);
 		// povreda 2
-		Injury injury2 = new Injury("I2", LocalDate.of(2021, 4, 12), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.ARM);
+		Injury injury2 = new Injury("I2", LocalDate.of(2021, 4, 12), null, "desc", fracture, InjuryBodyPart.ARM);
 		// povreda 3
-		Injury injury3 = new Injury("I3", LocalDate.of(2021, 3, 20), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.ARM);
+		Injury injury3 = new Injury("I3", LocalDate.of(2021, 3, 20), null, "desc", fracture, InjuryBodyPart.ARM);
 		// povreda 4
-		Injury injury4 = new Injury("I4", LocalDate.of(2020, 5, 30), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.ARM);
+		Injury injury4 = new Injury("I4", LocalDate.of(2020, 5, 30), null, "desc", fracture, InjuryBodyPart.ARM);
 		// lecenja
 		injury1.addAppliedTherapy(new AppliedTherapy(LocalDate.of(2021, 5, 3), therapy1));
 		injury2.addAppliedTherapy(new AppliedTherapy(LocalDate.of(2021, 4, 13), therapy1));
@@ -144,20 +157,20 @@ public class ReportsTest {
 		kieSession.getAgenda().getAgendaGroup("atrophy-report").setFocus();
 		// REST terapija
 		Therapy therapy1 = new Therapy("T1", TherapyType.REST, 10, 25.0, 3);
-		therapy1.addApplicableIllness(Illness.LOW_BLOOD_PRESSURE);
-		therapy1.addApplicableIllness(Illness.HIGH_BLOOD_PRESSURE);
-		therapy1.addApplicableInjuryType(InjuryType.FRACTURE);
+		therapy1.addApplicableIllness(lbp);
+		therapy1.addApplicableIllness(hbp);
+		therapy1.addApplicableInjuryType(fracture);
 		
 		// bolesti
-		patient.addIllness(Illness.LOW_BLOOD_PRESSURE);
+		patient.addIllness(lbp);
 		// povreda 1
-		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 1), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.LEG);
+		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 1), null, "desc", fracture, InjuryBodyPart.LEG);
 		// povreda 2
-		Injury injury2 = new Injury("I2", LocalDate.of(2021, 4, 12), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.ARM);
+		Injury injury2 = new Injury("I2", LocalDate.of(2021, 4, 12), null, "desc", fracture, InjuryBodyPart.ARM);
 		// povreda 3
-		Injury injury3 = new Injury("I3", LocalDate.of(2021, 3, 20), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.ARM);
+		Injury injury3 = new Injury("I3", LocalDate.of(2021, 3, 20), null, "desc", fracture, InjuryBodyPart.ARM);
 		// povreda 4
-		Injury injury4 = new Injury("I4", LocalDate.of(2020, 5, 30), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.ARM);
+		Injury injury4 = new Injury("I4", LocalDate.of(2020, 5, 30), null, "desc", fracture, InjuryBodyPart.ARM);
 		// lecenja
 		injury2.addAppliedTherapy(new AppliedTherapy(LocalDate.of(2021, 4, 13), therapy1));
 		injury3.addAppliedTherapy(new AppliedTherapy(LocalDate.of(2021, 3, 23), therapy1));
@@ -182,11 +195,11 @@ public class ReportsTest {
 		patient.setWeight(16.9);
 		patient.setHeight(105.4);
 		// bolesti
-		patient.addIllness(Illness.LOW_BLOOD_PRESSURE);
+		patient.addIllness(lbp);
 		// povreda 1
-		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 12), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.LEG);
+		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 12), null, "desc", fracture, InjuryBodyPart.LEG);
 		// povreda 2
-		Injury injury2 = new Injury("I2", LocalDate.of(2021, 4, 20), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.ARM);
+		Injury injury2 = new Injury("I2", LocalDate.of(2021, 4, 20), null, "desc", fracture, InjuryBodyPart.ARM);
 		
 		patient.addInjury(injury1);
 		patient.addInjury(injury2);
@@ -205,9 +218,9 @@ public class ReportsTest {
 		patient.setWeight(16.9);
 		patient.setHeight(105.4);
 		// bolesti
-		patient.addIllness(Illness.LOW_BLOOD_PRESSURE);
+		patient.addIllness(lbp);
 		// povreda 1
-		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 12), null, "desc", InjuryType.FRACTURE, InjuryBodyPart.LEG);
+		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 12), null, "desc", fracture, InjuryBodyPart.LEG);
 		
 		patient.addInjury(injury1);
 

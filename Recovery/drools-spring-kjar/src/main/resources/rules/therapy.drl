@@ -1,10 +1,16 @@
 package rules;
 
 import com.sbnz.recovery.model.Therapy;
-import com.sbnz.recovery.model.enums.InjuryType;
+import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.enums.TherapyType;
-import com.sbnz.recovery.model.enums.Illness;
+import com.sbnz.recovery.model.Illness;
 
+global Illness diabetes;
+global Illness hbp;
+global Illness lbp;
+global InjuryType fracture;
+global InjuryType internal;
+global InjuryType muscle;
 
 // injuries
 rule "Therapy FRACTURE"
@@ -13,7 +19,7 @@ rule "Therapy FRACTURE"
     when
         $t: Therapy(therapyType != TherapyType.KINESIOTHERAPY, intensity < 6)
     then
-    	modify ($t) { addApplicableInjuryType(InjuryType.FRACTURE); }
+    	modify ($t) { addApplicableInjuryType(fracture); }
         System.out.println("Therapy applicable for FRACTURE");
 end
 
@@ -23,7 +29,7 @@ rule "Therapy MUSCLE_STRAIN"
     when
         $t: Therapy(temperature < 15.0)
     then
-    	modify ($t) { addApplicableInjuryType(InjuryType.MUSCLE_STRAIN); }
+    	modify ($t) { addApplicableInjuryType(muscle); }
         System.out.println("Therapy applicable for MUSCLE_STRAIN");
 end
 
@@ -33,7 +39,7 @@ rule "Therapy INTERNAL"
     when
         $t: Therapy(intensity < 3, therapyType != TherapyType.KINESIOTHERAPY)
     then
-    	modify ($t) { addApplicableInjuryType(InjuryType.INTERNAL); }
+    	modify ($t) { addApplicableInjuryType(internal); }
         System.out.println("Therapy applicable for INTERNAL");
 end
 
@@ -44,7 +50,7 @@ rule "Therapy DIABETES"
     when
         $t: Therapy(intensity < 7)
     then
-    	modify ($t) { addApplicableIllness(Illness.DIABETES); }
+    	modify ($t) { addApplicableIllness(diabetes); }
         System.out.println("Therapy applicable for DIABETES");
 end
 
@@ -54,7 +60,7 @@ rule "Therapy HIGH_BLOOD_PRESSURE"
     when
         $t: Therapy(temperature < 25.0, intensity < 6)
     then
-    	modify ($t) { addApplicableIllness(Illness.HIGH_BLOOD_PRESSURE); }
+    	modify ($t) { addApplicableIllness(hbp); }
         System.out.println("Therapy applicable for HIGH_BLOOD_PRESSURE");
 end
 
@@ -64,7 +70,7 @@ rule "Therapy LOW_BLOOD_PRESSURE"
     when
         $t: Therapy(therapyType != TherapyType.MAGNET)
     then
-    	modify ($t) { addApplicableIllness(Illness.LOW_BLOOD_PRESSURE); }
+    	modify ($t) { addApplicableIllness(lbp); }
         System.out.println("Therapy applicable for LOW_BLOOD_PRESSURE");
 end
 
@@ -74,11 +80,11 @@ rule "Therapy REST"
 	when
 		$t: Therapy(therapyType == TherapyType.REST)
 	then
-		modify($t) { addApplicableIllness(Illness.LOW_BLOOD_PRESSURE),
-					addApplicableIllness(Illness.HIGH_BLOOD_PRESSURE),
-					addApplicableIllness(Illness.DIABETES),
-					addApplicableInjuryType(InjuryType.INTERNAL),
-					addApplicableInjuryType(InjuryType.MUSCLE_STRAIN),
-					addApplicableInjuryType(InjuryType.FRACTURE); }
+		modify($t) { addApplicableIllness(lbp),
+					addApplicableIllness(hbp),
+					addApplicableIllness(diabetes),
+					addApplicableInjuryType(internal),
+					addApplicableInjuryType(muscle),
+					addApplicableInjuryType(fracture); }
         System.out.println("Therapy REST applicable for everything");
 end

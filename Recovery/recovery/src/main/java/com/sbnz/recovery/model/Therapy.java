@@ -4,22 +4,51 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sbnz.recovery.model.enums.Illness;
-import com.sbnz.recovery.model.enums.InjuryType;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+import com.sbnz.recovery.model.Illness;
+import com.sbnz.recovery.model.InjuryType;
+
 import com.sbnz.recovery.model.enums.TherapyType;
 
+@Entity
 public class Therapy implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(name="name")
 	private String name;
+	
+	@Column(name="therapy_type")
 	private TherapyType therapyType;
+	
+	@Column(name="maximum_monthly_application")
 	private int maximumMonthlyApplication;
+	
+	@Column(name="temperature")
 	private double temperature;
+	
+	@Column(name="intensity")
 	private int intensity;
 	
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "therapy")
+//	@Transient
 	private List<Illness> applicableIllness;
+	
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "therapy")
+//	@Transient
 	private List<InjuryType> applicableInjury;
 	
 	public Therapy() {

@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.sbnz.recovery.model.enums.Gender;
-import com.sbnz.recovery.model.enums.Illness;
+import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 
 public class PatientDTO {
@@ -19,7 +19,7 @@ public class PatientDTO {
 	
 	private Gender gender;
 	private Date dateOfBirth;
-	private int height;
+	private double height;
 	private double weight;
 	
 	private PhysicalActivity physicalActivity;
@@ -29,7 +29,7 @@ public class PatientDTO {
 		super();
 	}
 
-	public PatientDTO(String username, String password, String name, String surname, Gender gender, Date dateOfBirth, int height,
+	public PatientDTO(String username, String password, String name, String surname, Gender gender, Date dateOfBirth, double height,
 			double weight, PhysicalActivity physicalActivity, List<Illness> anamnesis) {
 		super();
 		this.username = username;
@@ -86,7 +86,7 @@ public class PatientDTO {
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
-	public int getHeight() {
+	public double getHeight() {
 		return height;
 	}
 	public void setHeight(int height) {

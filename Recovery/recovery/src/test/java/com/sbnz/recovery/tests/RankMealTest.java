@@ -17,10 +17,11 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
 import com.sbnz.recovery.model.Ingredient;
+import com.sbnz.recovery.model.IngredientAmount;
 import com.sbnz.recovery.model.Meal;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.enums.Gender;
-import com.sbnz.recovery.model.enums.Illness;
+import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 
 public class RankMealTest {
@@ -46,20 +47,27 @@ public class RankMealTest {
 	@Test
 	public void rankMealForPatient() throws ParseException {
 		// sastojci
+		Illness ill1 = new Illness(1L, "DIABETES");
+		Illness ill2 = new Illness(2L, "HIGH_BLOOD_PRESSURE");
 		Ingredient ing1 = new Ingredient(100.00, 50.00, 30.00, 5.00);
-		ing1.addIllness(Illness.DIABETES);
+		ing1.addIllness(ill1);
 		Ingredient ing2 = new Ingredient(90.00, 200.00, 30.00, 5.00);
-		ing2.addIllness(Illness.DIABETES);
-		ing2.addIllness(Illness.HIGH_BLOOD_PRESSURE);
+		ing2.addIllness(ill1);
+		ing2.addIllness(ill2);
 		// obrok 1
-		Map<Ingredient, Double> mealIngs1 = new HashMap<>();
+		/*Map<Ingredient, Double> mealIngs1 = new HashMap<>();
 		mealIngs1.put(ing1, 100.0);
-		mealIngs1.put(ing2, 200.0);
+		mealIngs1.put(ing2, 200.0);*/
+		List<IngredientAmount> mealIngs1 = new ArrayList<IngredientAmount>();
+		mealIngs1.add(new IngredientAmount(ing1, 100.00));
+		mealIngs1.add(new IngredientAmount(ing2, 200.00));
 		Meal meal1 = new Meal("M1", mealIngs1, "opis");
 		meal1.setTotalCalories(280.0);
 		// obrok 2
-		Map<Ingredient, Double> mealIngs2 = new HashMap<>();
-		mealIngs2.put(ing1, 100.0);
+		/*Map<Ingredient, Double> mealIngs2 = new HashMap<>();
+		mealIngs2.put(ing1, 100.0);*/
+		List<IngredientAmount> mealIngs2 = new ArrayList<IngredientAmount>();
+		mealIngs2.add(new IngredientAmount(ing1, 100.00));
 		Meal meal2 = new Meal("M2", mealIngs2, "opis");
 		meal2.setTotalCalories(100.0);
 		
@@ -72,8 +80,8 @@ public class RankMealTest {
 		patient.setPhysicalActivityAfterInjury(PhysicalActivity.SEDENTARY);
 		patient.setDailyCaloryIntakeAfterInjury(1836.45);
 		// bolesti
-		patient.addIllness(Illness.DIABETES);
-		
+		patient.addIllness(ill1);
+
 		kieSession.insert(meal1);
 		kieSession.insert(meal2);
 		kieSession.insert(patient);

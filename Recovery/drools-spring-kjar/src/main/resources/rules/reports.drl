@@ -14,7 +14,7 @@ rule "Potential abuse"
 		accumulate(
 			Patient($p: this, $injuries: medicalHistory) and
 	        Number(intValue >= 3) from accumulate(
-	        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(6)), injuryType == InjuryType.FRACTURE) from $injuries,
+	        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(6)), injuryType.name == "FRACTURE") from $injuries,
 	         	count($i)
 	        ), 
 	        $potentialAbuse: collectList($p)
@@ -47,13 +47,13 @@ rule "Potential atrophy"
 end 
 
 
-rule "Potential eating dissorder"
+rule "Potential eating disorder"
 	agenda-group "eating-report"
 	when
 		accumulate(
 			Patient($p: this, $injuries: medicalHistory, (weight/(height * height)) * 10000 < 18.5) and
 	        Number(intValue >= 2) from accumulate(
-	        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(3)), injuryType == InjuryType.FRACTURE) from $injuries,
+	        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(3)), injuryType.name == "FRACTURE") from $injuries,
 	         	count($i)
 	        ),
 	        $potentialEatingDisorder : collectList($p)

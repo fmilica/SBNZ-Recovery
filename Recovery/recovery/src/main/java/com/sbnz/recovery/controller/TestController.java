@@ -29,7 +29,7 @@ public class TestController {
 		this.testService = testService;
 	}
 	
-	@PostMapping
+	/*@PostMapping
 	public ResponseEntity<Patient> getQuestions(@RequestBody PatientDTO patientDto) {
 
 		Patient newPatient = new Patient(patientDto.getUsername(), patientDto.getPassword(), patientDto.getName(), patientDto.getSurname(),
@@ -41,5 +41,5 @@ public class TestController {
 		Patient changed = testService.calculateBmi(newPatient);
 
 		return new ResponseEntity<Patient>(changed, HttpStatus.OK);
-	}
+	}*/
 }

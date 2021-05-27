@@ -1,0 +1,26 @@
+package rules;
+
+import com.sbnz.recovery.model.events.LoginEvent;
+
+declare SuspiciousUserEvent
+    @role(event)
+    @expires(10m)
+    username: String
+    reason: String
+end;
+
+rule "More than 5 login attempts in 1 minute from one user"
+    when
+        $u1: LoginEvent($username: username)
+        Number(intValue >= 5) from accumulate(
+            $u2: LoginEvent(
+                this != $u1, 
+                username == $username
+            ) over window:time( 1m ),
+            count($u2)
+        )
+        not (SuspiciousUserEvent(username == $username, reason == "Many login attempts"))
+    then
+        insert(new SuspiciousUserEvent($username, "Many login attempts"));
+        System.out.println("Suspicious login attempt for user: " + $username);
+end

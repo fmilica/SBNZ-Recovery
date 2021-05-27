@@ -1,22 +1,37 @@
-insert into doctor (username, password, name, surname)
-values ('doctor', 'doctor', 'Neko', 'Nekic');
+insert into authority (name) values ('ROLE_DOCTOR');
+insert into authority (name) values ('ROLE_PATIENT');
 
-insert into patient (username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
-values ('patient1', 'patient1', 'Jovo', 'Jovic', 1, '1998-10-10', 172, 68, 1, 0.0, 0.0, 0, 0.0);
-insert into patient (username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
-values ('patient2', 'patient2', 'Ivan', 'Ivanic', 1, '1998-10-10', 172, 68, 1, 1484.0, 2040.5, 0, 0.0);
-insert into patient (username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
-values ('patient3', 'patient3', 'Igor', 'Igic', 1, '1998-10-10', 172, 68, 4, 1484.0, 2040.5, 0, 0.0);
-insert into patient (username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
-values ('patient4', 'patient4', 'Marko', 'Markovic', 1, '1998-10-10', 172, 68, 3, 1484.0, 2040.5, 0, 0.0);
-insert into patient (username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
-values ('patient5', 'patient5', 'Ema', 'Emic', 0, '1998-10-10', 172, 68, 1, 0.0, 0.0, 0, 0.0);
-insert into patient (username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
-values ('patient6', 'patient6', 'Lena', 'Lenic', 0, '2003-10-10', 172, 68, 1, 0.0, 0.0, 0, 0.0);
-insert into patient (username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
-values ('patient7', 'patient7', 'Marina', 'Marinic', 0, '1968-10-10', 172, 68, 1, 0.0, 0.0, 0, 0.0);
-insert into patient (username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
-values ('patient8', 'patient8', 'Zeva', 'Zevic', 1, '1998-10-10', 172, 68, 0, 0.0, 0.0, 0, 0.0);
+--password=doctor
+insert into doctor (id, username, password, name, surname)
+values (1, 'doctor', '$2y$12$OL/h1hnTT3xD7deYzBF3m.TPUI7.ez9fSSZ3sRKG/1h.GAZ9kXzzO', 'Neko', 'Nekic');
+insert into user_authority (user_id, authority_id) values (1, 1);
+
+--password=patient
+insert into patient (id, username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
+values (1, 'patient1', '$2y$12$14qu7GNJstQpzeZQ0TlnO.7X3iZTa7zbblHnDNtXl4RaPIEm9kpp2', 'Jovo', 'Jovic', 1, '1998-10-10', 172, 68, 1, 0.0, 0.0, 0, 0.0);
+insert into patient (id, username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
+values (2, 'patient2', '$2y$12$14qu7GNJstQpzeZQ0TlnO.7X3iZTa7zbblHnDNtXl4RaPIEm9kpp2', 'Ivan', 'Ivanic', 1, '1998-10-10', 172, 68, 1, 1484.0, 2040.5, 0, 0.0);
+insert into patient (id, username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
+values (3, 'patient3', '$2y$12$14qu7GNJstQpzeZQ0TlnO.7X3iZTa7zbblHnDNtXl4RaPIEm9kpp2', 'Igor', 'Igic', 1, '1998-10-10', 172, 68, 4, 1484.0, 2040.5, 0, 0.0);
+insert into patient (id, username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
+values (4, 'patient4', '$2y$12$14qu7GNJstQpzeZQ0TlnO.7X3iZTa7zbblHnDNtXl4RaPIEm9kpp2', 'Marko', 'Markovic', 1, '1998-10-10', 172, 68, 3, 1484.0, 2040.5, 0, 0.0);
+insert into patient (id, username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
+values (5, 'patient5', '$2y$12$14qu7GNJstQpzeZQ0TlnO.7X3iZTa7zbblHnDNtXl4RaPIEm9kpp2', 'Ema', 'Emic', 0, '1998-10-10', 172, 68, 1, 0.0, 0.0, 0, 0.0);
+insert into patient (id, username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
+values (6, 'patient6', 'patient6', 'Lena', 'Lenic', 0, '2003-10-10', 172, 68, 1, 0.0, 0.0, 0, 0.0);
+insert into patient (id, username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
+values (7, 'patient7', '$2y$12$14qu7GNJstQpzeZQ0TlnO.7X3iZTa7zbblHnDNtXl4RaPIEm9kpp2', 'Marina', 'Marinic', 0, '1968-10-10', 172, 68, 1, 0.0, 0.0, 0, 0.0);
+insert into patient (id, username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
+values (8, 'patient8', '$2y$12$14qu7GNJstQpzeZQ0TlnO.7X3iZTa7zbblHnDNtXl4RaPIEm9kpp2', 'Zeva', 'Zevic', 1, '1998-10-10', 172, 68, 0, 0.0, 0.0, 0, 0.0);
+
+insert into user_authority (user_id, authority_id) values (1, 2);
+insert into user_authority (user_id, authority_id) values (2, 2);
+insert into user_authority (user_id, authority_id) values (3, 2);
+insert into user_authority (user_id, authority_id) values (4, 2);
+insert into user_authority (user_id, authority_id) values (5, 2);
+insert into user_authority (user_id, authority_id) values (6, 2);
+insert into user_authority (user_id, authority_id) values (7, 2);
+insert into user_authority (user_id, authority_id) values (8, 2);
 
 insert into therapy (name, therapy_type, maximum_monthly_application, temperature, intensity)
 values ('Terapija', 1, 20, 25.0, 3);

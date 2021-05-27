@@ -1,6 +1,5 @@
 package com.sbnz.recovery.model;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,9 +9,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -20,25 +16,7 @@ import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 
 @Entity
-public class Patient implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	@Column(name = "username", nullable = false)
-	private String username;
-
-	@Column(name = "password", nullable = false)
-	private String password;
-	
-	@Column(name="name")
-	private String name;
-	
-	@Column(name="surname")
-	private String surname;
+public class Patient extends User {
 	
 	@Column(name="gender")
 	private Gender gender;
@@ -90,11 +68,7 @@ public class Patient implements Serializable {
 	// kreiranje pacijenta
 	public Patient(String username, String password, String name, String surname, Gender gender, Date dateOfBirth, double height,
 			double weight, PhysicalActivity physicalActivityBeforeInjury, List<Illness> anamnesis) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.name = name;
-		this.surname = surname;
+		super(username, password, name, surname);
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
 		this.height = height;
@@ -112,11 +86,7 @@ public class Patient implements Serializable {
 			double height, double weight, PhysicalActivity physicalActivityBeforeInjury, double bmr,
 			double regularDailyCaloryIntake, PhysicalActivity physicalActivityAfterInjury,
 			double dailyCaloryIntakeAfterInjury, List<Injury> medicalHistory) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.name = name;
-		this.surname = surname;
+		super(username, password, name, surname);
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
 		this.height = height;
@@ -146,50 +116,6 @@ public class Patient implements Serializable {
 	public void addInjury(Injury injury) {
 		this.medicalHistory.add(injury);
 		this.physicalActivityAfterInjury = null;
-	}
-	
-	/*public void addTherapy(AppliedTherapy therapy) {
-		this.therapies.add(therapy);
-	}*/
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
 	}
 
 	public Gender getGender() {
@@ -316,17 +242,7 @@ public class Patient implements Serializable {
 				return false;
 		} else if (!medicalHistory.equals(other.medicalHistory))
 			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
 		if (physicalActivityBeforeInjury != other.physicalActivityBeforeInjury)
-			return false;
-		if (surname == null) {
-			if (other.surname != null)
-				return false;
-		} else if (!surname.equals(other.surname))
 			return false;
 		if (Double.doubleToLongBits(weight) != Double.doubleToLongBits(other.weight))
 			return false;
@@ -335,7 +251,7 @@ public class Patient implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Patient [name=" + name + ", surname=" + surname + ", gender=" + gender + ", dateOfBirth=" + dateOfBirth
+		return "Patient [gender=" + gender + ", dateOfBirth=" + dateOfBirth
 				+ ", height=" + height + ", weight=" + weight + ", physicalActivityBeforeInjury="
 				+ physicalActivityBeforeInjury + ", anamnesis=" + anamnesis + ", medicalHistory=" + medicalHistory
 				+ ", bmr=" + bmr + ", regularDailyCaloryIntake=" + regularDailyCaloryIntake

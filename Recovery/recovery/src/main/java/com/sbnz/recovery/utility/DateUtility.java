@@ -1,9 +1,14 @@
 package com.sbnz.recovery.utility;
 
+import static java.util.Calendar.DATE;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Locale;
-import static java.util.Calendar.*;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateUtility {
 
@@ -23,6 +28,12 @@ public class DateUtility {
 	    Calendar cal = Calendar.getInstance(Locale.US);
 	    cal.setTime(date);
 	    return cal;
+	}
+	
+	public static LocalDate parseLocalDate(String dateString) {
+		final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate date = LocalDate.parse(dateString, formatter);
+		return date;
 	}
 	
 }

@@ -1,4 +1,4 @@
-package rules;
+package cep;
 
 import com.sbnz.recovery.model.events.LoginEvent;
 
@@ -10,6 +10,7 @@ declare SuspiciousUserEvent
 end;
 
 rule "More than 5 login attempts in 1 minute from one user"
+	//agenda-group "failed-login"
     when
         $u1: LoginEvent($username: username)
         Number(intValue >= 5) from accumulate(

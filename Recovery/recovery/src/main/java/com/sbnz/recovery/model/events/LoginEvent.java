@@ -1,7 +1,6 @@
 package com.sbnz.recovery.model.events;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 
 import org.kie.api.definition.type.Role;

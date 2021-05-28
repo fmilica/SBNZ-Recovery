@@ -1,0 +1,29 @@
+package cep;
+
+import com.sbnz.recovery.model.events.MealEvent;
+import com.sbnz.recovery.model.Patient;
+
+declare CaloriesOverflow
+    @role(event)
+    @expires(10m)
+    username: String
+    reason: String
+end;
+
+rule "More than regular calories intake for patient"
+    when
+        $p: Patient($dailyCaloryIntakeAfterInjury: dailyCaloryIntakeAfterInjury)
+        $me1: MealEvent($username: username)
+        Number(intValue >= $dailyCaloryIntakeAfterInjury) from accumulate(
+            $me2: MealEvent(
+            	this != $me1,
+                username == $username,
+                $totalCalories : totalCalories
+            ) over window:time( 24h ),
+            sum($totalCalories)
+        )
+        not (CaloriesOverflow(username == $username, reason == "Calories intake overflow"))
+    then
+        insert(new CaloriesOverflow($username, "Calories intake overflow"));
+        System.out.println("More than regular calories intake for patient: " + $username);
+end

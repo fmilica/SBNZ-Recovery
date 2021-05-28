@@ -14,6 +14,8 @@ public class KnowledgeSessionService {
 	
 	private final KieContainer kieContainer;
     private KieSession rulesSession;
+    
+    private KieSession cepSession;
 
     @Autowired
     public KnowledgeSessionService(KieContainer kieContainer) {
@@ -36,9 +38,21 @@ public class KnowledgeSessionService {
         this.rulesSession = kieSession;
     }
     
+    public KieSession getCepSession() {
+    	if (this.rulesSession == null) {
+    		log.info("Initialized session");
+        	rulesSession = kieContainer.newKieSession("cepKsession");
+    	}
+        return rulesSession;
+    }
+
+    public void setCepSession(KieSession kieSession) {
+        this.cepSession = kieSession;
+    }
+    
     public void releaseRulesSession(){
-        this.rulesSession.dispose();
-        this.rulesSession = null;
+        this.cepSession.dispose();
+        this.cepSession = null;
     }
     
 }

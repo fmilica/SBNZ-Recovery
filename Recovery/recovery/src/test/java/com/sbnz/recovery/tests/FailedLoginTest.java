@@ -23,32 +23,33 @@ public class FailedLoginTest {
 		KieServices ks = KieServices.Factory.get();
     	KieContainer kc = ks.newKieClasspathContainer();
         kieSession = kc.newKieSession("cepKsession");
+        //kieSession.getAgenda().getAgendaGroup("failed-login").setFocus();
 	}
 	
 	@Test
 	public void failedLoginTest() throws ParseException {
 		
-		kieSession.insert(new LoginEvent("patient1"));
+		kieSession.insert(new LoginEvent("patient2"));
 		
 		int firedRules = kieSession.fireAllRules();
 		
-		kieSession.insert(new LoginEvent("patient1"));
+		kieSession.insert(new LoginEvent("patient2"));
 		
 		firedRules = kieSession.fireAllRules();
 		
-		kieSession.insert(new LoginEvent("patient1"));
+		kieSession.insert(new LoginEvent("patient2"));
 		
 		firedRules = kieSession.fireAllRules();
 		
-		kieSession.insert(new LoginEvent("patient1"));
+		kieSession.insert(new LoginEvent("patient2"));
 		
 		firedRules = kieSession.fireAllRules();
 		
-		kieSession.insert(new LoginEvent("patient1"));
+		kieSession.insert(new LoginEvent("patient2"));
 		
 		firedRules = kieSession.fireAllRules();
 		
-		kieSession.insert(new LoginEvent("patient1"));
+		kieSession.insert(new LoginEvent("patient2"));
 		
 		firedRules = kieSession.fireAllRules();
 		assertEquals(1, firedRules);

@@ -2,6 +2,7 @@ package com.sbnz.recovery.service;
 
 import java.util.ArrayList;
 
+import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.sbnz.recovery.exceptions.ExistingFieldValueException;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.User;
+import com.sbnz.recovery.model.events.LoginEvent;
 import com.sbnz.recovery.repository.PatientRepository;
 import com.sbnz.recovery.repository.UserRepository;
 
@@ -42,4 +44,10 @@ public class AuthService {
 		throw new ExistingFieldValueException("User", "email");
 	}
 
+	public void loginFailed(String username) {
+		LoginEvent event = new LoginEvent(username);
+		KieSession kieSession = kieSessionService.getCepSession();
+		kieSession.insert(event);
+		kieSession.fireAllRules();
+	}
 }

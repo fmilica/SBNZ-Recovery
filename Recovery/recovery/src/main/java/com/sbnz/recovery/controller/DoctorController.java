@@ -3,12 +3,14 @@ package com.sbnz.recovery.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.HashCodeExclude;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,6 +60,7 @@ public class DoctorController {
 		this.appliedTherapyMapper = new AppliedTherapyMapper();
 	}
 	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@PostMapping("/create-therapy")
 	public ResponseEntity<TherapyDTO> createTherapy(@RequestBody TherapyDTO therapyDto) {
 
@@ -75,6 +78,7 @@ public class DoctorController {
 		return new ResponseEntity<TherapyDTO>(theraphyMapper.toDto(therapy), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@PostMapping("/create-ingredient")
 	public ResponseEntity<IngredientDTO> createIngredient(@RequestBody IngredientDTO ingredientDto) {
 
@@ -92,6 +96,7 @@ public class DoctorController {
 		return new ResponseEntity<IngredientDTO>(ingredientMapper.toDto(ingredient), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@PostMapping("/create-meal")
 	public ResponseEntity<MealDTO> createMeal(@RequestBody MealDTO mealDto) {
 
@@ -108,6 +113,7 @@ public class DoctorController {
 		return new ResponseEntity<MealDTO>(mealMapper.toDto(meal), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("/patient-rank-therapies")
 	public ResponseEntity<List<AppliedTherapyDTO>> getPatientTherapies(@RequestBody PatientDTO patientDto) {
 
@@ -124,6 +130,7 @@ public class DoctorController {
 		return new ResponseEntity<List<AppliedTherapyDTO>>(appliedTherapyMapper.toDtoList(appliedTherapies), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("/patient-rank-meals")
 	public ResponseEntity<List<MealDTO>> getPatientMeals(@RequestBody PatientDTO patientDto) {
 
@@ -140,7 +147,9 @@ public class DoctorController {
 		return new ResponseEntity<List<MealDTO>>(mealMapper.toDtoList(availableMeals), HttpStatus.OK);
 	}
 	
+
 	//mozda i ovo treba
+	//@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	/*@PostMapping("/{patient-id}/add-therapy")
 	public ResponseEntity<TherapyDTO> addTherapy(@PathVariable("patient-id") Long patientId, 
 			@RequestBody TherapyDTO therapyDto) {
@@ -159,6 +168,7 @@ public class DoctorController {
 	}*/
 	
 	//kasnije rekla eva?
+	//@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	/*@PostMapping("/{patient-id}/add-meal")
 	public ResponseEntity<MealDTO> addMeal(@PathVariable("patient-id") Long patientId, 
 			@RequestBody MealDTO mealDto) {
@@ -176,6 +186,7 @@ public class DoctorController {
 		return new ResponseEntity<MealDTO>(mealMapper.toDto(meal), HttpStatus.OK);
 	}*/
 	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("/potential-abuse")
 	public ResponseEntity<List<PatientDTO>> getPotentialAbuse() {
 
@@ -191,6 +202,7 @@ public class DoctorController {
 		return new ResponseEntity<List<PatientDTO>>(patientMapper.toDtoList(patients), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("/potential-atrophy")
 	public ResponseEntity<List<PatientDTO>> getPotentialAtrophy() {
 
@@ -206,6 +218,7 @@ public class DoctorController {
 		return new ResponseEntity<List<PatientDTO>>(patientMapper.toDtoList(patients), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("/potential-eating-disorder")
 	public ResponseEntity<List<PatientDTO>> getPotentialEatingDisorder() {
 

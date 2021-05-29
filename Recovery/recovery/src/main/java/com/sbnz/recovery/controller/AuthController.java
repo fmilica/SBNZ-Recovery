@@ -3,6 +3,7 @@ package com.sbnz.recovery.controller;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +70,7 @@ public class AuthController {
 			return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn, username, verified));
 		} catch (Exception e) {
 			e.printStackTrace();
+			authService.loginFailed(authenticationRequest.getEmail());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 

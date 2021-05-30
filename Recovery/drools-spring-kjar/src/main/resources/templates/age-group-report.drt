@@ -1,0 +1,53 @@
+/*template header
+startDate
+endDate
+gender
+genderOrdinal
+
+package templates;
+
+import com.sbnz.recovery.model.*;
+import java.util.List;
+import java.util.Map;
+import java.time.LocalDate;
+import com.sbnz.recovery.utility.DateUtility;
+
+global Map<Integer, Double> result;
+
+template "age-group-report"
+
+query "getInjuriesCountByAgeGroup"(int startAge, int endAge, LocalDate startDate, LocalDate endDate)
+	accumulate(
+		Patient(DateUtility.getDiffYears(dateOfBirth) > startAge,
+				DateUtility.getDiffYears(dateOfBirth) < endAge
+				$injuries: medicalHistory)
+		$injuryPerPatient: Number() from accumulate(
+			Injury($i: this,
+				$injuryDate.isAfter(DateUtility.parseLocalDate("@{startDate}")),
+				$injuryDate.isBefore(DateUtility.parseLocalDate("@{endDate}"))
+			) from $injuries,
+			count($i)
+		),
+		sum($injuryPerPatient)
+	)
+end
+
+rule "Get most frequent injured gender in given time interval @{row.rowNumber}"
+agenda-group "age-group-report"
+when
+	$totalPerGender: Number() from accumulate(
+		Patient($injuries: medicalHistory, gender == Gender.@{gender}) and
+		$injuryPerPatient: Number() from accumulate(
+			Injury($i: this, $injuryDate: startDate, 
+				$injuryDate.isAfter(DateUtility.parseLocalDate("@{startDate}")),
+				$injuryDate.isBefore(DateUtility.parseLocalDate("@{endDate}"))) from $injuries,
+			count($i)
+		),
+		sum($injuryPerPatient)
+	)
+then
+	result.put(@{genderOrdinal}, $totalPerGender);
+	System.out.println("Total injuries per gender in the given time period: " + $totalPerGender);
+end
+
+end template*/

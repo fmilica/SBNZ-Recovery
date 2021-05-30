@@ -58,9 +58,6 @@ public class Patient extends User {
 //	@Transient
 //	private List<Meal> meals;
 	
-	//private List<AppliedTherapy> therapies;
-	//private AppliedTherapy currentTherapy;
-
 	public Patient() {
 		super();
 	}

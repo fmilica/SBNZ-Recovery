@@ -132,7 +132,7 @@ public class ReportsTest {
 		// povreda 3
 		Injury injury3 = new Injury("I3", LocalDate.of(2021, 3, 20), null, "desc", fracture, InjuryBodyPart.ARM);
 		// povreda 4
-		Injury injury4 = new Injury("I4", LocalDate.of(2020, 5, 30), null, "desc", fracture, InjuryBodyPart.ARM);
+		Injury injury4 = new Injury("I4", LocalDate.of(2020, 7, 30), null, "desc", fracture, InjuryBodyPart.ARM);
 		// lecenja
 		injury1.addAppliedTherapy(new AppliedTherapy(LocalDate.of(2021, 5, 3), therapy1));
 		injury2.addAppliedTherapy(new AppliedTherapy(LocalDate.of(2021, 4, 13), therapy1));

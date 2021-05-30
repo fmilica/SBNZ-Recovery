@@ -1,0 +1,123 @@
+package rules;
+
+import com.sbnz.recovery.model.*;
+
+global Map<InjuryType, Double> injuryTypeCountMap;
+
+// INGREDIENTS //
+query "getAllIngredients"
+	$ingredient: Ingredient()
+end;
+
+query "getAllIngredientsByIllness"(Illness illness)
+	$ingredient: Ingredient(illnesses contains illness)
+end;
+
+// MEALS //
+query "getAllMeals"
+	$meal: Meal()
+end;
+
+query "getAllMealsByIllness"(Illness illness)
+	accumulate(
+		Meal($m : this, $ingredients: ingredients) and
+		Number(intValue > 0) from accumulate(
+			Ingredient($i: this, illnesses contains illness) from $ingredients,
+			count($i)
+		),
+		$meals: collectList($m)
+	)
+end;
+
+// THERAPY //
+query "getAllTherapies"
+	$therapy: Therapy()
+end;
+
+query "getAllTherapiesByIllness"(Illness illness)
+	$therapy: Therapy(applicableIllness contains illness)
+end;
+
+query "getAllTherapiesByInjuryType"(InjuryType injuryType)
+	$therapy: Therapy(applicableInjury contains injuryType)
+end;
+
+// PATIENT //
+query "getAllPatients"
+	$patient: Patient()
+end;
+
+query "getAllPatientInjuries"(Long patientId)
+	Patient(id == patientId, $injuries: medicalHistory)
+	accumulate(
+		Injury($i: this) from $injuries,
+		$patientInjuries: collectList($i)
+	)
+end;
+
+query "getAllPatientTherapies"(Long patientId)
+	Patient(id == patientId, $injuries: medicalHistory)
+	accumulate(
+		Injury($i: this, $therapies: appliedTherapies) from $injuries and
+		accumulate(
+			AppliedTherapy($at: this) from $therapies,
+			$injuryTherapies: collectList($at)
+		),
+		$patientTherapies: collectList($injuryTherapies)
+	)
+end;
+
+query "getAllPatientTherapiesByInjury"(Long patientId, Long injuryId)
+	Patient(id == patientId, $injuries: medicalHistory)
+	Injury($i: this, $therapies: appliedTherapies, id == injuryId) from $injuries
+	accumulate(
+		AppliedTherapy($at: this) from $therapies,
+		$injuryTherapies: collectList($at)
+	)
+end;
+
+
+query "getInjuriesCountByAgeGroup"(int startAge, int endAge, LocalDate startDateInterval, LocalDate endDateInterval)
+	$totalInjuriesInAgeGroup: Number() from accumulate(
+		Patient(DateUtility.getDiffYears(dateOfBirth) > startAge,
+				DateUtility.getDiffYears(dateOfBirth) < endAge,
+				$injuries: medicalHistory) and
+		$injuryPerPatient: Number() from accumulate(
+			Injury($i: this, $injuryDate: startDate,
+				$injuryDate.isAfter(startDateInterval),
+				$injuryDate.isBefore(endDateInterval)
+			) from $injuries,
+			count($i)
+		),
+		sum($injuryPerPatient)
+	)
+end;
+/*
+query "getTotalInjuriesCountByInjuryType"(InjuryType type, 
+	LocalDate startDateInterval, LocalDate endDateInterval,
+	double $totalInjuriesForInjuryType)
+	$totalInjuriesForInjuryType := Number() from accumulate(
+		Patient($injuries: medicalHistory) and
+		$injuryPerPatient: Number() from accumulate(
+			Injury($i: this, injuryType == type,
+				$injuryDate: startDate,
+				$injuryDate.isAfter(startDateInterval),
+				$injuryDate.isBefore(endDateInterval)
+			) from $injuries,
+			count($i)
+		),
+		sum($injuryPerPatient)
+	)
+end;
+
+rule "Proba"
+	when
+		$type: InjuryType($typeName: name)
+		getTotalInjuriesCountByInjuryType($type, 
+		LocalDate.parse("2021-01-01"), LocalDate.parse("2022-01-01"), 
+		$totalInjuriesForInjuryType;)
+	then
+		injuryTypeCountMap.put($type, $totalInjuriesForInjuryType);
+		System.out.println("Added count: " + $totalInjuriesForInjuryType + " for injury type " + $typeName);
+end;
+*/

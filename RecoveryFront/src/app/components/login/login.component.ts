@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { UserLogin } from 'src/app/model/user-login.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +16,9 @@ export class LoginComponent implements OnInit {
   hide = true;
 
   constructor(
-    private router: Router) {
+    private router: Router,
+    private toastr: ToastrService,
+    private authService: AuthenticationService) {
       this.loginForm = new FormGroup({
         email: new FormControl('', [Validators.required, Validators.email]),
         password: new FormControl('', [Validators.required])
@@ -32,7 +37,30 @@ export class LoginComponent implements OnInit {
     const email = this.loginForm.value.email;
     const password = this.loginForm.value.password;
 
-    //const userLoginDto = new UserLogin(email, password);
+    const userLoginDto = new UserLogin(email, password);
+
+    this.authService.login(userLoginDto)
+      .subscribe(
+        (response) => {
+          this.toastr.success('Logged in successfully!');
+          // postavljanje u local storage
+          this.authService.setLoggedInUser(response);
+          // reset forme
+          this.loginForm.reset();
+          // preusmerenje
+          this.router.navigate(['homepage']);
+          this.authService.role.next(this.authService.getLoggedInUserAuthority());
+        },
+        (error) => {
+          if (error.status === 401) {
+            this.toastr.error('Incorrect email or password.');
+          } else {
+            this.toastr.error('503 Server Unavailable');
+          }
+          this.loginForm.reset();
+        }
+      );
+
   }
 
   getEmailErrorMessage(): string {

@@ -31,16 +31,18 @@ export class AuthenticationService {
   private refreshedToken = '';
   private expiresInNum = 0;
 
-  login(userLoginDto: UserLogin): Observable<HttpResponse<UserLogin>> {
-    return this.http.post<UserLogin>('https://localhost:8080/login', userLoginDto, {
-      headers: this.headers,
-      observe: 'response',
+  login(userLoginDto: UserLogin): Observable<UserLogin> {
+    return this.http.post<UserLogin>(environment.apiEndpoint + 'auth/log-in', userLoginDto, {
+      headers: this.headers
     });
   }
 
   logout(): void {
     sessionStorage.removeItem('jwtToken');
-    sessionStorage.removeItem('ang-refresh-token');
+    sessionStorage.removeItem('expiresIn');
+    this.router.navigate(['login']);
+    this.role.next('');
+    //this.stopRefreshTokenTimer();
   }
 
   // register(authUserDto: AuthenticatedUser): Observable<AuthenticatedUser> {
@@ -53,19 +55,18 @@ export class AuthenticationService {
   // poziva se i za updatePasswordDto i sa loginDto -> response je any
   setLoggedInUser(response: any): void {
     // ekstrakcija tokena
-    const jwtTokenBearer = response.get('Authorization');
-    const jwtToken = jwtTokenBearer.split(' ')[1];
-    const expiresIn = response.get('Expires-In');
+    const jwtToken = response.authenticationToken;
+    const expiresIn = response.expiresAt;
     // postavljanje tokena
-    localStorage.setItem('jwtToken', jwtToken);
-    localStorage.setItem('expiresIn', expiresIn);
+    sessionStorage.setItem('jwtToken', jwtToken);
+    sessionStorage.setItem('expiresIn', expiresIn);
     // pokretanje tajmera za refresh tokena
-    this.startRefreshTokenTimer(jwtToken);
- }
+    //this.startRefreshTokenTimer(jwtToken);
+  }
 
   // sadrzaj jwt tokena moze biti bilo sta
   getLoggedInUser(): any {
-    const token = localStorage.getItem('jwtToken');
+    const token = sessionStorage.getItem('jwtToken');
     if (!token) {
       return '';
     }
@@ -76,7 +77,7 @@ export class AuthenticationService {
   getLoggedInUserAuthority(): string {
     const info = this.getLoggedInUser();
     if (info) {
-      return info.authorities[0].authority;
+      return info.authority[0].authority;
     }
     else {
       return '';
@@ -92,7 +93,7 @@ export class AuthenticationService {
       return '';
     }
   }
-
+  /*
   // pomocne metode
   private refreshToken(): Observable<HttpResponse<UserLogin>> {
     return this.http.post<UserLogin>(
@@ -119,7 +120,7 @@ export class AuthenticationService {
             const jwtResponseToken = jwtTokenBearer.split(' ')[1];
             this.refreshedToken = jwtResponseToken;
             // postavljanje tokena
-            localStorage.setItem('jwtToken', this.refreshedToken);
+            sessionStorage.setItem('jwtToken', this.refreshedToken);
           }
         }),
       timeout
@@ -132,11 +133,11 @@ export class AuthenticationService {
   }
 
   public startAutoLoginRefreshTokenTimer(): void {
-    const token = localStorage.getItem('jwtToken');
+    const token = sessionStorage.getItem('jwtToken');
     if (!token) {
       return;
     }
-    const expiresIn = localStorage.getItem('expiresIn');
+    const expiresIn = sessionStorage.getItem('expiresIn');
     if (!expiresIn) {
       return;
     } else {
@@ -166,9 +167,9 @@ export class AuthenticationService {
         const jwtToken = jwtTokenBearer.split(' ')[1];
         this.refreshedToken = jwtToken;
         // postavljanje tokena
-        localStorage.setItem('jwtToken', this.refreshedToken);
+        sessionStorage.setItem('jwtToken', this.refreshedToken);
       }
     });
   }
-
+  */
 }

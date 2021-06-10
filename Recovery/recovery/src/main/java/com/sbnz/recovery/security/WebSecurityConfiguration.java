@@ -30,9 +30,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	// Implementacija PasswordEncoder-a koriscenjem BCrypt hashing funkcije.
 	// BCrypt po defalt-u radi 10 rundi hesiranja prosledjene vrednosti.
+	// BCrypt podesen na 12 rundi hesiranja
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder(12);
 	}
 
 	// Servis koji se koristi za citanje podataka o korisnicima aplikacije
@@ -83,7 +84,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
 				// svim korisnicima dopusti da pristupe putanji /auth/**
-				.authorizeRequests().antMatchers("/auth/**").permitAll()
+				.authorizeRequests().antMatchers("/api/auth/**").permitAll()
 
 				// umesto anotacija iynad svake metode, moze i ovde da se proveravaju prava
 				// pristupa ya odredjeni URL
@@ -108,6 +109,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		// TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
-		web.ignoring().antMatchers(HttpMethod.POST, "/auth/log-in");
+		web.ignoring().antMatchers(HttpMethod.POST, "/api/auth/log-in");
 	}
 }

@@ -28,7 +28,7 @@ import com.sbnz.recovery.service.AuthService;
 import com.sbnz.recovery.service.CustomUserDetailsService;
 
 @RestController
-@RequestMapping(path = "/auth")
+@RequestMapping(path = "api/auth")
 public class AuthController {
 	
 	@Autowired

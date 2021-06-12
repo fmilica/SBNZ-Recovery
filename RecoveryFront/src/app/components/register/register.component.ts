@@ -21,7 +21,7 @@ export class RegisterComponent implements OnInit {
   personalInfoForm: FormGroup;
   healthStateForm: FormGroup;
 
-  physicalActivityDescription: string = "opis"
+  physicalActivityDescription: string = '';
   allIllnesses: Illness[] = [];
 
   constructor(
@@ -105,6 +105,26 @@ export class RegisterComponent implements OnInit {
           this.personalInfoForm.reset();
           this.healthStateForm.reset();
         });
+  }
+
+  onActivitySelected(activity: string) {
+    switch (activity) {
+      case "SEDENTARY":
+        this.physicalActivityDescription = "Less than 30 minutes of daily exercise.";
+        break;
+      case "LIGHT_ACTIVE":
+        this.physicalActivityDescription = "At least 30 minutes of daily exercise (jogging, skiing).";
+        break;
+      case "MODERATE":
+        this.physicalActivityDescription = "Up to an hour of daily excercise.";
+        break;
+      case "VERY_ACTIVE":
+        this.physicalActivityDescription = "Up to 2 hours of daily excercise (gym, sports).";
+        break;
+      case "EXTRA_ACTIVE":
+        this.physicalActivityDescription = "At least 3 hours of daily exercise (two excercise sessions per day).";
+        break;
+    }
   }
 
   getRequiredPersonalInfoErrorMessage(fieldName: string): string {

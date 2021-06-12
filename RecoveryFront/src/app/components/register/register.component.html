@@ -80,11 +80,16 @@
                                 <mat-form-field appearance="standard" class="col-md-6">
                                     <mat-label>Physical Activity Level</mat-label>
                                     <mat-select formControlName="physicalActivity">
-                                        <mat-option value="SEDENTARY">Sedentary</mat-option>
-                                        <mat-option value="LIGHT_ACTIVE">Light active</mat-option>
-                                        <mat-option value="MODERATE">Moderate</mat-option>
-                                        <mat-option value="VERY_ACTIVE">Very active</mat-option>
-                                        <mat-option value="EXTRA_ACTIVE">Extrmely active</mat-option>
+                                        <mat-option value="SEDENTARY" (click)="onActivitySelected('SEDENTARY')">
+                                            Sedentary</mat-option>
+                                        <mat-option value="LIGHT_ACTIVE" (click)="onActivitySelected('LIGHT_ACTIVE')">
+                                            Light active</mat-option>
+                                        <mat-option value="MODERATE" (click)="onActivitySelected('MODERATE')">Moderate
+                                        </mat-option>
+                                        <mat-option value="VERY_ACTIVE" (click)="onActivitySelected('VERY_ACTIVE')">Very
+                                            active</mat-option>
+                                        <mat-option value="EXTRA_ACTIVE" (click)="onActivitySelected('EXTRA_ACTIVE')">
+                                            Extrmely active</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                                 <div class="col-md-6 activity-desciption">

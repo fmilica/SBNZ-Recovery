@@ -23,9 +23,7 @@ public class IllnessController {
 	private static Logger logger = LoggerFactory.getLogger(IllnessController.class);
 	
 	private IllnessService illnessService;
-	
 	private final IllnessMapper illnessMapper;
-
 
 	@Autowired
 	public IllnessController(IllnessService illnessService) {

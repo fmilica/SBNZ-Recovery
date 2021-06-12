@@ -82,6 +82,8 @@ export class RegisterComponent implements OnInit {
         anamnesis,
       );
 
+    console.log(patient.dateOfBirth);
+
     this.toastr.info('Your registration is being processed.', 'Please wait', {
       timeOut: 10000,
       progressBar: true,

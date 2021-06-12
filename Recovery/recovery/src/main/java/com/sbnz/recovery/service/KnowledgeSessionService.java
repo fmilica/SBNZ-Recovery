@@ -14,9 +14,9 @@ public class KnowledgeSessionService {
 	
 	private final KieContainer kieContainer;
     private KieSession rulesSession;
-    
     private KieSession cepSession;
-
+    
+    
     @Autowired
     public KnowledgeSessionService(KieContainer kieContainer) {
         this.kieContainer = kieContainer;

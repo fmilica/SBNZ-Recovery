@@ -29,7 +29,7 @@ public class AuthService {
 	@Autowired
 	private KnowledgeSessionService kieSessionService;
 
-	public Patient register(Patient user) throws Exception {
+	public Patient register(Patient user) throws ExistingFieldValueException {
 		User existingUser = (User) userRepository.findByUsername(user.getUsername());
 		if (existingUser == null) {
 			//enkripcija lozinke
@@ -37,6 +37,12 @@ public class AuthService {
 			user.setPassword(encoder.encode(user.getPassword()));
 			// postavljanje authorities
 			user.setAuthorities(new ArrayList<>(authorityService.findByName("ROLE_USER")));
+
+			KieSession kieSession = kieSessionService.getRulesSession();
+			kieSession.setGlobal("currentPatient", user.getUsername());
+			kieSession.getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
+			kieSession.insert(user);
+			kieSession.fireAllRules();
 			
 			return patientRepository.save(user);
 		}

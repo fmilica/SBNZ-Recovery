@@ -3,7 +3,6 @@ package com.sbnz.recovery.controller;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.sbnz.recovery.dto.PatientDTO;
 import com.sbnz.recovery.dto.UserLoginDTO;
 import com.sbnz.recovery.dto.UserTokenStateDTO;
+import com.sbnz.recovery.exceptions.ExistingFieldValueException;
 import com.sbnz.recovery.helper.PatientMapper;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.User;
@@ -84,7 +84,7 @@ public class AuthController {
 		try {
 			Patient createdUser = this.authService.register(patient);
 			return new ResponseEntity<>(patientMapper.toDto(createdUser), HttpStatus.OK);
-		} catch (Exception e) {
+		} catch (ExistingFieldValueException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 		

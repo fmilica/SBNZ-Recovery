@@ -19,11 +19,11 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private authService: AuthenticationService) {
-      this.loginForm = new FormGroup({
-        email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required])
-      });
-    }
+    this.loginForm = new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required])
+    });
+  }
 
   ngOnInit(): void {
   }
@@ -61,6 +61,10 @@ export class LoginComponent implements OnInit {
         }
       );
 
+  }
+
+  toRegister(): void {
+    this.router.navigate(['register']);
   }
 
   getEmailErrorMessage(): string {

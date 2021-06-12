@@ -11,7 +11,8 @@ import com.sbnz.recovery.repository.PatientRepository;
 @Service
 public class PatientService {
 	
-	@Autowired PatientRepository patientRepository;
+	@Autowired
+	PatientRepository patientRepository;
 
 	@Autowired
 	private KnowledgeSessionService knowledgeSessionService;

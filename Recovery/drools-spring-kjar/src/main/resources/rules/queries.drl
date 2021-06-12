@@ -92,11 +92,10 @@ query "getInjuriesCountByAgeGroup"(int startAge, int endAge, LocalDate startDate
 		sum($injuryPerPatient)
 	)
 end;
-/*
+
 query "getTotalInjuriesCountByInjuryType"(InjuryType type, 
-	LocalDate startDateInterval, LocalDate endDateInterval,
-	double $totalInjuriesForInjuryType)
-	$totalInjuriesForInjuryType := Number() from accumulate(
+	LocalDate startDateInterval, LocalDate endDateInterval)
+	$totalInjuriesForInjuryType : Number() from accumulate(
 		Patient($injuries: medicalHistory) and
 		$injuryPerPatient: Number() from accumulate(
 			Injury($i: this, injuryType == type,
@@ -110,6 +109,8 @@ query "getTotalInjuriesCountByInjuryType"(InjuryType type,
 	)
 end;
 
+
+/*
 rule "Proba"
 	when
 		$type: InjuryType($typeName: name)

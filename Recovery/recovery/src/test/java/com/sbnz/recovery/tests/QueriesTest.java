@@ -211,14 +211,14 @@ public class QueriesTest {
 		}
 		assertEquals(3, total);
 	}
-	/*
+	
 	@Test
 	public void getTotalInjuriesCountByInjuryTypeTest() throws ParseException {
 		LocalDate startDate = LocalDate.parse("2021-01-01");
 		LocalDate endDate = LocalDate.parse("2022-01-01");
 		QueryResults results = 
 				kieSession.getQueryResults("getTotalInjuriesCountByInjuryType", 
-						fracture, startDate, endDate, 3);
+						fracture, startDate, endDate);
 		int total = 0;
 		for (QueryResultsRow row : results) {
 			total = ((Number)row.get("$totalInjuriesForInjuryType")).intValue();
@@ -226,6 +226,7 @@ public class QueriesTest {
 		assertEquals(3, total);
 	}
 	
+	/*
 	@Test
 	public void proba() throws ParseException {
 		int fired = kieSession.fireAllRules();

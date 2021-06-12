@@ -11,6 +11,7 @@ import com.sbnz.recovery.tests.MealCEPTest;
 import com.sbnz.recovery.tests.MealTest;
 import com.sbnz.recovery.tests.NewActivityLevelTest;
 import com.sbnz.recovery.tests.NewUpdateInjuryTest;
+import com.sbnz.recovery.tests.QueriesTest;
 import com.sbnz.recovery.tests.RankMealTest;
 import com.sbnz.recovery.tests.RankTherapyTest;
 import com.sbnz.recovery.tests.ReportsTest;
@@ -29,7 +30,8 @@ import com.sbnz.recovery.tests.TemplateGenderIntervalTest;
 	RankMealTest.class,
 	RankTherapyTest.class,
 	ReportsTest.class,
-	TemplateGenderIntervalTest.class
+	TemplateGenderIntervalTest.class,
+	QueriesTest.class
 })
 public class AllTestsSuite {
 

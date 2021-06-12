@@ -4,14 +4,13 @@ import java.util.Date;
 import java.util.List;
 
 import com.sbnz.recovery.model.enums.Gender;
-import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 
 public class PatientDTO {
 
 	private Long id;
 	
-	private String username;
+	private String email;
 	private String password;
 	
 	private String name;
@@ -23,16 +22,16 @@ public class PatientDTO {
 	private double weight;
 	
 	private PhysicalActivity physicalActivity;
-	private List<Illness> anamnesis;
+	private List<IllnessDTO> anamnesis;
 	
 	public PatientDTO() {
 		super();
 	}
 
-	public PatientDTO(String username, String password, String name, String surname, Gender gender, Date dateOfBirth, double height,
-			double weight, PhysicalActivity physicalActivity, List<Illness> anamnesis) {
+	public PatientDTO(String email, String password, String name, String surname, Gender gender, Date dateOfBirth, double height,
+			double weight, PhysicalActivity physicalActivity, List<IllnessDTO> anamnesis) {
 		super();
-		this.username = username;
+		this.email = email;
 		this.password = password;
 		this.name = name;
 		this.surname = surname;
@@ -50,11 +49,11 @@ public class PatientDTO {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getPassword() {
 		return password;
@@ -104,10 +103,10 @@ public class PatientDTO {
 	public void setPhysicalActivity(PhysicalActivity physicalActivity) {
 		this.physicalActivity = physicalActivity;
 	}
-	public List<Illness> getAnamnesis() {
+	public List<IllnessDTO> getAnamnesis() {
 		return anamnesis;
 	}
-	public void setAnamnesis(List<Illness> anamnesis) {
+	public void setAnamnesis(List<IllnessDTO> anamnesis) {
 		this.anamnesis = anamnesis;
 	}
 }

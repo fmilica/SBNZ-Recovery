@@ -54,7 +54,7 @@ public class DoctorService {
 	}
 	
 	public List<Meal> findAllAvailableMeals(PatientDTO patientDto) throws Exception{
-		Patient patient = patientService.findOneByUsername(patientDto.getUsername());
+		Patient patient = patientService.findOneByUsername(patientDto.getEmail());
 		if(patient == null) {
 			throw new Exception();
 		}
@@ -73,7 +73,7 @@ public class DoctorService {
 	}
 	
 	public List<AppliedTherapy> findAllAvailableTherapies(PatientDTO patientDto) throws Exception{
-		Patient patient = patientService.findOneByUsername(patientDto.getUsername());
+		Patient patient = patientService.findOneByUsername(patientDto.getEmail());
 		if(patient == null) {
 			throw new Exception();
 		}

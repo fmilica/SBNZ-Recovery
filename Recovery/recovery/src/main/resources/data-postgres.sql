@@ -24,6 +24,8 @@ values (7, 'patient7@patient.com', '$2y$12$Mz9aZQZcPPdrctescbnAD.ceatxTOuZdXFzxw
 insert into patient (id, username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
 values (8, 'patient8@patient.com', '$2y$12$Mz9aZQZcPPdrctescbnAD.ceatxTOuZdXFzxwId9kKRsYBjQQfqAK', 'Zeva', 'Zevic', 1, '1998-10-10', 172, 68, 0, 0.0, 0.0, 0, 0.0);
 
+alter sequence hibernate_sequence restart with 9;
+
 insert into user_authority (user_id, authority_id) values (1, 2);
 insert into user_authority (user_id, authority_id) values (2, 2);
 insert into user_authority (user_id, authority_id) values (3, 2);
@@ -71,11 +73,11 @@ insert into injury(name, start_date, end_date, description, injury_type_id, pati
 values ('Prelom ruke', '2021-05-25', null, 'opis', 3, 7, 0);
 
 insert into illness(name)
-values ('DIABETES');
+values ('Diabetes');
 insert into illness(name)
-values ('HIGH_BLOOD_PRESSURE');
+values ('High blood pressure');
 insert into illness(name)
-values ('LOW_BLOOD_PRESSURE');
+values ('Low blood pressure');
 
 insert into ingredient_amount(ingredient_id, amount)
 values (1, 200.00);

@@ -118,7 +118,7 @@ public class DoctorController {
 	public ResponseEntity<List<AppliedTherapyDTO>> getPatientTherapies(@RequestBody PatientDTO patientDto) {
 
 
-		log.debug("List available therapies for patient : " + patientDto.getUsername());
+		log.debug("List available therapies for patient : " + patientDto.getEmail());
 		
 		List<AppliedTherapy> appliedTherapies = new ArrayList<AppliedTherapy>();
 		try {
@@ -134,7 +134,7 @@ public class DoctorController {
 	@GetMapping("/patient-rank-meals")
 	public ResponseEntity<List<MealDTO>> getPatientMeals(@RequestBody PatientDTO patientDto) {
 
-		log.debug("List available meals for patient : " + patientDto.getUsername());
+		log.debug("List available meals for patient : " + patientDto.getEmail());
 		
 		List<Meal> availableMeals = new ArrayList<Meal>();
 		

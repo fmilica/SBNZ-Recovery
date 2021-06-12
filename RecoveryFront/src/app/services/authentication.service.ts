@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { PatientRegister } from '../model/patient-register.model';
 import { UserLogin } from '../model/user-login.model';
 
 @Injectable({
@@ -45,11 +46,11 @@ export class AuthenticationService {
     //this.stopRefreshTokenTimer();
   }
 
-  // register(authUserDto: AuthenticatedUser): Observable<AuthenticatedUser> {
-  //   return this.http.post<AuthenticatedUser>(environment.apiEndpoint + 'register', authUserDto, {
-  //     headers: this.headers,
-  //   });
-  // }
+  register(patient: PatientRegister): Observable<PatientRegister> {
+    return this.http.post<PatientRegister>(environment.apiEndpoint + 'auth/register', patient, {
+      headers: this.headers,
+    });
+  }
 
   // geteri i seteri
   // poziva se i za updatePasswordDto i sa loginDto -> response je any

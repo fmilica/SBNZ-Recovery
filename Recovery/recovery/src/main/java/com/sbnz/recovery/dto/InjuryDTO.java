@@ -14,20 +14,20 @@ public class InjuryDTO {
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate endDate;
 	private String description;
-	private InjuryTypeDTO injuryTypeDto;
+	private Long injuryTypeId;
 	private InjuryBodyPart injuryBodyPart;
 	
 	public InjuryDTO() {
 	}
 	
-	public InjuryDTO(Long id, String name, LocalDate startDate, LocalDate endDate, String description, InjuryTypeDTO injuryTypeDto,
+	public InjuryDTO(Long id, String name, LocalDate startDate, LocalDate endDate, String description, Long injuryTypeId,
 			InjuryBodyPart injuryBodyPart) {
 		this.id = id;
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.description = description;
-		this.injuryTypeDto = injuryTypeDto;
+		this.injuryTypeId = injuryTypeId;
 		this.injuryBodyPart = injuryBodyPart;
 	}
 	
@@ -61,11 +61,11 @@ public class InjuryDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public InjuryTypeDTO getInjuryTypeDto() {
-		return injuryTypeDto;
+	public Long getInjuryTypeId() {
+		return injuryTypeId;
 	}
-	public void setInjuryTypeDto(InjuryTypeDTO injuryTypeDto) {
-		this.injuryTypeDto = injuryTypeDto;
+	public void setInjuryTypeId(Long injuryTypeId) {
+		this.injuryTypeId = injuryTypeId;
 	}
 	public InjuryBodyPart getInjuryBodyPart() {
 		return injuryBodyPart;

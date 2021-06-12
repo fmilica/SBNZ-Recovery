@@ -33,11 +33,11 @@ public class KieConfiguration {
 	}
 	
 	@Bean(name = "rulesSession")
-	@SessionScope
+	//@SessionScope
 	public KieSession kieSession() {
 		KieSession kieSession = this.kieContainer().newKieSession("rulesSession");
 		System.out.println("Creating new kie session");
-		this.kieSessionHolder.add(kieSession);
+		//this.kieSessionHolder.add(kieSession);
 		return kieSession;
 	}
 }

@@ -5,21 +5,20 @@ import java.util.List;
 
 import com.sbnz.recovery.dto.InjuryDTO;
 import com.sbnz.recovery.model.Injury;
+import com.sbnz.recovery.model.InjuryType;
 
 public class InjuryMapper implements MapperInterface<Injury, InjuryDTO> {
 
-	private final InjuryTypeMapper injuryTypeMapper = new InjuryTypeMapper();
-	
 	@Override
 	public Injury toEntity(InjuryDTO dto) {
 		return new Injury(dto.getId(), dto.getName(), dto.getStartDate(), dto.getEndDate(), 
-				dto.getDescription(), injuryTypeMapper.toEntity(dto.getInjuryTypeDto()), dto.getInjuryBodyPart());
+				dto.getDescription(), new InjuryType(dto.getInjuryTypeId()), dto.getInjuryBodyPart());
 	}
 
 	@Override
 	public InjuryDTO toDto(Injury entity) {
 		return new InjuryDTO(entity.getId(), entity.getName(), entity.getStartDate(), entity.getEndDate(), 
-				entity.getDescription(), injuryTypeMapper.toDto(entity.getInjuryType()), entity.getInjuryBodyPart());
+				entity.getDescription(), entity.getInjuryType().getId(), entity.getInjuryBodyPart());
 	}
 
 	@Override

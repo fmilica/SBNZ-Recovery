@@ -4,12 +4,26 @@
             <img style="vertical-align:middle" src="../../../assets/images/hospital.png" width=43 height=43 alt="">
             <span style="vertical-align:middle;">Recovery</span>
         </div>
-        <mat-nav-list>
+        <mat-nav-list *ngIf="role==='ROLE_DOCTOR'">
             <a mat-list-item [routerLink]="'log'" routerLinkActive="active-link">
                 Logs
             </a>
             <a mat-list-item [routerLink]="'log-alarms'" routerLinkActive="active-link">
                 Log alarms
+            </a>
+        </mat-nav-list>
+        <mat-nav-list *ngIf="role==='ROLE_PATIENT'">
+            <a mat-list-item [routerLink]="'medical-history'" routerLinkActive="active-link">
+                Medical History
+            </a>
+            <a mat-list-item [routerLink]="'nutrition'" routerLinkActive="active-link">
+                Nutrition
+            </a>
+            <a mat-list-item [routerLink]="'therapy'" routerLinkActive="active-link">
+                Therapy
+            </a>
+            <a mat-list-item [routerLink]="'add-injury'" routerLinkActive="active-link">
+                Add Injury
             </a>
         </mat-nav-list>
     </mat-drawer>

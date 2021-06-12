@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
   healthStateForm: FormGroup;
 
   physicalActivityDescription: string = "opis"
-  allIllnesses: Illness[] = [{ id: 1, name: "diabete" }, { id: 2, name: "nesto" }];
+  allIllnesses: Illness[] = [];
 
   constructor(
     private router: Router,

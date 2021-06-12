@@ -1,0 +1,75 @@
+<div class="jumbotron bg-transparent col-md-10 m-auto p-5 bg-white rounded">
+    <mat-card class="shadow">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image">
+                <!-- <img src="assets/img/food-icon.png" alt="Food Icon" class="food-icon" /> -->
+            </div>
+            <mat-card-title>Add New Injury</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-3">
+            <form [formGroup]="addInjuryForm" #addInjuryDirective="ngForm" (ngSubmit)="onSubmit(addInjuryDirective)"
+                class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Injury Name</mat-label>
+                            <input type="text" matInput formControlName="name">
+                            <mat-error *ngIf="addInjuryForm.get('name')?.invalid">
+                                {{getRequiredFieldErrorMessage('name')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Injury Date</mat-label>
+                            <input type="date" matInput formControlName="startDate">
+                            <mat-error *ngIf="addInjuryForm.get('startDate')?.invalid">
+                                {{getRequiredFieldErrorMessage('startDate')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Injury Description</mat-label>
+                            <input type="text" matInput formControlName="description">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Injury Type</mat-label>
+                            <mat-select formControlName="injuryType">
+                                <mat-option *ngFor="let injuryType of allInjuryTypes" [value]="injuryType.id">
+                                    {{injuryType.name}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="addInjuryForm.get('injuryType')?.invalid">
+                                {{getRequiredFieldErrorMessage('injuryType')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Injured Body Part</mat-label>
+                            <mat-select id="location" formControlName="injuryBodyPart">
+                                <mat-option value="ARM">Arm</mat-option>
+                                <mat-option value="WRIST">Wrist</mat-option>
+                                <mat-option value="LEG">Leg</mat-option>
+                                <mat-option value="HIP">Hip</mat-option>
+                                <mat-option value="KNEE">Knee</mat-option>
+                                <mat-option value="ANKLE">Ankle</mat-option>
+                                <mat-option value="LIVER">Liver</mat-option>
+                                <mat-option value="KIDNEY">Kidney</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="addInjuryForm.get('injuryBodyPart')?.invalid">
+                                {{getRequiredFieldErrorMessage('injuryBodyPart')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <button id="login-btn" class="btn btn-color text-center" type="submit"
+                    [disabled]="addInjuryForm.invalid">
+                    Add Injury
+                </button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

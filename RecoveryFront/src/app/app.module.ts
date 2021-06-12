@@ -26,16 +26,19 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCardModule } from "@angular/material/card";
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { AuthInterceptorService } from './interceptors/auth-interceptor.service';
 import { RegisterComponent } from './components/register/register.component';
+import { AddInjuryComponent } from './components/add-injury/add-injury.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomepageComponent,
-    RegisterComponent
+    RegisterComponent,
+    AddInjuryComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +64,7 @@ import { RegisterComponent } from './components/register/register.component';
     MatNativeDateModule,
     MatProgressBarModule,
     MatPaginatorModule,
+    MatCardModule,
     MDBBootstrapModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',

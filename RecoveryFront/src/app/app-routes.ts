@@ -1,4 +1,5 @@
 import { Routes } from "@angular/router";
+import { AddInjuryComponent } from "./components/add-injury/add-injury.component";
 import { HomepageComponent } from "./components/homepage/homepage.component";
 import { LoginComponent } from "./components/login/login.component";
 import { RegisterComponent } from "./components/register/register.component";
@@ -24,7 +25,14 @@ export const routes: Routes = [
     {
         path: 'homepage',
         component: HomepageComponent,
-        children: [],
+        children: [
+            {
+                path: 'add-injury',
+                component: AddInjuryComponent,
+                canActivate: [RoleGuard],
+                data: { expectedRoles: 'ROLE_PATIENT' },
+            },
+        ],
         canActivate: [RoleGuard],
         data: { expectedRoles: 'ROLE_DOCTOR|ROLE_PATIENT' },
     },

@@ -49,6 +49,11 @@ public class InjuryService {
 		injury.setPatient(patient);
 		injury.setInjuryType(injuryType);
 		
+		rulesSession.setGlobal("currentPatient", patient.getUsername());
+		// OVO BI TREBALO DA SE UBACI PRI LOGINU I RADI, ALI KREIRA NOVU SESIJU
+		//rulesSession.insert(patient);
+		// PROBA SA APPLICATION SCOPE
+		// application scope radi kada je fetch type za medical history eager
 		rulesSession.getAgenda().getAgendaGroup("new-injury").setFocus();
 		rulesSession.insert(injury);
 		rulesSession.fireAllRules();

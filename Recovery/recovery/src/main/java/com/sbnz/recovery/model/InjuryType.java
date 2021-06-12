@@ -31,12 +31,14 @@ private static final long serialVersionUID = 1L;
 	private Injury injury;
 
 	public InjuryType() {
-		super();
 	}
 	
 	public InjuryType(String name) {
-		super();
 		this.name = name;
+	}
+	
+	public InjuryType(Long id) {
+		this.id = id;
 	}
 
 	public InjuryType(Long id, String name) {

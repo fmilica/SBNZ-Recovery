@@ -59,6 +59,7 @@ public class AuthService {
 		// postavljanje kao globalnog trenutno ulogovanog korisnika
 		try {
 			Patient patient = (Patient) user;
+			patient = patientRepository.getOne(patient.getId());
 			rulesSession.setGlobal("currentPatient", user.getUsername());
 			rulesSession.insert(patient);
 		} catch (ClassCastException e) {

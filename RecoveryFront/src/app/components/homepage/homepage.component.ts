@@ -17,6 +17,7 @@ export class HomepageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.role = this.authService.getLoggedInUserAuthority();
   }
 
   logout(): void {

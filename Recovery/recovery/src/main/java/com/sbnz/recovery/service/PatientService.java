@@ -14,9 +14,6 @@ public class PatientService {
 	@Autowired
 	PatientRepository patientRepository;
 
-	@Autowired
-	private KnowledgeSessionService knowledgeSessionService;
-	
 	public Patient findOneById(Long id) {
 		return patientRepository.findById(id).orElse(null);
 	}

@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
           this.authService.role.next(this.authService.getLoggedInUserAuthority());
         },
         (error) => {
-          if (error.status === 401) {
+          if (error.status === 400) {
             this.toastr.error('Incorrect email or password.');
           } else {
             this.toastr.error('503 Server Unavailable');

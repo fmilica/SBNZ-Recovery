@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,12 @@ public class AuthService {
 	private AuthorityService authorityService;
 
 	@Autowired
-	private KnowledgeSessionService kieSessionService;
+	@Qualifier(value = "rulesSession")
+	private KieSession rulesSession;
+	
+	@Autowired
+	@Qualifier(value = "cepSession")
+	private KieSession cepSession;
 
 	public Patient register(Patient user) throws ExistingFieldValueException {
 		User existingUser = (User) userRepository.findByUsername(user.getUsername());
@@ -38,11 +44,10 @@ public class AuthService {
 			// postavljanje authorities
 			user.setAuthorities(new ArrayList<>(authorityService.findByName("ROLE_USER")));
 
-			KieSession kieSession = kieSessionService.getRulesSession();
-			kieSession.setGlobal("currentPatient", user.getUsername());
-			kieSession.getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
-			kieSession.insert(user);
-			kieSession.fireAllRules();
+			rulesSession.setGlobal("currentPatient", user.getUsername());
+			rulesSession.getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
+			rulesSession.insert(user);
+			rulesSession.fireAllRules();
 			
 			return patientRepository.save(user);
 		}
@@ -52,8 +57,7 @@ public class AuthService {
 
 	public void loginFailed(String username) {
 		LoginEvent event = new LoginEvent(username);
-		KieSession kieSession = kieSessionService.getCepSession();
-		kieSession.insert(event);
-		kieSession.fireAllRules();
+		cepSession.insert(event);
+		cepSession.fireAllRules();
 	}
 }

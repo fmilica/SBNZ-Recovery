@@ -2,7 +2,9 @@ package com.sbnz.recovery.service;
 
 import java.util.List;
 
+import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.sbnz.recovery.exceptions.NonExistingIdException;
@@ -16,10 +18,14 @@ public class InjuryService {
 	
 	@Autowired
 	private InjuryRepository injuryRepository;
+	
 	@Autowired
 	private PatientRepository patientRepository;
+	
 	@Autowired
-	private KnowledgeSessionService kieSessionService;
+	@Qualifier(value = "rulesSession")
+	private KieSession rulesSession;
+	
 	
 	public List<Injury> findAll() {
 		return injuryRepository.findAll();

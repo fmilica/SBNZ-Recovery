@@ -21,8 +21,6 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
 	@Override
 	protected void additionalAuthenticationChecks(UserDetails userDetails,
 			UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -38,7 +36,6 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
 			return user;
 		else
 			throw new BadCredentialsException("Password incorrect");
-			
 	}
 
 }

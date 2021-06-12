@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -39,7 +40,8 @@ public class DoctorService {
 	private AppliedTherapyRepository atRepository;
 
 	@Autowired
-	private KnowledgeSessionService knowledgeSessionService;
+	@Qualifier(value = "rulesSession")
+	private KieSession rulesSession;
 	
 	public Therapy createTherapy(Therapy therapy) {
 		return therapyRepository.save(therapy);
@@ -59,16 +61,15 @@ public class DoctorService {
 			throw new Exception();
 		}
 		List<Meal> meals = mealRepository.findAll();
-		KieSession kieSession = knowledgeSessionService.getRulesSession();
 		List<Meal> patientMeals = new ArrayList<Meal>();
-		kieSession.getAgenda().getAgendaGroup("rank-meal").setFocus();
-		kieSession.setGlobal("chosenPatientUsername", patient.getUsername());
-		kieSession.setGlobal("mealList", patientMeals);
+		rulesSession.getAgenda().getAgendaGroup("rank-meal").setFocus();
+		rulesSession.setGlobal("chosenPatientUsername", patient.getUsername());
+		rulesSession.setGlobal("mealList", patientMeals);
 		for (Meal meal : meals) {
-			kieSession.insert(meal);
+			rulesSession.insert(meal);
 		}
-		kieSession.insert(patient);
-		kieSession.fireAllRules();
+		rulesSession.insert(patient);
+		rulesSession.fireAllRules();
 		return patientMeals;
 	}
 	
@@ -78,14 +79,13 @@ public class DoctorService {
 			throw new Exception();
 		}
 		List<Therapy> therapies = therapyRepository.findAll();
-		KieSession kieSession = knowledgeSessionService.getRulesSession();
-		kieSession.setGlobal("chosenPatientUsername", patient.getUsername());
-		kieSession.getAgenda().getAgendaGroup("find-therapy").setFocus();
+		rulesSession.setGlobal("chosenPatientUsername", patient.getUsername());
+		rulesSession.getAgenda().getAgendaGroup("find-therapy").setFocus();
 		for (Therapy therapy : therapies) {
-			kieSession.insert(therapy);
+			rulesSession.insert(therapy);
 		}
-		kieSession.insert(patient);
-		kieSession.fireAllRules();
+		rulesSession.insert(patient);
+		rulesSession.fireAllRules();
 		return atRepository.findAllByInjuryPatientUsername(patient.getUsername());
 	}
 	
@@ -102,39 +102,36 @@ public class DoctorService {
 	
 	public List<Patient> findPotentialAbuse(){
 		List<Patient> patients = patientService.findAll();
-		KieSession kieSession = knowledgeSessionService.getRulesSession();
 		List<Patient> patientReport = new ArrayList<Patient>();
-		kieSession.setGlobal("patientReport", patientReport);
-		kieSession.getAgenda().getAgendaGroup("abuse-report").setFocus();
+		rulesSession.setGlobal("patientReport", patientReport);
+		rulesSession.getAgenda().getAgendaGroup("abuse-report").setFocus();
 		for (Patient patient : patients) {
-			kieSession.insert(patient);
-			kieSession.fireAllRules();
+			rulesSession.insert(patient);
+			rulesSession.fireAllRules();
 		}
 		return patientReport;
 	}
 	
 	public List<Patient> findPotentialAtrophy(){
 		List<Patient> patients = patientService.findAll();
-		KieSession kieSession = knowledgeSessionService.getRulesSession();
 		List<Patient> patientReport = new ArrayList<Patient>();
-		kieSession.setGlobal("patientReport", patientReport);
-		kieSession.getAgenda().getAgendaGroup("atrophy-report").setFocus();
+		rulesSession.setGlobal("patientReport", patientReport);
+		rulesSession.getAgenda().getAgendaGroup("atrophy-report").setFocus();
 		for (Patient patient : patients) {
-			kieSession.insert(patient);
-			kieSession.fireAllRules();
+			rulesSession.insert(patient);
+			rulesSession.fireAllRules();
 		}
 		return patientReport;
 	}
 	
 	public List<Patient> findPotentialEatingDisorder(){
 		List<Patient> patients = patientService.findAll();
-		KieSession kieSession = knowledgeSessionService.getRulesSession();
 		List<Patient> patientReport = new ArrayList<Patient>();
-		kieSession.setGlobal("patientReport", patientReport);
-		kieSession.getAgenda().getAgendaGroup("eating-report").setFocus();
+		rulesSession.setGlobal("patientReport", patientReport);
+		rulesSession.getAgenda().getAgendaGroup("eating-report").setFocus();
 		for (Patient patient : patients) {
-			kieSession.insert(patient);
-			kieSession.fireAllRules();
+			rulesSession.insert(patient);
+			rulesSession.fireAllRules();
 		}
 		return patientReport;
 	}

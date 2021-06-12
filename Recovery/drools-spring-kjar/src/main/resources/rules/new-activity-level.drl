@@ -53,7 +53,7 @@ rule "Muscle strain + > 50 + ARM, WRIST, LEG, KNEE, ANKLE injury -> SEDENTARY"
     		$age : DateUtility.getDiffYears(dateOfBirth) > 50 )
 		$muscleStrains : List(size > 0) 
 			from collect(
-				Injury(injuryType.name.equals('MUSCLE_STRAIN'), 
+				Injury(injuryType.name.equals('Muscle strain'), 
 					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
 					this.getEndDate() == null) 
 				from $p.medicalHistory
@@ -73,7 +73,7 @@ rule "Muscle strain + <= 50 + ARM, WRIST, LEG, KNEE, ANKLE injury -> LIGHT_ACTIV
     		DateUtility.getDiffYears(dateOfBirth) <= 50 )
 		$muscleStrains : List(size > 0) 
 			from collect(
-				Injury(injuryType.name.equals('MUSCLE_STRAIN'), 
+				Injury(injuryType.name.equals('Muscle strain'), 
 					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
 					this.getEndDate() == null) 
 				from $p.medicalHistory
@@ -92,7 +92,7 @@ rule "Muscle strain + <= 20 + ARM, WRIST, LEG, KNEE, ANKLE injury -> MODERATE"
     		$age : DateUtility.getDiffYears(dateOfBirth) <= 20 )
 		$muscleStrains : List(size > 0) 
 			from collect(
-				Injury(injuryType.name.equals('MUSCLE_STRAIN'), 
+				Injury(injuryType.name.equals('Muscle strain'), 
 					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
 					this.getEndDate() == null) 
 				from $p.medicalHistory
@@ -113,7 +113,7 @@ rule "Fracute + <= 30 + ARM, WRIST injury -> MODERATE"
     		$age : DateUtility.getDiffYears(dateOfBirth) <= 30 )
 		$muscleStrains : List(size > 0) 
 			from collect(
-				Injury(injuryType.name.equals('FRACTURE'), 
+				Injury(injuryType.name.equals('Fracture'), 
 					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
 					injuryBodyPart != InjuryBodyPart.LEG, injuryBodyPart != InjuryBodyPart.KNEE,
 					injuryBodyPart != InjuryBodyPart.ANKLE, 
@@ -134,7 +134,7 @@ rule "Fracute + > 30 + ARM, WRIST injury -> LIGHT_ACTIVE"
     		$age : DateUtility.getDiffYears(dateOfBirth) > 30 )
 		$muscleStrains : List(size > 0) 
 			from collect(
-				Injury(injuryType.name.equals('FRACTURE'), 
+				Injury(injuryType.name.equals('Fracture'), 
 					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
 					injuryBodyPart != InjuryBodyPart.LEG, injuryBodyPart != InjuryBodyPart.KNEE,
 					injuryBodyPart != InjuryBodyPart.ANKLE, 
@@ -155,7 +155,7 @@ rule "Lower body injury"
     	$p : Patient( username == currentPatient, physicalActivityAfterInjury == null )
 		$liverInjuries : List(size > 0) 
 			from collect(
-				Injury(injuryType.name.equals('FRACTURE'), 
+				Injury(injuryType.name.equals('Fracture'), 
 					injuryBodyPart == InjuryBodyPart.LEG || injuryBodyPart == InjuryBodyPart.KNEE || injuryBodyPart == InjuryBodyPart.ANKLE, 
 					this.getEndDate() == null) 
 				from $p.medicalHistory

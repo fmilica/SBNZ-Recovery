@@ -47,6 +47,10 @@ query "getAllPatients"
 	$patient: Patient()
 end;
 
+query "getPatient"(Long patientId)
+	$patient: Patient(id == patientId)
+end;
+
 query "getAllPatientInjuries"(Long patientId)
 	Patient(id == patientId, $injuries: medicalHistory)
 	accumulate(

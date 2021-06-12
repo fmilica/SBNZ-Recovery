@@ -3,6 +3,8 @@ package com.sbnz.recovery.service;
 import java.util.List;
 
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -58,6 +60,16 @@ public class InjuryService {
 		rulesSession.insert(injury);
 		rulesSession.fireAllRules();
 		
-		return injuryRepository.save(injury);
+		// dobavi izmenjenog pacijenta
+		rulesSession.getAgenda().getAgendaGroup("MAIN").setFocus();
+		QueryResults results = rulesSession.getQueryResults("getPatient", patient.getId());
+		for (QueryResultsRow row : results) {
+			patient = (Patient) row.get("$patient");
+		}
+		
+		injury = injuryRepository.save(injury);
+		patientRepository.save(patient);
+		
+		return injury;
 	}
 }

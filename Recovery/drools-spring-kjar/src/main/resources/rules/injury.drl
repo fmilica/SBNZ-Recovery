@@ -27,6 +27,6 @@ rule "Add new injury"
     then
     	modify ($p) { addInjury($i); }
     	modify ($i) { setProccesed(true); }
-        System.out.println("Added new injury for patient " + currentPatient);
+        System.out.println("Added new injury:" + $i.getName() + " for patient " + currentPatient);
 		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
 end

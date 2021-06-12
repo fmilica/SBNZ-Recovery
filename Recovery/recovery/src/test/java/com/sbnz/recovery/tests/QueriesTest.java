@@ -124,6 +124,15 @@ public class QueriesTest {
 	}
 	
 	@Test
+	public void getPatientTest() throws ParseException {
+		QueryResults results = kieSession.getQueryResults("getPatient", 1L);
+		Patient patient1 = null;
+		for (QueryResultsRow row : results) {
+			patient1 = (Patient) row.get("$patient");
+		}
+	}
+	
+	@Test
 	public void getAllPatientInjuriesTest() throws ParseException {
 		QueryResults results = kieSession.getQueryResults("getAllPatientInjuries", 1L);
 		List<Injury> patientInjuries = null;

@@ -222,40 +222,4 @@ public class Patient extends User {
 //		this.meals.add(meal);
 //	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Patient other = (Patient) obj;
-		if (dateOfBirth != other.dateOfBirth)
-			return false;
-		if (gender != other.gender)
-			return false;
-		if (height != other.height)
-			return false;
-		if (medicalHistory == null) {
-			if (other.medicalHistory != null)
-				return false;
-		} else if (!medicalHistory.equals(other.medicalHistory))
-			return false;
-		if (physicalActivityBeforeInjury != other.physicalActivityBeforeInjury)
-			return false;
-		if (Double.doubleToLongBits(weight) != Double.doubleToLongBits(other.weight))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Patient [gender=" + gender + ", dateOfBirth=" + dateOfBirth
-				+ ", height=" + height + ", weight=" + weight + ", physicalActivityBeforeInjury="
-				+ physicalActivityBeforeInjury + ", anamnesis=" + anamnesis + ", medicalHistory=" + medicalHistory
-				+ ", bmr=" + bmr + ", regularDailyCaloryIntake=" + regularDailyCaloryIntake
-				+ ", physicalActivityAfterInjury=" + physicalActivityAfterInjury + ", dailyCaloryIntakeAfterInjury="
-				+ dailyCaloryIntakeAfterInjury + "]";
-	}
 }

@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.sbnz.recovery.exceptions.NonExistingIdException;
 import com.sbnz.recovery.model.Injury;
+import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.repository.InjuryRepository;
+import com.sbnz.recovery.repository.InjuryTypeRepository;
 import com.sbnz.recovery.repository.PatientRepository;
 
 @Service
@@ -18,6 +20,9 @@ public class InjuryService {
 	
 	@Autowired
 	private InjuryRepository injuryRepository;
+	
+	@Autowired
+	private InjuryTypeRepository injuryTypeRepository;
 	
 	@Autowired
 	private PatientRepository patientRepository;
@@ -36,7 +41,18 @@ public class InjuryService {
 		if (patient == null) {
 			throw new NonExistingIdException("Patient");
 		}
-		patient.addInjury(injury);
-		return injury;
+		InjuryType injuryType = injuryTypeRepository.findById(injury.getInjuryType().getId()).orElse(null);
+		if (injuryType == null) {
+			throw new NonExistingIdException("Injury type");
+		}
+		injury.setProccesed(false);
+		injury.setPatient(patient);
+		injury.setInjuryType(injuryType);
+		
+		rulesSession.getAgenda().getAgendaGroup("new-injury").setFocus();
+		rulesSession.insert(injury);
+		rulesSession.fireAllRules();
+		
+		return injuryRepository.save(injury);
 	}
 }

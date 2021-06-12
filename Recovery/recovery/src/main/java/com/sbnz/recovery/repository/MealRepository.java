@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.sbnz.recovery.model.Meal;
 
 @Repository
-public interface MealRepository extends JpaRepository<Meal, Long>{
+public interface MealRepository extends JpaRepository<Meal, Long> {
 
 	List<Meal> findAll();
 }

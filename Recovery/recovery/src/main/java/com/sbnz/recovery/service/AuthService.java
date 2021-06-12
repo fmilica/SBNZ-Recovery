@@ -55,6 +55,17 @@ public class AuthService {
 		throw new ExistingFieldValueException("User", "email");
 	}
 
+	public void loginSuccess(User user) {
+		// postavljanje kao globalnog trenutno ulogovanog korisnika
+		try {
+			Patient patient = (Patient) user;
+			rulesSession.setGlobal("currentPatient", user.getUsername());
+			rulesSession.insert(patient);
+		} catch (ClassCastException e) {
+			
+		}
+	}
+	
 	public void loginFailed(String username) {
 		LoginEvent event = new LoginEvent(username);
 		cepSession.insert(event);

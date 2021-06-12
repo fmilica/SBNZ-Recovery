@@ -23,6 +23,7 @@ rule "Add new injury"
 	agenda-group "new-injury"
     when
         $p: Patient( username == currentPatient )
+        $i: Injury ( patient.username == currentPatient, proccesed == false )
     then
         System.out.println("Added new injury for patient " + currentPatient);
 		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();

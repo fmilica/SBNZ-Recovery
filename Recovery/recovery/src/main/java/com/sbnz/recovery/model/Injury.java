@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
 
@@ -54,6 +55,9 @@ public class Injury implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false)
 	private Patient patient;
+	
+	@Transient
+	private boolean proccesed;
 	
 	public Injury() {
 		super();
@@ -168,6 +172,14 @@ public class Injury implements Serializable{
 
 	public void setPatient(Patient patient) {
 		this.patient = patient;
+	}
+
+	public boolean isProccesed() {
+		return proccesed;
+	}
+
+	public void setProccesed(boolean proccesed) {
+		this.proccesed = proccesed;
 	}
 
 	@Override

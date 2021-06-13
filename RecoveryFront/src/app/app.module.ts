@@ -31,6 +31,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { AuthInterceptorService } from './interceptors/auth-interceptor.service';
 import { RegisterComponent } from './components/register/register.component';
 import { AddInjuryComponent } from './components/add-injury/add-injury.component';
+import { MedicalHistoryComponent } from './components/medical-history/medical-history.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { AddInjuryComponent } from './components/add-injury/add-injury.component
     LoginComponent,
     HomepageComponent,
     RegisterComponent,
-    AddInjuryComponent
+    AddInjuryComponent,
+    MedicalHistoryComponent
   ],
   imports: [
     BrowserModule,

@@ -6,6 +6,7 @@ export class Injury {
         public description: string,
         public injuryTypeId: number,
         public injuryBodyPart: string,
+        public injuryTypeName?: string,
         public id?: number,
         public endDate?: Date
     ) { }

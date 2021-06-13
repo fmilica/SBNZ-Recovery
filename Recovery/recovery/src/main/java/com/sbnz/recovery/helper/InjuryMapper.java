@@ -18,7 +18,8 @@ public class InjuryMapper implements MapperInterface<Injury, InjuryDTO> {
 	@Override
 	public InjuryDTO toDto(Injury entity) {
 		return new InjuryDTO(entity.getId(), entity.getName(), entity.getStartDate(), entity.getEndDate(), 
-				entity.getDescription(), entity.getInjuryType().getId(), entity.getInjuryBodyPart());
+				entity.getDescription(), entity.getInjuryType().getId(), entity.getInjuryType().getName(), 
+				entity.getInjuryBodyPart());
 	}
 
 	@Override

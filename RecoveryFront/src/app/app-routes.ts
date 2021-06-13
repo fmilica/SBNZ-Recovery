@@ -2,6 +2,7 @@ import { Routes } from "@angular/router";
 import { AddInjuryComponent } from "./components/add-injury/add-injury.component";
 import { HomepageComponent } from "./components/homepage/homepage.component";
 import { LoginComponent } from "./components/login/login.component";
+import { MedicalHistoryComponent } from "./components/medical-history/medical-history.component";
 import { RegisterComponent } from "./components/register/register.component";
 import { LoginGuard } from "./guards/login-guard.service";
 import { RoleGuard } from "./guards/role-guard.service";
@@ -29,6 +30,12 @@ export const routes: Routes = [
             {
                 path: 'add-injury',
                 component: AddInjuryComponent,
+                canActivate: [RoleGuard],
+                data: { expectedRoles: 'ROLE_PATIENT' },
+            },
+            {
+                path: 'medical-history',
+                component: MedicalHistoryComponent,
                 canActivate: [RoleGuard],
                 data: { expectedRoles: 'ROLE_PATIENT' },
             },

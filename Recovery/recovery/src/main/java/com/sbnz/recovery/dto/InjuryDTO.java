@@ -15,19 +15,21 @@ public class InjuryDTO {
 	private LocalDate endDate;
 	private String description;
 	private Long injuryTypeId;
+	private String injuryTypeName;
 	private InjuryBodyPart injuryBodyPart;
 	
 	public InjuryDTO() {
 	}
 	
-	public InjuryDTO(Long id, String name, LocalDate startDate, LocalDate endDate, String description, Long injuryTypeId,
-			InjuryBodyPart injuryBodyPart) {
+	public InjuryDTO(Long id, String name, LocalDate startDate, LocalDate endDate, String description, 
+			Long injuryTypeId, String injuryTypeName, InjuryBodyPart injuryBodyPart) {
 		this.id = id;
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.description = description;
 		this.injuryTypeId = injuryTypeId;
+		this.injuryTypeName = injuryTypeName;
 		this.injuryBodyPart = injuryBodyPart;
 	}
 	
@@ -66,6 +68,12 @@ public class InjuryDTO {
 	}
 	public void setInjuryTypeId(Long injuryTypeId) {
 		this.injuryTypeId = injuryTypeId;
+	}
+	public String getInjuryTypeName() {
+		return injuryTypeName;
+	}
+	public void setInjuryTypeName(String injuryTypeName) {
+		this.injuryTypeName = injuryTypeName;
 	}
 	public InjuryBodyPart getInjuryBodyPart() {
 		return injuryBodyPart;

@@ -38,6 +38,10 @@ public class InjuryService {
 		return injuryRepository.findAll();
 	}
 	
+	public List<Injury> findAllForPatient(Long patientId) {
+		return injuryRepository.findAllByPatientIdOrderByStartDateDesc(patientId);
+	}
+	
 	public Injury addInjury(Patient patient, Injury injury) throws NonExistingIdException {
 		patient = patientRepository.findById(patient.getId()).orElse(null);
 		if (patient == null) {

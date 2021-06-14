@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AppliedTherapy } from '../model/applied-therapy.model';
 import { Injury } from '../model/injury.model';
 
 @Injectable({
@@ -13,6 +14,10 @@ export class InjuryService {
 
     findAllForPatient(): Observable<Injury[]> {
         return this.http.get<Injury[]>(environment.apiEndpoint + 'injury/current');
+    }
+
+    findTherapiesForPatientForInjury(injuryId: number): Observable<AppliedTherapy[]> {
+        return this.http.get<AppliedTherapy[]>(environment.apiEndpoint + 'injury/current/' + injuryId);
     }
 
     addInjury(injury: Injury): Observable<Injury> {

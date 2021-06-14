@@ -11,4 +11,6 @@ import com.sbnz.recovery.model.AppliedTherapy;
 public interface AppliedTherapyRepository extends JpaRepository<AppliedTherapy, Long>{
 
 	List<AppliedTherapy> findAllByInjuryPatientUsername(String username);
+	
+	List<AppliedTherapy> findAllByInjuryIdOrderByApplicationDateDesc(Long injuryId);
 }

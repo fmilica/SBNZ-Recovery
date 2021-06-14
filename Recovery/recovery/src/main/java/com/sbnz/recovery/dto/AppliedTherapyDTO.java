@@ -4,17 +4,25 @@ import java.time.LocalDate;
 
 public class AppliedTherapyDTO {
 
+	private Long id;
 	private LocalDate applicationDate;
 	private TherapyDTO therapy;
 	
 	public AppliedTherapyDTO() {
-		super();
 	}
 
-	public AppliedTherapyDTO(LocalDate applicationDate, TherapyDTO therapy) {
-		super();
+	public AppliedTherapyDTO(Long id, LocalDate applicationDate, TherapyDTO therapy) {
+		this.id = id;
 		this.applicationDate = applicationDate;
 		this.therapy = therapy;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public LocalDate getApplicationDate() {

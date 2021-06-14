@@ -12,11 +12,15 @@ public class TherapyDTO {
 	private int intensity;
 	
 	public TherapyDTO() {
-		super();
+	}
+	
+	public TherapyDTO(Long id, String name, TherapyType therapyType) {
+		this.id = id;
+		this.name = name;
+		this.therapyType = therapyType;
 	}
 
 	public TherapyDTO(String name, TherapyType therapyType, int maximumMonthlyApplication, double temperature, int intensity) {
-		super();
 		this.name = name;
 		this.therapyType = therapyType;
 		this.maximumMonthlyApplication = maximumMonthlyApplication;
@@ -25,7 +29,6 @@ public class TherapyDTO {
 	}
 	
 	public TherapyDTO(Long id, String name, TherapyType therapyType, int maximumMonthlyApplication, double temperature, int intensity) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.therapyType = therapyType;

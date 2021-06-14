@@ -22,24 +22,23 @@ public class AppliedTherapy {
 	@Column(name="application_date")
 	private LocalDate applicationDate;
 	
-	@Column(name="therapy")
+	@ManyToOne
+	@JoinColumn(name = "therapy_id", referencedColumnName = "id", nullable = false)
 	private Therapy therapy;
 	
 	@ManyToOne
-	@JoinColumn(name = "injury_id", referencedColumnName = "id", nullable = true)
+	@JoinColumn(name = "injury_id", referencedColumnName = "id", nullable = false)
 	private Injury injury;
 	
 	public AppliedTherapy() {
 	}
 
 	public AppliedTherapy(LocalDate applicationDate, Therapy therapy) {
-		super();
 		this.applicationDate = applicationDate;
 		this.therapy = therapy;
 	}
 	
 	public AppliedTherapy(Long id, LocalDate applicationDate, Therapy therapy) {
-		super();
 		this.id = id;
 		this.applicationDate = applicationDate;
 		this.therapy = therapy;

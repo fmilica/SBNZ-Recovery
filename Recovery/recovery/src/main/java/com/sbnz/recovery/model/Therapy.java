@@ -52,12 +52,14 @@ public class Therapy implements Serializable {
 	private List<InjuryType> applicableInjury;
 	
 	public Therapy() {
-		super();
+	}
+	
+	public Therapy(Long id) {
+		this.id = id;
 	}
 
 	public Therapy(String name, TherapyType therapyType, int maximumMonthlyApplication,
 			double temperature, int intensity) {
-		super();
 		this.name = name;
 		this.therapyType = therapyType;
 		this.maximumMonthlyApplication = maximumMonthlyApplication;
@@ -69,7 +71,6 @@ public class Therapy implements Serializable {
 
 	public Therapy(Long id, String name, TherapyType therapyType, int maximumMonthlyApplication,
 			double temperature) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.therapyType = therapyType;

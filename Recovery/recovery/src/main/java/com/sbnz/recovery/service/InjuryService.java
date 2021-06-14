@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.sbnz.recovery.exceptions.NonExistingIdException;
+import com.sbnz.recovery.model.AppliedTherapy;
 import com.sbnz.recovery.model.Injury;
 import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.Patient;
+import com.sbnz.recovery.repository.AppliedTherapyRepository;
 import com.sbnz.recovery.repository.InjuryRepository;
 import com.sbnz.recovery.repository.InjuryTypeRepository;
 import com.sbnz.recovery.repository.PatientRepository;
@@ -30,6 +32,9 @@ public class InjuryService {
 	private PatientRepository patientRepository;
 	
 	@Autowired
+	private AppliedTherapyRepository appliedTherapyRepository;
+	
+	@Autowired
 	@Qualifier(value = "rulesSession")
 	private KieSession rulesSession;
 	
@@ -40,6 +45,18 @@ public class InjuryService {
 	
 	public List<Injury> findAllForPatient(Long patientId) {
 		return injuryRepository.findAllByPatientIdOrderByStartDateDesc(patientId);
+	}
+	
+	public List<AppliedTherapy> findAllForPatientForInjury(Long patientId, Long injuryId) throws NonExistingIdException {
+		Patient patient = patientRepository.findById(patientId).orElse(null);
+		if (patient == null) {
+			throw new NonExistingIdException("Patient");
+		}
+		Injury injury = injuryRepository.findById(injuryId).orElse(null);
+		if (injury == null) {
+			throw new NonExistingIdException("Injury");
+		}
+		return appliedTherapyRepository.findAllByInjuryIdOrderByApplicationDateDesc(injuryId);
 	}
 	
 	public Injury addInjury(Patient patient, Injury injury) throws NonExistingIdException {

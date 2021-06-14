@@ -5,9 +5,9 @@ export class Ingredient {
         public calories: number,
         public waterPercentage: number,
         public proteins: number,
-        public carbonhydrates: number,
+        public carbohydrates: number,
         public sugars: number,
-        public fiber: number,
+        public fibers: number,
         public fat: number,
         public id?: number
     ) { }

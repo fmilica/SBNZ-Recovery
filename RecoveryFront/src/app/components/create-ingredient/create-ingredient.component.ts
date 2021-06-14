@@ -25,7 +25,7 @@ export class CreateIngredientComponent implements OnInit {
       calories: new FormControl('', [Validators.required]),
       waterPercentage: new FormControl('', [Validators.required]),
       proteins: new FormControl('', [Validators.required]),
-      carbonhydrates: new FormControl('', [Validators.required]),
+      carbohydrates: new FormControl('', [Validators.required]),
       sugars: new FormControl('', [Validators.required]),
       fiber: new FormControl('', [Validators.required]),
       fat: new FormControl('', [Validators.required]),
@@ -45,7 +45,7 @@ export class CreateIngredientComponent implements OnInit {
       this.newIngredientForm.value.calories,
       this.newIngredientForm.value.waterPercentage,
       this.newIngredientForm.value.proteins,
-      this.newIngredientForm.value.carbonhydrates,
+      this.newIngredientForm.value.carbohydrates,
       this.newIngredientForm.value.sugars,
       this.newIngredientForm.value.fiber,
       this.newIngredientForm.value.fat

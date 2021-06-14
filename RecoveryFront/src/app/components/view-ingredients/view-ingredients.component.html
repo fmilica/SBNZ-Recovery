@@ -1,0 +1,56 @@
+<mat-progress-bar class="progress-bar" mode="indeterminate" *ngIf="dataSource.length===0">
+</mat-progress-bar>
+<div class="table-title">View Ingredients</div>
+<div class="ng-container row justify-content-md-center">
+    <div class="col-md-11">
+        <table mat-table [dataSource]="dataSource" id="ingredient-table">
+            <!-- No data row -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="6">No prior ingredients.</td>
+            </tr>
+\
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="calories">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Calories </th>
+                <td mat-cell *matCellDef="let row"> {{row.calories}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="waterPercentage">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Water Percentage </th>
+                <td mat-cell *matCellDef="let row"> {{row.waterPercentage}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="proteins">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Proteins </th>
+                <td mat-cell *matCellDef="let row"> {{row.proteins}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="carbohydrates">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Carbohydrates </th>
+                <td mat-cell *matCellDef="let row"> {{row.carbohydrates}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="sugars">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Sugars </th>
+                <td mat-cell *matCellDef="let row"> {{row.sugars}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="fibers">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fibers </th>
+                <td mat-cell *matCellDef="let row"> {{row.fibers}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="fat">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fat </th>
+                <td mat-cell *matCellDef="let row"> {{row.fat}} </td>
+            </ng-container>
+        </table>
+    </div>
+</div>

@@ -9,8 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -25,9 +24,10 @@ private static final long serialVersionUID = 1L;
 	@Column(name="name")
 	private String name;
 	
-	@ManyToOne
-	@JoinColumn(name = "therapy_id", referencedColumnName = "id", nullable = true)
-	private Therapy therapy;
+	//@ManyToOne
+	//@JoinColumn(name = "therapy_id", referencedColumnName = "id", nullable = true)
+	@ManyToMany(mappedBy = "applicableInjury")
+	private List<Therapy> therapies;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "injuryType")
 	private List<Injury> injury;
@@ -49,11 +49,11 @@ private static final long serialVersionUID = 1L;
 		this.name = name;
 	}
 
-	public InjuryType(Long id, String name, Therapy therapy) {
+	public InjuryType(Long id, String name, List<Therapy> therapies) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.therapy = therapy;
+		this.therapies = therapies;
 	}
 
 	public Long getId() {
@@ -72,11 +72,11 @@ private static final long serialVersionUID = 1L;
 		this.name = name;
 	}
 
-	public Therapy getTherapy() {
-		return therapy;
+	public List<Therapy> getTherapies() {
+		return therapies;
 	}
 
-	public void setTherapy(Therapy therapy) {
-		this.therapy = therapy;
+	public void setTherapies(List<Therapy> therapies) {
+		this.therapies = therapies;
 	}
 }

@@ -3,9 +3,7 @@ package com.sbnz.recovery.helper;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sbnz.recovery.dto.MealDTO;
 import com.sbnz.recovery.dto.TherapyDTO;
-import com.sbnz.recovery.model.Meal;
 import com.sbnz.recovery.model.Therapy;
 
 public class TherapyMapper implements MapperInterface<Therapy, TherapyDTO>{

@@ -39,9 +39,10 @@ public class Illness implements Serializable{
 	  inverseJoinColumns = @JoinColumn(name = "patient_id"))
 	private List<Patient> patients;
 	
-	@ManyToOne
-	@JoinColumn(name = "therapy_id", referencedColumnName = "id", nullable = true)
-	private Therapy therapy;
+	//@ManyToOne
+	//@JoinColumn(name = "therapy_id", referencedColumnName = "id", nullable = true)
+	@ManyToMany(mappedBy = "applicableIllness")
+	private List<Therapy> therapies;
 
 	public Illness() {
 		super();
@@ -55,12 +56,12 @@ public class Illness implements Serializable{
 		this.patients = new ArrayList<Patient>();
 	}
 
-	public Illness(Long id, String name, Ingredient ingredient, Therapy therapy) {
+	public Illness(Long id, String name, Ingredient ingredient, List<Therapy> therapies) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.ingredient = ingredient;
-		this.therapy = therapy;
+		this.therapies = therapies;
 		this.patients = new ArrayList<Patient>();
 	}
 
@@ -100,11 +101,11 @@ public class Illness implements Serializable{
 		this.patients.add(patient);
 	}
 
-	public Therapy getTherapy() {
-		return therapy;
+	public List<Therapy> getTherapies() {
+		return therapies;
 	}
 
-	public void setTherapy(Therapy therapy) {
-		this.therapy = therapy;
+	public void setTherapies(List<Therapy> therapies) {
+		this.therapies = therapies;
 	}
 }

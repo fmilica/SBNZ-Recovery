@@ -5,17 +5,14 @@ import com.sbnz.recovery.model.Meal;
 import com.sbnz.recovery.model.Illness;
 import java.util.Map.Entry;
 
-global Illness diabetes;
-global Illness hbp;
-global Illness lbp;
-
 rule "Diabetes Classify Ingredient"
 	lock-on-active true
 	agenda-group "classify-ingredient"
     when
         $i: Ingredient(calories < 200.00, carbohydrates < 100.00, sugars < 100.00, fat < 50.00)
+        $diabetes: Illness(name == "Diabetes")
     then
-    	modify ($i) { addIllness(diabetes) }
+    	modify ($i) { addIllness($diabetes) }
     	System.out.println("Added diabetes in illnesses.");
 end
 
@@ -24,8 +21,9 @@ rule "High Blood Pressure Classify Ingredient"
 	agenda-group "classify-ingredient"
     when
         $i: Ingredient(calories < 100.00, sugars < 50.00, fat < 50.00)
+        $hbp: Illness(name == "High blood pressure")
     then
-    	modify ($i) { addIllness(hbp) }
+    	modify ($i) { addIllness($hbp) }
     	System.out.println("Added high blood pressure in illnesses.");
 end
 
@@ -34,8 +32,9 @@ rule "Low Blood Pressure Classify Ingredient"
 	agenda-group "classify-ingredient"
     when
         $i: Ingredient(calories < 50.00, sugars < 100.00, fat < 20.00)
+        $lbp: Illness(name == "Low blood pressure")
     then
-    	modify ($i) { addIllness(lbp) }
+    	modify ($i) { addIllness($lbp) }
     	System.out.println("Added low blood pressure in illnesses.");
 end
 

@@ -7,5 +7,7 @@ import com.sbnz.recovery.model.Therapy;
 
 @Repository
 public interface TherapyRepository extends JpaRepository<Therapy, Long> {
+	
+	Therapy findOneByName(String name);
 
 }

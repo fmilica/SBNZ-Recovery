@@ -5,21 +5,15 @@ import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.enums.TherapyType;
 import com.sbnz.recovery.model.Illness;
 
-global Illness diabetes;
-global Illness hbp;
-global Illness lbp;
-global InjuryType fracture;
-global InjuryType internal;
-global InjuryType muscle;
-
 // injuries
 rule "Therapy FRACTURE"
 	lock-on-active true
 	agenda-group "classify-therapy"
     when
         $t: Therapy(therapyType != TherapyType.KINESIOTHERAPY, intensity < 6)
+        $fracture: InjuryType(name == "Fracture")
     then
-    	modify ($t) { addApplicableInjuryType(fracture); }
+    	modify ($t) { addApplicableInjuryType($fracture); }
         System.out.println("Therapy applicable for FRACTURE");
 end
 
@@ -28,8 +22,9 @@ rule "Therapy MUSCLE_STRAIN"
 	agenda-group "classify-therapy"
     when
         $t: Therapy(temperature < 15.0)
+        $muscle: InjuryType(name == "Muscle strain")
     then
-    	modify ($t) { addApplicableInjuryType(muscle); }
+    	modify ($t) { addApplicableInjuryType($muscle); }
         System.out.println("Therapy applicable for MUSCLE_STRAIN");
 end
 
@@ -38,8 +33,9 @@ rule "Therapy INTERNAL"
 	agenda-group "classify-therapy"
     when
         $t: Therapy(intensity < 3, therapyType != TherapyType.KINESIOTHERAPY)
+        $internal: InjuryType(name == "Internal")
     then
-    	modify ($t) { addApplicableInjuryType(internal); }
+    	modify ($t) { addApplicableInjuryType($internal); }
         System.out.println("Therapy applicable for INTERNAL");
 end
 
@@ -49,8 +45,9 @@ rule "Therapy DIABETES"
 	agenda-group "classify-therapy"
     when
         $t: Therapy(intensity < 7)
+        $diabetes: Illness(name == "Diabetes")
     then
-    	modify ($t) { addApplicableIllness(diabetes); }
+    	modify ($t) { addApplicableIllness($diabetes); }
         System.out.println("Therapy applicable for DIABETES");
 end
 
@@ -59,8 +56,9 @@ rule "Therapy HIGH_BLOOD_PRESSURE"
 	agenda-group "classify-therapy"
     when
         $t: Therapy(temperature < 25.0, intensity < 6)
+        $hbp: Illness(name == "High blood pressure")
     then
-    	modify ($t) { addApplicableIllness(hbp); }
+    	modify ($t) { addApplicableIllness($hbp); }
         System.out.println("Therapy applicable for HIGH_BLOOD_PRESSURE");
 end
 
@@ -69,22 +67,21 @@ rule "Therapy LOW_BLOOD_PRESSURE"
 	agenda-group "classify-therapy"
     when
         $t: Therapy(therapyType != TherapyType.MAGNET)
+        $lbp: Illness(name == "Low blood pressure")
     then
-    	modify ($t) { addApplicableIllness(lbp); }
+    	modify ($t) { addApplicableIllness($lbp); }
         System.out.println("Therapy applicable for LOW_BLOOD_PRESSURE");
 end
 
-rule "Therapy REST"
+/*rule "Therapy REST"
 	lock-on-active true
 	agenda-group "classify-therapy"
 	when
 		$t: Therapy(therapyType == TherapyType.REST)
+		$it: InjuryType(name == "Internal")
+		$il: Illness(name == "Low blood pressure")
 	then
-		modify($t) { addApplicableIllness(lbp),
-					addApplicableIllness(hbp),
-					addApplicableIllness(diabetes),
-					addApplicableInjuryType(internal),
-					addApplicableInjuryType(muscle),
-					addApplicableInjuryType(fracture); }
+		modify($t) { addApplicableIllness($il),
+					addApplicableInjuryType($it); }
         System.out.println("Therapy REST applicable for everything");
-end
+end*/

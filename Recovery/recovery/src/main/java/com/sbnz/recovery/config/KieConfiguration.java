@@ -10,8 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.InjuryRequirement;
+import com.sbnz.recovery.model.InjuryType;
+import com.sbnz.recovery.repository.IllnessRepository;
 import com.sbnz.recovery.repository.InjuryRequirementRepository;
+import com.sbnz.recovery.repository.InjuryTypeRepository;
 
 @Configuration
 public class KieConfiguration {
@@ -21,6 +25,12 @@ public class KieConfiguration {
 	
 	@Autowired
 	private InjuryRequirementRepository injuryRequirementRepository;
+	
+	@Autowired
+	private IllnessRepository illnessRepository;
+	
+	@Autowired
+	private InjuryTypeRepository injuryTypeRepository;
 	
 	@Bean
 	public KieContainer kieContainer() {
@@ -44,9 +54,20 @@ public class KieConfiguration {
 	public KieSession kieSession() {
 		KieSession kieSession = this.kieContainer().newKieSession("rulesSession");
 		System.out.println("Creating new kie session");
+		// ubacivanje svih injuryRequirement objekata
 		List<InjuryRequirement> injuryRequirements = injuryRequirementRepository.findAll();
 		for (InjuryRequirement injuryRequirement : injuryRequirements) {
 			kieSession.insert(injuryRequirement);
+		}
+		// ubacivanje svih illness objekata
+		List<Illness> illnesses = illnessRepository.findAll();
+		for (Illness illness : illnesses) {
+			kieSession.insert(illness);
+		}
+		// ubacivanje svih injuryType objekata
+		List<InjuryType> injuryTypes = injuryTypeRepository.findAll();
+		for (InjuryType injuryType : injuryTypes) {
+			kieSession.insert(injuryType);
 		}
 		//this.kieSessionHolder.add(kieSession);
 		return kieSession;

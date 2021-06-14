@@ -51,9 +51,7 @@ values ('ingredient3', 20.00, 200.00, 70.00, 5.00, 20.00, 20.00, 20.00);
 insert into injury_type(name)
 values ('Muscle strain');
 insert into injury_type(name)
-values ('Upper body fracture');
-insert into injury_type(name)
-values ('Lower body fracture');
+values ('Fracture');
 insert into injury_type(name)
 values ('Internal');
 
@@ -72,10 +70,10 @@ insert into injury_requirement(lower_age_boundry, upper_age_boundry, injury_type
 values (0, 30, 2, 2);
 -- lower body fracture
 insert into injury_requirement(lower_age_boundry, upper_age_boundry, injury_type_id, activity_after_injury) 
-values (0, 130, 3, 0);
+values (0, 130, 2, 0);
 -- internal
 insert into injury_requirement(lower_age_boundry, upper_age_boundry, injury_type_id, activity_after_injury) 
-values (0, 130, 4, 0);
+values (0, 130, 3, 0);
 -- INJURY REQUIREMENT BODY PART
 -- Muscle strain <-> body part
 insert into injury_req_body_part(injury_req_id, injury_body_part) 

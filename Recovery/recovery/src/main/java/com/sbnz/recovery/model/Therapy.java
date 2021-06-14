@@ -4,18 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-
-import com.sbnz.recovery.model.Illness;
-import com.sbnz.recovery.model.InjuryType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 import com.sbnz.recovery.model.enums.TherapyType;
 
@@ -43,12 +39,20 @@ public class Therapy implements Serializable {
 	@Column(name="intensity")
 	private int intensity;
 	
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "therapy")
-//	@Transient
+	//@OneToMany(cascade = {CascadeType.DETACH}, fetch = FetchType.LAZY, mappedBy = "therapy")
+	@ManyToMany
+	@JoinTable(
+	  name = "therapy_illness", 
+	  joinColumns = @JoinColumn(name = "therapy_id"), 
+	  inverseJoinColumns = @JoinColumn(name = "illness_id"))
 	private List<Illness> applicableIllness;
 	
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "therapy")
-//	@Transient
+	//@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "therapy")
+	@ManyToMany
+	@JoinTable(
+	  name = "therapy_injury_type", 
+	  joinColumns = @JoinColumn(name = "therapy_id"), 
+	  inverseJoinColumns = @JoinColumn(name = "injury_type_id"))
 	private List<InjuryType> applicableInjury;
 	
 	public Therapy() {

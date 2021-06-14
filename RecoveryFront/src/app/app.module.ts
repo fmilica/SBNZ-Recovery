@@ -36,6 +36,7 @@ import { CreateIngredientComponent } from './components/create-ingredient/create
 import { CreateMealComponent } from './components/create-meal/create-meal.component';
 import { ViewIngredientsComponent } from './components/view-ingredients/view-ingredients.component';
 import { AddTherapyComponent } from './components/add-therapy/add-therapy.component';
+import { ViewMealsComponent } from './components/view-meals/view-meals.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { AddTherapyComponent } from './components/add-therapy/add-therapy.compon
     CreateMealComponent,
     ViewIngredientsComponent,
     AddTherapyComponent
+    ViewMealsComponent
   ],
   imports: [
     BrowserModule,

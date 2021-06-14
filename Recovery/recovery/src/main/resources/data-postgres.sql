@@ -173,3 +173,8 @@ insert into ingredient_amount(ingredient_id, amount)
 values (1, 200.00);
 insert into ingredient_amount(ingredient_id, amount)
 values (2, 300.00);
+
+insert into meal_ingredient(meal_id, ingredient_amount_id)
+values (1, 1);
+insert into meal_ingredient(meal_id, ingredient_amount_id)
+values (1, 2);

@@ -78,6 +78,10 @@ public class DoctorService {
 		return mealRepository.save(meal);
 	}
 	
+	public List<Meal> findAllMeals(){
+		return mealRepository.findAll(); 
+	}
+	
 	public List<Meal> findAllAvailableMeals(PatientDTO patientDto) throws Exception{
 		Patient patient = patientService.findOneByUsername(patientDto.getEmail());
 		if(patient == null) {

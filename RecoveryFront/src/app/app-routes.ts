@@ -6,6 +6,8 @@ import { MedicalHistoryComponent } from "./components/medical-history/medical-hi
 import { RegisterComponent } from "./components/register/register.component";
 import { LoginGuard } from "./guards/login-guard.service";
 import { RoleGuard } from "./guards/role-guard.service";
+import { CreateIngredientComponent } from "./components/create-ingredient/create-ingredient.component";
+import { CreateMealComponent } from "./components/create-meal/create-meal.component";
 
 export const routes: Routes = [
     {
@@ -38,6 +40,18 @@ export const routes: Routes = [
                 component: MedicalHistoryComponent,
                 canActivate: [RoleGuard],
                 data: { expectedRoles: 'ROLE_PATIENT' },
+            },
+            {
+                path: 'create-ingredient',
+                component: CreateIngredientComponent,
+                canActivate: [RoleGuard],
+                data: { expectedRoles: 'ROLE_DOCTOR' },
+            },
+            {
+                path: 'create-meal',
+                component: CreateMealComponent,
+                canActivate: [RoleGuard],
+                data: { expectedRoles: 'ROLE_DOCTOR' },
             },
         ],
         canActivate: [RoleGuard],

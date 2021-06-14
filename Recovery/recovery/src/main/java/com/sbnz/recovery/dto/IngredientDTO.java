@@ -2,6 +2,7 @@ package com.sbnz.recovery.dto;
 
 public class IngredientDTO {
 
+	private Long id;
 	private String name;
 	private double calories;
 	private double waterPercentage;
@@ -13,9 +14,10 @@ public class IngredientDTO {
 	
 	public IngredientDTO () {}
 
-	public IngredientDTO(String name, double calories, double waterPercentage, double proteins, double carbohydrates,
+	public IngredientDTO(Long id, String name, double calories, double waterPercentage, double proteins, double carbohydrates,
 			double sugars, double fibers, double fat) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.calories = calories;
 		this.waterPercentage = waterPercentage;
@@ -24,6 +26,14 @@ public class IngredientDTO {
 		this.sugars = sugars;
 		this.fibers = fibers;
 		this.fat = fat;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {

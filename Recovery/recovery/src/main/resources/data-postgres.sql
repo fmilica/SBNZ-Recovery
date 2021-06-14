@@ -41,12 +41,12 @@ values ('Terapija', 1, 20, 25.0, 3);
 insert into meal(name, meal_description, total_calories)
 values ('Apple soup', 'Low cooking', 470.00);
 
-insert into ingredient (name, calories, carbohydrates, sugars, fat)
-values ('ingredient1', 100.00, 50.00, 30.00, 5.00);
-insert into ingredient (name, calories, carbohydrates, sugars, fat)
-values ('ingredient2', 90.00, 200.00, 30.00, 5.00);
-insert into ingredient (name, calories, carbohydrates, sugars, fat)
-values ('ingredient2', 20.00, 200.00, 70.00, 5.00);
+insert into ingredient (name, calories, carbohydrates, sugars, fat, fibers, proteins, water_percentage)
+values ('ingredient1', 100.00, 50.00, 30.00, 5.00, 20.00, 20.00, 20.00);
+insert into ingredient (name, calories, carbohydrates, sugars, fat, fibers, proteins, water_percentage)
+values ('ingredient2', 90.00, 200.00, 30.00, 5.00, 20.00, 20.00, 20.00);
+insert into ingredient (name, calories, carbohydrates, sugars, fat, fibers, proteins, water_percentage)
+values ('ingredient3', 20.00, 200.00, 70.00, 5.00, 20.00, 20.00, 20.00);
 
 insert into injury_type(name)
 values ('Muscle strain');

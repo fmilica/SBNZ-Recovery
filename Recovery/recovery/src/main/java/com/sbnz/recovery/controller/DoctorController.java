@@ -97,6 +97,20 @@ public class DoctorController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@GetMapping("/get-ingredients")
+	public ResponseEntity<List<IngredientDTO>> getAllIngredients() {
+		List<Ingredient> ingredients = new ArrayList<Ingredient>();
+		log.debug("Get all ingredients: ");
+		
+		try {
+            ingredients = doctorService.findAllIngredients();
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+		return new ResponseEntity<List<IngredientDTO>>(ingredientMapper.toDtoList(ingredients), HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@PostMapping("/create-meal")
 	public ResponseEntity<MealDTO> createMeal(@RequestBody MealDTO mealDto) {
 

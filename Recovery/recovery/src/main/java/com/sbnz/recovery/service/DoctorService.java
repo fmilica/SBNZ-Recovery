@@ -13,10 +13,12 @@ import org.springframework.web.server.ResponseStatusException;
 import com.sbnz.recovery.dto.PatientDTO;
 import com.sbnz.recovery.model.AppliedTherapy;
 import com.sbnz.recovery.model.Ingredient;
+import com.sbnz.recovery.model.IngredientAmount;
 import com.sbnz.recovery.model.Meal;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.repository.AppliedTherapyRepository;
+import com.sbnz.recovery.repository.IngredientAmountRepository;
 import com.sbnz.recovery.repository.IngredientRepository;
 import com.sbnz.recovery.repository.MealRepository;
 import com.sbnz.recovery.repository.TherapyRepository;
@@ -38,6 +40,9 @@ public class DoctorService {
 	
 	@Autowired
 	private AppliedTherapyRepository atRepository;
+	
+	@Autowired
+	private IngredientAmountRepository ingredientAmountRepository;
 
 	@Autowired
 	@Qualifier(value = "rulesSession")
@@ -48,10 +53,28 @@ public class DoctorService {
 	}
 	
 	public Ingredient createIngredient(Ingredient ingredient) {
+		rulesSession.getAgenda().getAgendaGroup("classify-ingredient").setFocus();
+		rulesSession.insert(ingredient);
+		rulesSession.fireAllRules();
 		return ingredientRepository.save(ingredient);
 	}
 	
-	public Meal createMeal(Meal meal) {
+	public List<Ingredient> findAllIngredients(){
+		return ingredientRepository.findAll(); 
+	}
+	
+	public Meal createMeal(Meal meal) throws Exception {
+		for (IngredientAmount ia : meal.getIngredients()) {
+			Ingredient i = ingredientRepository.findOneById(ia.getIngredient().getId());
+			if(i == null) {
+				throw new Exception();
+			}
+			ia.setIngredient(i);
+			ia = ingredientAmountRepository.save(ia);
+		}
+		rulesSession.getAgenda().getAgendaGroup("meal").setFocus();
+		rulesSession.insert(meal);
+		rulesSession.fireAllRules();
 		return mealRepository.save(meal);
 	}
 	

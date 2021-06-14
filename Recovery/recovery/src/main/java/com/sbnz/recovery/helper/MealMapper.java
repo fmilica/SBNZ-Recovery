@@ -17,7 +17,7 @@ public class MealMapper implements MapperInterface<Meal, MealDTO>{
 
 	@Override
 	public MealDTO toDto(Meal entity) {
-		return new MealDTO(entity.getName(), iaMapper.toDtoList(entity.getIngredients()), entity.getMealDescription(), 
+		return new MealDTO(entity.getId(), entity.getName(), iaMapper.toDtoList(entity.getIngredients()), entity.getMealDescription(), 
 				entity.getTotalCalories());
 	}
 

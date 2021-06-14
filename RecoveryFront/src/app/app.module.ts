@@ -35,6 +35,7 @@ import { MedicalHistoryComponent } from './components/medical-history/medical-hi
 import { CreateIngredientComponent } from './components/create-ingredient/create-ingredient.component';
 import { CreateMealComponent } from './components/create-meal/create-meal.component';
 import { ViewIngredientsComponent } from './components/view-ingredients/view-ingredients.component';
+import { ViewMealsComponent } from './components/view-meals/view-meals.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { ViewIngredientsComponent } from './components/view-ingredients/view-ing
     MedicalHistoryComponent,
     CreateIngredientComponent,
     CreateMealComponent,
-    ViewIngredientsComponent
+    ViewIngredientsComponent,
+    ViewMealsComponent
   ],
   imports: [
     BrowserModule,

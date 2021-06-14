@@ -11,158 +11,70 @@ import com.sbnz.recovery.utility.DateUtility;
 
 global String currentPatient;
 
-// internal injuries -> SEDENTEARY
-rule "Kidney injury"
+rule "Sedentary injuries"
 	salience 3
 	agenda-group "new-activity-level"
     when
-    	$p : Patient( username == currentPatient, physicalActivityAfterInjury == null )
-		$kidneyInjuries : List(size > 0) 
+    	$ir: InjuryRequirement($lowerAge: lowerAgeBoundry,  $upperAge: upperAgeBoundry, 
+    		$injuryType: injuryType, $injuryBodyParts: injuryBodyPart, $newActivityLevel: activityAfterInjury,
+    		activityAfterInjury == PhysicalActivity.SEDENTARY)
+    	$p: Patient( username == currentPatient, physicalActivityAfterInjury == null, 
+    		 $age : DateUtility.getDiffYears(dateOfBirth),
+    		 $age > $lowerAge, $age <= $upperAge)
+		$internalInjuries : List(size > 0) 
 			from collect(
-				Injury(injuryBodyPart == InjuryBodyPart.KIDNEY, endDate == null) 
+				Injury(injuryType.name == $injuryType.name,
+						$injuryBodyParts contains injuryBodyPart,
+						this.getEndDate() == null) 
 				from $p.medicalHistory
 			)
     then
-    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.SEDENTARY); }
-    	System.out.println("Set physical activity level after KIDNEY injury to SEDENTARY.");
+    	modify ($p) { setPhysicalActivityAfterInjury($newActivityLevel); }
+    	System.out.println("Set physical activity level after injury to " + $newActivityLevel + ".");
 end
 
-rule "Liver injury"
-	salience 3
+rule "Light active injuries"
+	salience 2
 	agenda-group "new-activity-level"
     when
-    	$p : Patient( username == currentPatient, physicalActivityAfterInjury == null )
-		$liverInjuries : List(size > 0) 
+    	$ir: InjuryRequirement($lowerAge: lowerAgeBoundry,  $upperAge: upperAgeBoundry, 
+    		$injuryType: injuryType, $injuryBodyParts: injuryBodyPart, $newActivityLevel: activityAfterInjury,
+    		activityAfterInjury == PhysicalActivity.LIGHT_ACTIVE)
+    	$p: Patient( username == currentPatient, physicalActivityAfterInjury == null, 
+    		 $age : DateUtility.getDiffYears(dateOfBirth),
+    		 $age > $lowerAge, $age <= $upperAge)
+		$internalInjuries : List(size > 0) 
 			from collect(
-				Injury(injuryBodyPart == InjuryBodyPart.LIVER, this.getEndDate() == null) 
+				Injury(injuryType.name == $injuryType.name,
+						$injuryBodyParts contains injuryBodyPart,
+						this.getEndDate() == null) 
 				from $p.medicalHistory
 			)
     then
-    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.SEDENTARY); }
-    	System.out.println("Set physical activity level after LIVER injury to SEDENTARY.");
+    	modify ($p) { setPhysicalActivityAfterInjury($newActivityLevel); }
+    	System.out.println("Set physical activity level after injury to " + $newActivityLevel + ".");
 end
 
-// MUSCLE_STRAIN -> SEDENTARY OR LIGHT_ACTIVE OR MODERATE
-
-rule "Muscle strain + > 50 + ARM, WRIST, LEG, KNEE, ANKLE injury -> SEDENTARY"
-    salience 3
+rule "Moderate injuries"
+	salience 1
 	agenda-group "new-activity-level"
     when
-    	$p : Patient( username == currentPatient, 
-    		physicalActivityAfterInjury == null, 
-    		$age : DateUtility.getDiffYears(dateOfBirth) > 50 )
-		$muscleStrains : List(size > 0) 
+    	$ir: InjuryRequirement($lowerAge: lowerAgeBoundry,  $upperAge: upperAgeBoundry, 
+    		$injuryType: injuryType, $injuryBodyParts: injuryBodyPart, $newActivityLevel: activityAfterInjury,
+    		activityAfterInjury == PhysicalActivity.MODERATE)
+    	$p: Patient( username == currentPatient, physicalActivityAfterInjury == null, 
+    		 $age : DateUtility.getDiffYears(dateOfBirth),
+    		 $age > $lowerAge, $age <= $upperAge)
+		$internalInjuries : List(size > 0) 
 			from collect(
-				Injury(injuryType.name.equals('Muscle strain'), 
-					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
-					this.getEndDate() == null) 
+				Injury(injuryType.name == $injuryType.name,
+						$injuryBodyParts contains injuryBodyPart,
+						this.getEndDate() == null) 
 				from $p.medicalHistory
 			)
     then
-    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.SEDENTARY); }
-    	System.out.println("Set physical activity level for > 50 patient after MUSCLE_STRAIN injury to SEDENTARY.");
-end
-
-rule "Muscle strain + <= 50 + ARM, WRIST, LEG, KNEE, ANKLE injury -> LIGHT_ACTIVE"
-    salience 2
-	agenda-group "new-activity-level"
-    when
-    	$p : Patient( username == currentPatient,
-    		physicalActivityAfterInjury == null, 
-    		DateUtility.getDiffYears(dateOfBirth) > 20, 
-    		DateUtility.getDiffYears(dateOfBirth) <= 50 )
-		$muscleStrains : List(size > 0) 
-			from collect(
-				Injury(injuryType.name.equals('Muscle strain'), 
-					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
-					this.getEndDate() == null) 
-				from $p.medicalHistory
-			)
-    then
-    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.LIGHT_ACTIVE); }
-    	System.out.println("Set physical activity level for 20 < patient <= 50 after MUSCLE_STRAIN injury to LIGHT_ACTIVE.");
-end
-
-rule "Muscle strain + <= 20 + ARM, WRIST, LEG, KNEE, ANKLE injury -> MODERATE"
-    salience 1
-	agenda-group "new-activity-level"
-    when
-    	$p : Patient( username == currentPatient,
-    		physicalActivityAfterInjury == null, 
-    		$age : DateUtility.getDiffYears(dateOfBirth) <= 20 )
-		$muscleStrains : List(size > 0) 
-			from collect(
-				Injury(injuryType.name.equals('Muscle strain'), 
-					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
-					this.getEndDate() == null) 
-				from $p.medicalHistory
-			)
-    then
-    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.MODERATE); }
-    	System.out.println("Set physical activity level for patient <= 20 after MUSCLE_STRAIN injury to MODERATE.");
-end
-
-// UPPER BODY FRACTURE -> LIGHT_ACTIVE OR MODERATE
-
-rule "Fracute + <= 30 + ARM, WRIST injury -> MODERATE"
-    salience 1
-	agenda-group "new-activity-level"
-    when
-    	$p : Patient( username == currentPatient, 
-    		physicalActivityAfterInjury == null, 
-    		$age : DateUtility.getDiffYears(dateOfBirth) <= 30 )
-		$muscleStrains : List(size > 0) 
-			from collect(
-				Injury(injuryType.name.equals('Fracture'), 
-					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
-					injuryBodyPart != InjuryBodyPart.LEG, injuryBodyPart != InjuryBodyPart.KNEE,
-					injuryBodyPart != InjuryBodyPart.ANKLE, 
-					this.getEndDate() == null) 
-				from $p.medicalHistory
-			)
-    then
-    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.MODERATE); }
-    	System.out.println("Set physical activity level for patient <= 30 after upper body FRACTURE injury to MODERATE.");
-end
-
-rule "Fracute + > 30 + ARM, WRIST injury -> LIGHT_ACTIVE"
-    salience 2
-	agenda-group "new-activity-level"
-    when
-    	$p : Patient( username == currentPatient, 
-    		physicalActivityAfterInjury == null, 
-    		$age : DateUtility.getDiffYears(dateOfBirth) > 30 )
-		$muscleStrains : List(size > 0) 
-			from collect(
-				Injury(injuryType.name.equals('Fracture'), 
-					injuryBodyPart != InjuryBodyPart.LIVER, injuryBodyPart != InjuryBodyPart.KIDNEY,
-					injuryBodyPart != InjuryBodyPart.LEG, injuryBodyPart != InjuryBodyPart.KNEE,
-					injuryBodyPart != InjuryBodyPart.ANKLE, 
-					this.getEndDate() == null) 
-				from $p.medicalHistory
-			)
-    then
-    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.LIGHT_ACTIVE); }
-    	System.out.println("Set physical activity level for patient > 30 after upper body FRACTURE injury to LIGHT_ACTIVE.");
-end
-
-// LOWER BODY FRACTURE -> SEDENTARY
-
-rule "Lower body injury"
-	salience 3
-	agenda-group "new-activity-level"
-    when
-    	$p : Patient( username == currentPatient, physicalActivityAfterInjury == null )
-		$liverInjuries : List(size > 0) 
-			from collect(
-				Injury(injuryType.name.equals('Fracture'), 
-					injuryBodyPart == InjuryBodyPart.LEG || injuryBodyPart == InjuryBodyPart.KNEE || injuryBodyPart == InjuryBodyPart.ANKLE, 
-					this.getEndDate() == null) 
-				from $p.medicalHistory
-			)
-    then
-    	modify ($p) { setPhysicalActivityAfterInjury(PhysicalActivity.SEDENTARY); }
-    	System.out.println("Set physical activity level after lower body FRACTURE injury to SEDENTARY.");
+    	modify ($p) { setPhysicalActivityAfterInjury($newActivityLevel); }
+    	System.out.println("Set physical activity level after injury to " + $newActivityLevel + ".");
 end
 
 rule "Change agenda-group to calories-after-injury"
@@ -174,33 +86,3 @@ rule "Change agenda-group to calories-after-injury"
 		System.out.println("Changed agenda-group from new-activity-level to calories-after-injury");
 		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("calories-after-injury").setFocus();
 end
-
-
-
-
-
-// NAPOMENA:
-// MOZDA IZMENITI PRAVILA TAKO DA NE BUDE != NEGO NEKO ITERIRANJE KROZ USLOVE ILI ||
-
-// proba
-
-/*
-rule "Lower body injury"
-	salience 3
-	agenda-group "patient-after-injury"
-    when
-    	$ir : InjuryRequirement($godine : godine, $tip : tipPovrede, $deoTela : deloviTela, $novaAkt : aktivnost)
-    	$p : Patient( physicalActivityAfterInjury == null, 
-    		 $godine contains starost)
-		$liverInjuries : List(size > 0) 
-			from collect(
-				Injury($tip contains injuryType,
-						$deoTela contains injuryBodyPart,
-						this.getEndDate() == null) 
-				from $p.medicalHistory
-			)
-    then
-    	modify ($p) { setPhysicalActivityAfterInjury($novaAkt); }
-    	System.out.println("Set physical activity level after upper body FRACTURE injury to SEDENTARY.");
-end
-*/

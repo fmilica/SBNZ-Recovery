@@ -51,9 +51,93 @@ values ('ingredient3', 20.00, 200.00, 70.00, 5.00, 20.00, 20.00, 20.00);
 insert into injury_type(name)
 values ('Muscle strain');
 insert into injury_type(name)
-values ('Internal');
+values ('Upper body fracture');
 insert into injury_type(name)
-values ('Fracture');
+values ('Lower body fracture');
+insert into injury_type(name)
+values ('Internal');
+
+-- INJURY REQUIREMENTS
+-- muscle strain
+insert into injury_requirement(lower_age_boundry, upper_age_boundry, injury_type_id, activity_after_injury) 
+values (50, 130, 1, 0);
+insert into injury_requirement(lower_age_boundry, upper_age_boundry, injury_type_id, activity_after_injury) 
+values (20, 50, 1, 1);
+insert into injury_requirement(lower_age_boundry, upper_age_boundry, injury_type_id, activity_after_injury) 
+values (0, 20, 1, 2);
+-- upper body fracture
+insert into injury_requirement(lower_age_boundry, upper_age_boundry, injury_type_id, activity_after_injury) 
+values (30, 130, 2, 1);
+insert into injury_requirement(lower_age_boundry, upper_age_boundry, injury_type_id, activity_after_injury) 
+values (0, 30, 2, 2);
+-- lower body fracture
+insert into injury_requirement(lower_age_boundry, upper_age_boundry, injury_type_id, activity_after_injury) 
+values (0, 130, 3, 0);
+-- internal
+insert into injury_requirement(lower_age_boundry, upper_age_boundry, injury_type_id, activity_after_injury) 
+values (0, 130, 4, 0);
+-- INJURY REQUIREMENT BODY PART
+-- Muscle strain <-> body part
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (1, 0);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (1, 1);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (1, 2);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (1, 3);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (1, 4);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (1, 5);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (2, 0);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (2, 1);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (2, 2);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (2, 3);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (2, 4);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (2, 5);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (3, 0);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (3, 1);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (3, 2);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (3, 3);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (3, 4);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (3, 5);
+-- Upper body fracture <-> body part
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (4, 0);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (4, 1);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (5, 0);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (5, 1);
+-- Lower body fracture <-> body part
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (6, 2);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (6, 3);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (6, 4);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (6, 5);
+-- Internal <-> body part
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (7, 6);
+insert into injury_req_body_part(injury_req_id, injury_body_part) 
+values (7, 7);
+
 
 -- PACIJENT 5 -> povrede i terapije
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)

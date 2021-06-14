@@ -1,5 +1,7 @@
 package com.sbnz.recovery.config;
 
+import java.util.List;
+
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieScanner;
 import org.kie.api.runtime.KieContainer;
@@ -7,13 +9,18 @@ import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.context.annotation.SessionScope;
+
+import com.sbnz.recovery.model.InjuryRequirement;
+import com.sbnz.recovery.repository.InjuryRequirementRepository;
 
 @Configuration
 public class KieConfiguration {
 	
 	@Autowired
 	private KieSessionHolder kieSessionHolder;
+	
+	@Autowired
+	private InjuryRequirementRepository injuryRequirementRepository;
 	
 	@Bean
 	public KieContainer kieContainer() {
@@ -37,6 +44,10 @@ public class KieConfiguration {
 	public KieSession kieSession() {
 		KieSession kieSession = this.kieContainer().newKieSession("rulesSession");
 		System.out.println("Creating new kie session");
+		List<InjuryRequirement> injuryRequirements = injuryRequirementRepository.findAll();
+		for (InjuryRequirement injuryRequirement : injuryRequirements) {
+			kieSession.insert(injuryRequirement);
+		}
 		//this.kieSessionHolder.add(kieSession);
 		return kieSession;
 	}

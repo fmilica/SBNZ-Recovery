@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
@@ -41,9 +40,8 @@ public class Injury implements Serializable{
 	@Column(name="description")
 	private String description;
 	
-//	@Column(name="injury_type")
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "injury_type_id", referencedColumnName = "id")
+	@ManyToOne
+    @JoinColumn(name = "injury_type_id", referencedColumnName = "id", nullable = false)
 	private InjuryType injuryType;
 	
 	@Column(name="injury_body_parts")

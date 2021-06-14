@@ -100,17 +100,17 @@ public class Patient extends User {
 //		this.meals = new ArrayList<Meal>();
 	}
 
+	public void addIllness(Illness illness) {
+		this.anamnesis.add(illness);
+	}
+	
 	public void addTherapyForInjury(AppliedTherapy appliedTherapy, Injury injury) {
 		this.medicalHistory.get(this.medicalHistory.indexOf(injury)).addAppliedTherapy(appliedTherapy);
 	}
-
+	
 	public void finalizeInjury(Injury injury, LocalDate endDate) {
 		this.medicalHistory.get(this.medicalHistory.indexOf(injury)).setEndDate(endDate);
 		this.physicalActivityAfterInjury = null;
-	}
-	
-	public void addIllness(Illness illness) {
-		this.anamnesis.add(illness);
 	}
 	
 	public void addInjury(Injury injury) {

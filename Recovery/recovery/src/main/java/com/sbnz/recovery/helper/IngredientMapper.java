@@ -10,13 +10,13 @@ public class IngredientMapper implements MapperInterface<Ingredient, IngredientD
 
 	@Override
 	public Ingredient toEntity(IngredientDTO dto) {
-		return new Ingredient(dto.getName(), dto.getCalories(), dto.getWaterPercentage(), 
+		return new Ingredient(dto.getId(), dto.getName(), dto.getCalories(), dto.getWaterPercentage(), 
 				dto.getProteins(), dto.getCarbohydrates(), dto.getSugars(), dto.getFibers(), dto.getFat());
 	}
 
 	@Override
 	public IngredientDTO toDto(Ingredient entity) {
-		return new IngredientDTO(entity.getName(), entity.getCalories(), entity.getWaterPercentage(), 
+		return new IngredientDTO(entity.getId(), entity.getName(), entity.getCalories(), entity.getWaterPercentage(), 
 				entity.getProteins(), entity.getCarbohydrates(), entity.getSugars(), entity.getFibers(), entity.getFat());
 	}
 

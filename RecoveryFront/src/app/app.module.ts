@@ -32,6 +32,8 @@ import { AuthInterceptorService } from './interceptors/auth-interceptor.service'
 import { RegisterComponent } from './components/register/register.component';
 import { AddInjuryComponent } from './components/add-injury/add-injury.component';
 import { MedicalHistoryComponent } from './components/medical-history/medical-history.component';
+import { CreateIngredientComponent } from './components/create-ingredient/create-ingredient.component';
+import { CreateMealComponent } from './components/create-meal/create-meal.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { MedicalHistoryComponent } from './components/medical-history/medical-hi
     HomepageComponent,
     RegisterComponent,
     AddInjuryComponent,
-    MedicalHistoryComponent
+    MedicalHistoryComponent,
+    CreateIngredientComponent,
+    CreateMealComponent
   ],
   imports: [
     BrowserModule,

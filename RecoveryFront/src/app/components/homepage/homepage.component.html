@@ -11,6 +11,12 @@
             <a mat-list-item [routerLink]="'log-alarms'" routerLinkActive="active-link">
                 Log alarms
             </a>
+            <a mat-list-item [routerLink]="'create-ingredient'" routerLinkActive="active-link">
+                Create Ingredient
+            </a>
+            <a mat-list-item [routerLink]="'create-meal'" routerLinkActive="active-link">
+                Create Meal
+            </a>
         </mat-nav-list>
         <mat-nav-list *ngIf="role==='ROLE_PATIENT'">
             <a mat-list-item [routerLink]="'medical-history'" routerLinkActive="active-link">

@@ -9,6 +9,7 @@ import { RoleGuard } from "./guards/role-guard.service";
 import { CreateIngredientComponent } from "./components/create-ingredient/create-ingredient.component";
 import { CreateMealComponent } from "./components/create-meal/create-meal.component";
 import { ViewIngredientsComponent } from "./components/view-ingredients/view-ingredients.component";
+import { ViewMealsComponent } from "./components/view-meals/view-meals.component";
 
 export const routes: Routes = [
     {
@@ -51,6 +52,12 @@ export const routes: Routes = [
             {
                 path: 'create-ingredient',
                 component: CreateIngredientComponent,
+                canActivate: [RoleGuard],
+                data: { expectedRoles: 'ROLE_DOCTOR' },
+            },
+            {
+                path: 'view-meals',
+                component: ViewMealsComponent,
                 canActivate: [RoleGuard],
                 data: { expectedRoles: 'ROLE_DOCTOR' },
             },

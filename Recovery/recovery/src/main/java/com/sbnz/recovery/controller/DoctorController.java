@@ -128,6 +128,20 @@ public class DoctorController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@GetMapping("/get-meals")
+	public ResponseEntity<List<MealDTO>> getAllMeals() {
+		List<Meal> meals = new ArrayList<Meal>();
+		log.debug("Get all meals: ");
+		
+		try {
+			meals = doctorService.findAllMeals();
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+		return new ResponseEntity<List<MealDTO>>(mealMapper.toDtoList(meals), HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("/patient-rank-therapies")
 	public ResponseEntity<List<AppliedTherapyDTO>> getPatientTherapies(@RequestBody PatientDTO patientDto) {
 

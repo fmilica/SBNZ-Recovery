@@ -5,7 +5,8 @@ export class Meal {
     constructor(
         public name: string,
         public ingredients: Array<IngredientAmount>,
-        public mealDescription: string
+        public mealDescription: string,
+        public id?: number
     ) { }
 
 }

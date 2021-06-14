@@ -5,6 +5,7 @@ import java.util.List;
 
 public class MealDTO {
 
+	private Long id;
 	private String name;
 	private List<IngredientAmountDTO> ingredients;
 	private String mealDescription;
@@ -15,12 +16,21 @@ public class MealDTO {
 		this.ingredients = new ArrayList<IngredientAmountDTO>();
 	}
 
-	public MealDTO(String name, List<IngredientAmountDTO> ingredients, String mealDescription, double totalCalories) {
+	public MealDTO(Long id, String name, List<IngredientAmountDTO> ingredients, String mealDescription, double totalCalories) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.ingredients = ingredients;
 		this.mealDescription = mealDescription;
 		this.totalCalories = totalCalories;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {

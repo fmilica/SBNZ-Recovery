@@ -11,6 +11,7 @@ import { CreateMealComponent } from "./components/create-meal/create-meal.compon
 import { ViewIngredientsComponent } from "./components/view-ingredients/view-ingredients.component";
 import { AddTherapyComponent } from "./components/add-therapy/add-therapy.component";
 import { ViewMealsComponent } from "./components/view-meals/view-meals.component";
+import { ViewTherapiesComponent } from "./components/view-therapies/view-therapies.component";
 
 export const routes: Routes = [
     {
@@ -65,6 +66,12 @@ export const routes: Routes = [
             {
                 path: 'create-meal',
                 component: CreateMealComponent,
+                canActivate: [RoleGuard],
+                data: { expectedRoles: 'ROLE_DOCTOR' },
+            },
+            {
+                path: 'view-therapies',
+                component: ViewTherapiesComponent,
                 canActivate: [RoleGuard],
                 data: { expectedRoles: 'ROLE_DOCTOR' },
             },

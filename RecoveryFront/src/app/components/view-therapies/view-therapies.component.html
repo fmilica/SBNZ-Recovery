@@ -1,0 +1,52 @@
+<mat-progress-bar class="progress-bar" mode="indeterminate" *ngIf="dataSource.length===0">
+</mat-progress-bar>
+<div class="table-title">View Therapies</div>
+<div class="ng-container row justify-content-md-center">
+    <div class="col-md-11">
+        <table mat-table [dataSource]="dataSource" id="therapies-table">
+            <!-- No data row -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="6">No existing therapies.</td>
+            </tr>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Therapy Name </th>
+                <td mat-cell *matCellDef="let row"> {{row.therapyInfo.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="therapyType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Therapy Type </th>
+                <td mat-cell *matCellDef="let row"> {{formatTherapyType(row.therapyInfo.therapyType)}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="maximumMonthlyApplication">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Maximum Monthly Applications </th>
+                <td mat-cell *matCellDef="let row"> {{row.therapyInfo.maximumMonthlyApplication}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="temperature">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Application Temperature </th>
+                <td mat-cell *matCellDef="let row"> {{row.therapyInfo.temperature}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="intensity">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Application Intensity </th>
+                <td mat-cell *matCellDef="let row"> {{row.therapyInfo.intensity}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="applicableIllness">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Applicable for Illness </th>
+                <td mat-cell *matCellDef="let row"> {{formatStringList(row.applicableIllness)}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="applicableInjury">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Applicable for Injury Type </th>
+                <td mat-cell *matCellDef="let row"> {{formatStringList(row.applicableInjury)}} </td>
+            </ng-container>
+
+        </table>
+    </div>
+</div>

@@ -15,7 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Illness implements Serializable{
+public class Illness implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	

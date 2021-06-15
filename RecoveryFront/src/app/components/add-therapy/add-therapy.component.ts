@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Therapy } from 'src/app/model/therapy.model';
 import { TherapyService } from 'src/app/services/therapy.service';
@@ -14,6 +15,7 @@ export class AddTherapyComponent implements OnInit {
   addTherapyForm: FormGroup;
 
   constructor(
+    private router: Router,
     private toastr: ToastrService,
     private therapyService: TherapyService
   ) {
@@ -49,6 +51,7 @@ export class AddTherapyComponent implements OnInit {
           this.toastr.info('Hope it helps a lot of people.', 'Succesfully created new therapy!');
           this.addTherapyForm.reset();
           addTherapyDirective.resetForm();
+          this.router.navigate(['homepage/view-therapies'])
         },
         error => {
           if (error.error.message) {

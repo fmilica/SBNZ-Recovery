@@ -1,10 +1,13 @@
 package com.sbnz.recovery.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.sbnz.recovery.dto.TherapyDTO;
+import com.sbnz.recovery.dto.ViewTherapyDTO;
 import com.sbnz.recovery.helper.TherapyMapper;
+import com.sbnz.recovery.helper.ViewTherapyMapper;
 import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.service.TherapyService;
 
@@ -22,11 +27,26 @@ public class TherapyController {
 	
 	private TherapyService therapyService;
 	private final TherapyMapper therapyMapper;
+	private final ViewTherapyMapper viewTherapyMapper;
 	
 	@Autowired
 	public TherapyController(TherapyService therapyService) {
 		this.therapyService = therapyService;
 		this.therapyMapper = new TherapyMapper();
+		this.viewTherapyMapper = new ViewTherapyMapper();
+	}
+	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@GetMapping
+	public ResponseEntity<List<ViewTherapyDTO>> getAllTherapies() {
+        List<Therapy> therapies;
+		try {
+			therapies = therapyService.getAllTherapies();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
+        return new ResponseEntity<>(viewTherapyMapper.toDtoList(therapies), HttpStatus.OK);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Therapy } from '../model/therapy.model';
+import { ViewTherapy } from '../model/view-therapy.model';
 
 @Injectable({
     providedIn: 'root',
@@ -10,6 +11,10 @@ import { Therapy } from '../model/therapy.model';
 export class TherapyService {
 
     constructor(private http: HttpClient) { }
+
+    getTherapies(): Observable<ViewTherapy[]> {
+        return this.http.get<ViewTherapy[]>(environment.apiEndpoint + 'therapy');
+    }
 
     createTherapy(therapy: Therapy): Observable<Therapy> {
         return this.http.post<Therapy>(environment.apiEndpoint + 'therapy', therapy);

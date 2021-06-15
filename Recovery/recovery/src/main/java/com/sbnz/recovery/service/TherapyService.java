@@ -1,5 +1,7 @@
 package com.sbnz.recovery.service;
 
+import java.util.List;
+
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,6 +21,10 @@ public class TherapyService {
 	@Autowired
 	@Qualifier(value = "rulesSession")
 	private KieSession rulesSession;
+	
+	public List<Therapy> getAllTherapies() {
+		return therapyRepository.findAll();
+	}
 	
 	public Therapy createTherapy(Therapy therapy) throws ExistingFieldValueException, NonExistingIdException {
 		Therapy existing = therapyRepository.findOneByName(therapy.getName());

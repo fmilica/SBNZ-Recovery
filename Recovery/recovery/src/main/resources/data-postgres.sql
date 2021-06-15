@@ -44,9 +44,9 @@ values ('Apple soup', 'Low cooking', 470.00);
 insert into ingredient (name, calories, carbohydrates, sugars, fat, fibers, proteins, water_percentage)
 values ('ingredient1', 100.00, 50.00, 30.00, 5.00, 20.00, 20.00, 20.00);
 insert into ingredient (name, calories, carbohydrates, sugars, fat, fibers, proteins, water_percentage)
-values ('ingredient2', 90.00, 200.00, 30.00, 5.00, 20.00, 20.00, 20.00);
+values ('ingredient2', 90.00, 20.00, 30.00, 5.00, 20.00, 20.00, 20.00);
 insert into ingredient (name, calories, carbohydrates, sugars, fat, fibers, proteins, water_percentage)
-values ('ingredient3', 20.00, 200.00, 70.00, 5.00, 20.00, 20.00, 20.00);
+values ('ingredient3', 20.00, 20.00, 45.00, 5.00, 20.00, 20.00, 20.00);
 
 insert into injury_type(name)
 values ('Muscle strain');
@@ -178,3 +178,18 @@ insert into meal_ingredient(meal_id, ingredient_amount_id)
 values (1, 1);
 insert into meal_ingredient(meal_id, ingredient_amount_id)
 values (1, 2);
+
+insert into illness_ingredient(ingredient_id, illness_id)
+values (1, 1);
+insert into illness_ingredient(ingredient_id, illness_id)
+values (1, 2);
+insert into illness_ingredient(ingredient_id, illness_id)
+values (2, 1);
+insert into illness_ingredient(ingredient_id, illness_id)
+values (2, 2);
+insert into illness_ingredient(ingredient_id, illness_id)
+values (3, 1);
+insert into illness_ingredient(ingredient_id, illness_id)
+values (3, 2);
+insert into illness_ingredient(ingredient_id, illness_id)
+values (3, 3);

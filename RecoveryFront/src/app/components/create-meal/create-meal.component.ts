@@ -69,7 +69,7 @@ export class CreateMealComponent implements OnInit {
     if (this.newMealForm.invalid) {
       return;
     }
-    let mealDto = new Meal(this.newMealForm.value.nameMeal, this.values, this.newMealForm.value.description)
+    let mealDto = new Meal(this.newMealForm.value.nameMeal, this.values, this.newMealForm.value.description, 0)
 
     this.doctorService.createMeal(mealDto).subscribe(
       response => {

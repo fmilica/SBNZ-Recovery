@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Illness implements Serializable {
@@ -26,9 +25,9 @@ public class Illness implements Serializable {
 	@Column(name="name")
 	private String name;
 	
-	@ManyToOne
-	@JoinColumn(name = "ingredient_id", referencedColumnName = "id", nullable = true)
-	private Ingredient ingredient;
+//	@JoinColumn(name = "ingredient_id", referencedColumnName = "id", nullable = true)
+	@ManyToMany(mappedBy = "illnesses")
+	private List<Ingredient> ingredients;
 	
 //	@ManyToOne
 //	@JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = true)
@@ -47,6 +46,8 @@ public class Illness implements Serializable {
 	public Illness() {
 		super();
 		this.patients = new ArrayList<Patient>();
+		this.ingredients = new ArrayList<Ingredient>();
+		this.therapies = new ArrayList<Therapy>();
 	}
 	
 	public Illness(Long id, String name) {
@@ -54,13 +55,15 @@ public class Illness implements Serializable {
 		this.id = id;
 		this.name = name;
 		this.patients = new ArrayList<Patient>();
+		this.ingredients = new ArrayList<Ingredient>();
+		this.therapies = new ArrayList<Therapy>();
 	}
 
-	public Illness(Long id, String name, Ingredient ingredient, List<Therapy> therapies) {
+	public Illness(Long id, String name, List<Ingredient> ingredients, List<Therapy> therapies) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.ingredient = ingredient;
+		this.ingredients = ingredients;
 		this.therapies = therapies;
 		this.patients = new ArrayList<Patient>();
 	}
@@ -81,14 +84,6 @@ public class Illness implements Serializable {
 		this.name = name;
 	}
 
-	public Ingredient getIngredient() {
-		return ingredient;
-	}
-
-	public void setIngredient(Ingredient ingredient) {
-		this.ingredient = ingredient;
-	}
-
 	public List<Patient> getPatient() {
 		return patients;
 	}
@@ -107,5 +102,21 @@ public class Illness implements Serializable {
 
 	public void setTherapies(List<Therapy> therapies) {
 		this.therapies = therapies;
+	}
+
+	public List<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
+	}
+
+	public List<Patient> getPatients() {
+		return patients;
+	}
+
+	public void setPatients(List<Patient> patients) {
+		this.patients = patients;
 	}
 }

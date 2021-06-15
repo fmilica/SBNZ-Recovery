@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class IngredientAmount implements Serializable{
@@ -24,8 +24,8 @@ public class IngredientAmount implements Serializable{
 	private Long id;
 	
 //	@Column(name="ingredient")
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ingredient_id", referencedColumnName = "id")
+	@ManyToOne
+	@JoinColumn(name = "ingredient_id", referencedColumnName = "id", nullable = false)
 	private Ingredient ingredient;
 	
 	@Column(name="amount")

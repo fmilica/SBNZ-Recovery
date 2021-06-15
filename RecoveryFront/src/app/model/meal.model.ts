@@ -6,6 +6,7 @@ export class Meal {
         public name: string,
         public ingredients: Array<IngredientAmount>,
         public mealDescription: string,
+        public totalCalories: number,
         public id?: number
     ) { }
 

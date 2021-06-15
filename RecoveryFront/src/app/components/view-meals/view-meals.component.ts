@@ -18,7 +18,7 @@ import { MealService } from 'src/app/services/meal.service';
 })
 export class ViewMealsComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'mealDescription'];
+  displayedColumns: string[] = ['name', 'mealDescription', 'totalCalories'];
   displayedIngredientColumns: string[] = ['ingredientName', 'amount'];
   dataSource: Meal[] = [];
   expandedElement: any | null;

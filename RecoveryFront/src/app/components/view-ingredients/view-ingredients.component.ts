@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Illness } from 'src/app/model/illness.model';
 import { Ingredient } from 'src/app/model/ingredient.model';
 import { DoctorService } from 'src/app/services/doctor.service';
 
@@ -9,7 +10,7 @@ import { DoctorService } from 'src/app/services/doctor.service';
 })
 export class ViewIngredientsComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'calories', 'waterPercentage', 'proteins', 'carbohydrates', 'sugars', 'fibers', 'fat'];
+  displayedColumns: string[] = ['name', 'calories', 'waterPercentage', 'proteins', 'carbohydrates', 'sugars', 'fibers', 'fat', 'illnesses'];
   dataSource: Ingredient[] = [];
 
   constructor(
@@ -24,6 +25,17 @@ export class ViewIngredientsComponent implements OnInit {
         },
         error => {
         });
+  }
+
+  formatIllnesses(illnesses: Illness[]) {
+    let illnessesString = ""
+    illnesses.forEach((element, index) => {
+      illnessesString += element.name;
+      if(index != illnesses.length-1){
+        illnessesString += ", ";
+      }
+    })
+    return illnessesString;
   }
 
 }

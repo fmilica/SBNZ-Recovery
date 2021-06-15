@@ -123,6 +123,7 @@ public class DoctorService {
 		}
 		meal = mealRepository.save(meal);
 //		patient.addMeal(meal);
+		//mealEvent i dodaje se u cep sesiju, napravi DailyMeal instancu
 		patientService.save(patient);
 		return meal;
 	}

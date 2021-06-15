@@ -1,5 +1,8 @@
 package com.sbnz.recovery.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class IngredientDTO {
 
 	private Long id;
@@ -11,11 +14,14 @@ public class IngredientDTO {
 	private double sugars;
 	private double fibers;
 	private double fat;
+	private List<IllnessDTO> illnesses;
 	
-	public IngredientDTO () {}
+	public IngredientDTO () {
+		this.illnesses = new ArrayList<IllnessDTO>();
+	}
 
 	public IngredientDTO(Long id, String name, double calories, double waterPercentage, double proteins, double carbohydrates,
-			double sugars, double fibers, double fat) {
+			double sugars, double fibers, double fat, List<IllnessDTO> illnesses) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -26,6 +32,7 @@ public class IngredientDTO {
 		this.sugars = sugars;
 		this.fibers = fibers;
 		this.fat = fat;
+		this.illnesses = illnesses;
 	}
 
 	public Long getId() {
@@ -98,5 +105,13 @@ public class IngredientDTO {
 
 	public void setFat(double fat) {
 		this.fat = fat;
+	}
+
+	public List<IllnessDTO> getIllnesses() {
+		return illnesses;
+	}
+
+	public void setIllnesses(List<IllnessDTO> illnesses) {
+		this.illnesses = illnesses;
 	}
 }

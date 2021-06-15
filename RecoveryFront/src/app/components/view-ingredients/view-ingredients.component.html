@@ -51,6 +51,11 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Fat </th>
                 <td mat-cell *matCellDef="let row"> {{row.fat}} </td>
             </ng-container>
+
+            <ng-container matColumnDef="illnesses">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Applicable Illnesses </th>
+                <td mat-cell *matCellDef="let row; "> {{formatIllnesses(row.illnesses)}} </td>
+            </ng-container>
         </table>
     </div>
 </div>

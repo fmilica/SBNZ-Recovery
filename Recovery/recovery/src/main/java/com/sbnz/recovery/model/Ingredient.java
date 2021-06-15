@@ -11,6 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -46,8 +49,13 @@ public class Ingredient implements Serializable {
 	@Column(name="fat")
 	private double fat;
 	
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "ingredient")
+//	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "ingredient")
 //	@Transient
+	@ManyToMany
+	@JoinTable(
+	  name = "illness_ingredient", 
+	  joinColumns = @JoinColumn(name = "ingredient_id"), 
+	  inverseJoinColumns = @JoinColumn(name = "illness_id"))
 	private List<Illness> illnesses;
 	
 //	@Column(name="illnesses_string")
@@ -56,6 +64,10 @@ public class Ingredient implements Serializable {
 //	@ManyToOne
 //	@JoinColumn(name = "meal_id", referencedColumnName = "id", nullable = true)
 //	private Meal meal;
+	
+//	@OneToMany(mappedBy = "ingredientAmounts")
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "ingredient")
+	private List<IngredientAmount> ingredientAmounts;
 	
 	public Ingredient() {
 		super();
@@ -95,7 +107,7 @@ public class Ingredient implements Serializable {
 		this.fat = fat;
 		this.illnesses = new ArrayList<Illness>();
 	}
-
+	
 	public Ingredient(Long id, String name, double calories, double waterPercentage, double proteins, double carbohydrates,
 			double sugars, double fibers, double fat) {
 		super();
@@ -109,17 +121,21 @@ public class Ingredient implements Serializable {
 		this.fibers = fibers;
 		this.fat = fat;
 		this.illnesses = new ArrayList<Illness>();
-		
-		/*String[] parts = illnesses.split("|");
-		for(int i=0;i<parts.length;i++) {
-			if(parts[i] == "DIABETES") {
-				this.illnesses.add(Illness.DIABETES);
-			}else if(parts[i] == "HIGH_BLOOD_PRESSURE") {
-				this.illnesses.add(Illness.HIGH_BLOOD_PRESSURE);
-			}else {
-				this.illnesses.add(Illness.LOW_BLOOD_PRESSURE);
-			}
-		}*/
+	}
+
+	public Ingredient(Long id, String name, double calories, double waterPercentage, double proteins, double carbohydrates,
+			double sugars, double fibers, double fat, List<Illness> illnesses) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.calories = calories;
+		this.waterPercentage = waterPercentage;
+		this.proteins = proteins;
+		this.carbohydrates = carbohydrates;
+		this.sugars = sugars;
+		this.fibers = fibers;
+		this.fat = fat;
+		this.illnesses = illnesses;
 	}
 
 	public Long getId() {
@@ -220,6 +236,14 @@ public class Ingredient implements Serializable {
 //	public void setMeal(Meal meal) {
 //		this.meal = meal;
 //	}
+
+	public List<IngredientAmount> getIngredientAmounts() {
+		return ingredientAmounts;
+	}
+
+	public void setIngredientAmounts(List<IngredientAmount> ingredientAmounts) {
+		this.ingredientAmounts = ingredientAmounts;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

@@ -7,6 +7,8 @@ import com.sbnz.recovery.dto.IngredientDTO;
 import com.sbnz.recovery.model.Ingredient;
 
 public class IngredientMapper implements MapperInterface<Ingredient, IngredientDTO>{
+	
+	private final IllnessMapper iMapper = new IllnessMapper();
 
 	@Override
 	public Ingredient toEntity(IngredientDTO dto) {
@@ -17,7 +19,8 @@ public class IngredientMapper implements MapperInterface<Ingredient, IngredientD
 	@Override
 	public IngredientDTO toDto(Ingredient entity) {
 		return new IngredientDTO(entity.getId(), entity.getName(), entity.getCalories(), entity.getWaterPercentage(), 
-				entity.getProteins(), entity.getCarbohydrates(), entity.getSugars(), entity.getFibers(), entity.getFat());
+				entity.getProteins(), entity.getCarbohydrates(), entity.getSugars(), entity.getFibers(), entity.getFat(),
+				iMapper.toDtoList(entity.getIllnesses()));
 	}
 
 	@Override

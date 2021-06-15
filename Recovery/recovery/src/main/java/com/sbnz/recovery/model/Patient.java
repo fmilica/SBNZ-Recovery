@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -37,7 +39,12 @@ public class Patient extends User {
 	
 //	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "patient")
 //	@Transient
-	@ManyToMany(mappedBy = "patients")
+//	@ManyToMany(mappedBy = "patients")
+	@ManyToMany
+	@JoinTable(
+	  name = "patient_illness", 
+	  joinColumns = @JoinColumn(name = "patient_id"), 
+	  inverseJoinColumns = @JoinColumn(name = "illness_id"))
 	private List<Illness> anamnesis;
 	
 	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "patient")

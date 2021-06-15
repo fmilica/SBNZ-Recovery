@@ -47,11 +47,7 @@ public class InjuryService {
 		return injuryRepository.findAllByPatientIdOrderByStartDateDesc(patientId);
 	}
 	
-	public List<AppliedTherapy> findAllForPatientForInjury(Long patientId, Long injuryId) throws NonExistingIdException {
-		Patient patient = patientRepository.findById(patientId).orElse(null);
-		if (patient == null) {
-			throw new NonExistingIdException("Patient");
-		}
+	public List<AppliedTherapy> findAllForPatientForInjury(Long injuryId) throws NonExistingIdException {
 		Injury injury = injuryRepository.findById(injuryId).orElse(null);
 		if (injury == null) {
 			throw new NonExistingIdException("Injury");

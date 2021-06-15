@@ -60,23 +60,23 @@ public class DoctorController {
 		this.appliedTherapyMapper = new AppliedTherapyMapper();
 	}
 	
-	@PreAuthorize("hasRole('ROLE_DOCTOR')")
-	@PostMapping("/create-therapy")
-	public ResponseEntity<TherapyDTO> createTherapy(@RequestBody TherapyDTO therapyDto) {
-
-		Therapy therapy = theraphyMapper.toEntity(therapyDto);
-
-		log.debug("Create therapy: " + therapy);
-		
-		
-		try {
-            therapy = doctorService.createTherapy(therapy);
-        }catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-
-		return new ResponseEntity<TherapyDTO>(theraphyMapper.toDto(therapy), HttpStatus.OK);
-	}
+//	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+//	@PostMapping("/create-therapy")
+//	public ResponseEntity<TherapyDTO> createTherapy(@RequestBody TherapyDTO therapyDto) {
+//
+//		Therapy therapy = theraphyMapper.toEntity(therapyDto);
+//
+//		log.debug("Create therapy: " + therapy);
+//		
+//		
+//		try {
+//            therapy = doctorService.createTherapy(therapy);
+//        }catch (Exception e){
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+//        }
+//
+//		return new ResponseEntity<TherapyDTO>(theraphyMapper.toDto(therapy), HttpStatus.OK);
+//	}
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@PostMapping("/create-ingredient")

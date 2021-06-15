@@ -24,15 +24,20 @@ public class PatientDTO {
 	private PhysicalActivity physicalActivity;
 	private List<IllnessDTO> anamnesis;
 	
+	private PhysicalActivity physicalActivityAfterInjury;
+	private double regularDailyCaloryIntake;
+	private double dailyCaloryIntakeAfterInjury;
+	
+	
 	public PatientDTO() {
-		super();
 	}
 
-	public PatientDTO(String email, String password, String name, String surname, Gender gender, Date dateOfBirth, double height,
-			double weight, PhysicalActivity physicalActivity, List<IllnessDTO> anamnesis) {
-		super();
+	public PatientDTO(Long id, String email, String name, String surname, Gender gender, Date dateOfBirth,
+			double height, double weight, PhysicalActivity physicalActivity, List<IllnessDTO> anamnesis,
+			PhysicalActivity physicalActivityAfterInjury, double regularDailyCaloryIntake,
+			double dailyCaloryIntakeAfterInjury) {
+		this.id = id;
 		this.email = email;
-		this.password = password;
 		this.name = name;
 		this.surname = surname;
 		this.gender = gender;
@@ -41,8 +46,11 @@ public class PatientDTO {
 		this.weight = weight;
 		this.physicalActivity = physicalActivity;
 		this.anamnesis = anamnesis;
+		this.physicalActivityAfterInjury = physicalActivityAfterInjury;
+		this.regularDailyCaloryIntake = regularDailyCaloryIntake;
+		this.dailyCaloryIntakeAfterInjury = dailyCaloryIntakeAfterInjury;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -88,7 +96,7 @@ public class PatientDTO {
 	public double getHeight() {
 		return height;
 	}
-	public void setHeight(int height) {
+	public void setHeight(double height) {
 		this.height = height;
 	}
 	public double getWeight() {
@@ -108,5 +116,23 @@ public class PatientDTO {
 	}
 	public void setAnamnesis(List<IllnessDTO> anamnesis) {
 		this.anamnesis = anamnesis;
+	}
+	public PhysicalActivity getPhysicalActivityAfterInjury() {
+		return physicalActivityAfterInjury;
+	}
+	public void setPhysicalActivityAfterInjury(PhysicalActivity physicalActivityAfterInjury) {
+		this.physicalActivityAfterInjury = physicalActivityAfterInjury;
+	}
+	public double getRegularDailyCaloryIntake() {
+		return regularDailyCaloryIntake;
+	}
+	public void setRegularDailyCaloryIntake(double regularDailyCaloryIntake) {
+		this.regularDailyCaloryIntake = regularDailyCaloryIntake;
+	}
+	public double getDailyCaloryIntakeAfterInjury() {
+		return dailyCaloryIntakeAfterInjury;
+	}
+	public void setDailyCaloryIntakeAfterInjury(double dailyCaloryIntakeAfterInjury) {
+		this.dailyCaloryIntakeAfterInjury = dailyCaloryIntakeAfterInjury;
 	}
 }

@@ -19,8 +19,11 @@ public class PatientMapper implements MapperInterface<Patient, PatientDTO>{
 
 	@Override
 	public PatientDTO toDto(Patient entity) {
-		return new PatientDTO(entity.getUsername(), entity.getPassword(), entity.getName(), entity.getSurname(), entity.getGender(), entity.getDateOfBirth(), entity.getHeight(), entity.getWeight(), entity.getPhysicalActivityAfterInjury(), 
-				illnessMapper.toDtoList(entity.getAnamnesis()));
+		return new PatientDTO(entity.getId(), entity.getUsername(), entity.getName(), entity.getSurname(), entity.getGender(), 
+				entity.getDateOfBirth(), entity.getHeight(), entity.getWeight(), 
+				entity.getPhysicalActivityBeforeInjury(), illnessMapper.toDtoList(entity.getAnamnesis()), 
+				entity.getPhysicalActivityAfterInjury(), entity.getRegularDailyCaloryIntake(), 
+				entity.getDailyCaloryIntakeAfterInjury());
 	}
 
 	@Override

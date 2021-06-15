@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PatientRegister } from 'src/app/model/patient-register.model';
+import { Router } from '@angular/router';
+import { Patient } from 'src/app/model/patient.model';
 import { PatientService } from 'src/app/services/patient.service';
 
 @Component({
@@ -10,10 +11,11 @@ import { PatientService } from 'src/app/services/patient.service';
 export class ViewPatientsComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'surname', 'dateOfBirth', 'gender', 'height', 'weight', 'physicalActivity'];
-  dataSource: PatientRegister[] = [];
+  dataSource: Patient[] = [];
 
   constructor(
-    private patientService: PatientService
+    private patientService: PatientService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -26,4 +28,7 @@ export class ViewPatientsComponent implements OnInit {
         });
   }
 
+  patientView(patient: Patient) {
+    this.router.navigate(['homepage/patient-view'], { state: { data: { patient } } });
+  }
 }

@@ -40,6 +40,19 @@ public class InjuryController {
 		this.appliedTherapyMapper = new AppliedTherapyMapper();
 	}
 	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@GetMapping(value = "/{patientId}")
+	public ResponseEntity<List<InjuryDTO>> findAllForPatient(@PathVariable("patientId") Long patientId) {
+		List<Injury> injuries = null;
+        try {
+            injuries = injuryService.findAllForPatient(patientId);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
+        return new ResponseEntity<>(injuryMapper.toDtoList(injuries), HttpStatus.OK);
+	}
+	
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	@GetMapping(value = "/current")
 	public ResponseEntity<List<InjuryDTO>> findAllForCurrent() {
@@ -55,12 +68,11 @@ public class InjuryController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	@GetMapping(value = "/current/{injuryId}")
+	@GetMapping(value = "/applied-therapies/{injuryId}")
 	public ResponseEntity<List<AppliedTherapyDTO>> findAllTherapiesForCurrentForInjury(@PathVariable("injuryId") Long injuryId) {
 		List<AppliedTherapy> appliedTherapies = null;
         try {
-            Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            appliedTherapies = injuryService.findAllForPatientForInjury(patient.getId(), injuryId);
+            appliedTherapies = injuryService.findAllForPatientForInjury(injuryId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

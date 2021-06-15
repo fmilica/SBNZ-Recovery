@@ -1,16 +1,16 @@
 <mat-progress-bar class="progress-bar" mode="indeterminate" *ngIf="dataSource.length===0">
 </mat-progress-bar>
-<div class="table-title">View Ingredients</div>
+<div class="table-title">View Patients</div>
 <div class="ng-container row justify-content-md-center">
     <div class="col-md-11">
         <table mat-table [dataSource]="dataSource" id="ingredient-table">
             <!-- No data row -->
             <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="6">No prior ingredients.</td>
+                <td class="mat-cell" colspan="7">No registered patients.</td>
             </tr>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="patientView(row)"></tr>
 
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
@@ -43,8 +43,9 @@
             </ng-container>
 
             <ng-container matColumnDef="physicalActivity">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Physical Activity </th>
-                <td mat-cell *matCellDef="let row"> {{row.physicalActivity}} </td>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Physical Activity </th>
+                <td mat-cell *matCellDef="let row">
+                    {{row.physicalActivityAfterInjury ? row.physicalActivityAfterInjury : row.physicalActivity}} </td>
             </ng-container>
         </table>
     </div>

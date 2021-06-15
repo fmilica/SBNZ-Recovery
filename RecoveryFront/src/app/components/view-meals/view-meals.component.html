@@ -3,61 +3,7 @@
 <div class="table-title">View Meals</div>
 <div class="ng-container row justify-content-md-center">
     <div class="col-md-11">
-        <table mat-table multiTemplateDataRows [dataSource]="dataSource" id="meals-table">
-            <!-- No data row -->
-            <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="6">No prior meals.</td>
-            </tr>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="example-element-row"
-                [class.example-expanded-row]="expandedElement === row"
-                (click)="expandedElement = expandedElement === row ? null : row; getIngredientAmounts(row.id)">
-            </tr>
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-
-            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-            <ng-container matColumnDef="expandedDetail">
-                <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-                    <div class="example-element-detail"
-                        [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                        <table mat-table [dataSource]="chosenIngredients" id="ingredient-amount-table">
-                            <!-- No data row -->
-                            <tr class="mat-row" *matNoDataRow>
-                                <td class="mat-cell" colspan="2">No ingredients for this meal.</td>
-                            </tr>
-
-                            <tr mat-header-row *matHeaderRowDef="displayedIngredientColumns"></tr>
-                            <tr mat-row *matRowDef="let ingredientAmount; columns: displayedIngredientColumns;"></tr>
-
-                            <ng-container matColumnDef="ingredientName">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Ingredient Name </th>
-                                <td mat-cell *matCellDef="let ingredientAmount"> {{ingredientAmount.ingredient.name}} </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="amount">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Ingredient Amount </th>
-                                <td mat-cell *matCellDef="let ingredientAmount"> {{ingredientAmount.amount}} </td>
-                            </ng-container>
-                        </table>
-                    </div>
-                </td>
-            </ng-container>
-
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-                <td mat-cell *matCellDef="let row"> {{row.name}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="mealDescription">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
-                <td mat-cell *matCellDef="let row"> {{row.mealDescription}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="totalCalories">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Calories </th>
-                <td mat-cell *matCellDef="let row"> {{row.totalCalories}} </td>
-            </ng-container>
-        </table>
+        <app-meal-table [dataSource]="dataSource" [assignPatientMeal]="false">
+        </app-meal-table>
     </div>
 </div>

@@ -48,9 +48,9 @@ public class DoctorService {
 	@Qualifier(value = "rulesSession")
 	private KieSession rulesSession;
 	
-	public Therapy createTherapy(Therapy therapy) {
-		return therapyRepository.save(therapy);
-	}
+//	public Therapy createTherapy(Therapy therapy) {
+//		return therapyRepository.save(therapy);
+//	}
 	
 	public Ingredient createIngredient(Ingredient ingredient) {
 		rulesSession.getAgenda().getAgendaGroup("classify-ingredient").setFocus();

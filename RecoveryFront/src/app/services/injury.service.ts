@@ -16,8 +16,12 @@ export class InjuryService {
         return this.http.get<Injury[]>(environment.apiEndpoint + 'injury/current');
     }
 
+    findAllForGivenPatient(patientId: number): Observable<Injury[]> {
+        return this.http.get<Injury[]>(environment.apiEndpoint + 'injury/' + patientId);
+    }
+
     findTherapiesForPatientForInjury(injuryId: number): Observable<AppliedTherapy[]> {
-        return this.http.get<AppliedTherapy[]>(environment.apiEndpoint + 'injury/current/' + injuryId);
+        return this.http.get<AppliedTherapy[]>(environment.apiEndpoint + 'injury/applied-therapies/' + injuryId);
     }
 
     addInjury(injury: Injury): Observable<Injury> {

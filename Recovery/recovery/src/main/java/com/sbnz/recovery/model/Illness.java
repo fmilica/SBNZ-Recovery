@@ -31,11 +31,12 @@ public class Illness implements Serializable {
 	
 //	@ManyToOne
 //	@JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = true)
-	@ManyToMany
-	@JoinTable(
-	  name = "patient_illness", 
-	  joinColumns = @JoinColumn(name = "illness_id"), 
-	  inverseJoinColumns = @JoinColumn(name = "patient_id"))
+//	@ManyToMany
+//	@JoinTable(
+//	  name = "patient_illness", 
+//	  joinColumns = @JoinColumn(name = "illness_id"), 
+//	  inverseJoinColumns = @JoinColumn(name = "patient_id"))
+	@ManyToMany(mappedBy = "anamnesis")
 	private List<Patient> patients;
 	
 	//@ManyToOne

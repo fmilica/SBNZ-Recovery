@@ -39,6 +39,9 @@ import { AddTherapyComponent } from './components/add-therapy/add-therapy.compon
 import { ViewMealsComponent } from './components/view-meals/view-meals.component';
 import { ViewTherapiesComponent } from './components/view-therapies/view-therapies.component';
 import { ViewPatientsComponent } from './components/view-patients/view-patients.component';
+import { PatientViewComponent } from './components/patient-view/patient-view.component';
+import { InjuryTableComponent } from './components/injury-table/injury-table.component';
+import { MealTableComponent } from './components/meal-table/meal-table.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +57,10 @@ import { ViewPatientsComponent } from './components/view-patients/view-patients.
     AddTherapyComponent,
     ViewMealsComponent,
     ViewTherapiesComponent,
-    ViewPatientsComponent
+    ViewPatientsComponent,
+    PatientViewComponent,
+    InjuryTableComponent,
+    MealTableComponent
   ],
   imports: [
     BrowserModule,

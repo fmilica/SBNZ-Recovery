@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.sbnz.recovery.dto.IngredientDTO;
 import com.sbnz.recovery.dto.PatientDTO;
 import com.sbnz.recovery.helper.PatientMapper;
 import com.sbnz.recovery.model.Patient;

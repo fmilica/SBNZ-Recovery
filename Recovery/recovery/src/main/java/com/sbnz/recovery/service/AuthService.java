@@ -37,22 +37,21 @@ public class AuthService {
 
 	public Patient register(Patient user) throws ExistingFieldValueException {
 		User existingUser = (User) userRepository.findByUsername(user.getUsername());
-		if (existingUser == null) {
-			//enkripcija lozinke
-			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-			user.setPassword(encoder.encode(user.getPassword()));
-			// postavljanje authorities
-			user.setAuthorities(new ArrayList<>(authorityService.findByName("ROLE_USER")));
-
-			rulesSession.setGlobal("currentPatient", user.getUsername());
-			rulesSession.getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
-			rulesSession.insert(user);
-			rulesSession.fireAllRules();
-			
-			return patientRepository.save(user);
+		if (existingUser != null) {
+			throw new ExistingFieldValueException("User", "email");
 		}
+		//enkripcija lozinke
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		user.setPassword(encoder.encode(user.getPassword()));
+		// postavljanje authorities
+		user.setAuthorities(new ArrayList<>(authorityService.findByName("ROLE_PATIENT")));
 
-		throw new ExistingFieldValueException("User", "email");
+		rulesSession.setGlobal("currentPatient", user.getUsername());
+		rulesSession.getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
+		rulesSession.insert(user);
+		rulesSession.fireAllRules();
+		
+		return patientRepository.save(user);
 	}
 
 	public void loginSuccess(User user) {

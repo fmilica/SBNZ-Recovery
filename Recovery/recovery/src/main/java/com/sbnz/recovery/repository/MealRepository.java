@@ -11,4 +11,6 @@ import com.sbnz.recovery.model.Meal;
 public interface MealRepository extends JpaRepository<Meal, Long> {
 
 	List<Meal> findAll();
+	
+	Meal findOneById(Long id);
 }

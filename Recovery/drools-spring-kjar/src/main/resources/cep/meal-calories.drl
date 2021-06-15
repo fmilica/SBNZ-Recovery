@@ -12,11 +12,10 @@ end;
 
 rule "More than regular calories intake for patient"
     when
-        $p: Patient($dailyCaloryIntakeAfterInjury: dailyCaloryIntakeAfterInjury)
-        $me1: MealEvent($username: username)
+        $p: Patient($dailyCaloryIntakeAfterInjury: dailyCaloryIntakeAfterInjury, $username: username)
+        //$me1: MealEvent($username: username)
         Number(intValue >= $dailyCaloryIntakeAfterInjury) from accumulate(
             $me2: MealEvent(
-            	this != $me1,
                 username == $username,
                 $totalCalories : totalCalories
             ) over window:time( 24h ),
@@ -27,3 +26,5 @@ rule "More than regular calories intake for patient"
         insert(new CaloriesOverflow($username, "Calories intake overflow"));
         System.out.println("More than regular calories intake for patient: " + $username);
 end
+
+//this != $me1,

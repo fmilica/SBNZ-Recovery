@@ -3,7 +3,6 @@ package com.sbnz.recovery.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.builder.HashCodeExclude;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,6 @@ import com.sbnz.recovery.dto.AppliedTherapyDTO;
 import com.sbnz.recovery.dto.IngredientDTO;
 import com.sbnz.recovery.dto.MealDTO;
 import com.sbnz.recovery.dto.PatientDTO;
-import com.sbnz.recovery.dto.TherapyDTO;
 import com.sbnz.recovery.helper.AppliedTherapyMapper;
 import com.sbnz.recovery.helper.IngredientMapper;
 import com.sbnz.recovery.helper.MealMapper;
@@ -32,7 +31,6 @@ import com.sbnz.recovery.model.AppliedTherapy;
 import com.sbnz.recovery.model.Ingredient;
 import com.sbnz.recovery.model.Meal;
 import com.sbnz.recovery.model.Patient;
-import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.service.DoctorService;
 import com.sbnz.recovery.service.PatientService;
 
@@ -195,24 +193,23 @@ public class DoctorController {
 		return new ResponseEntity<TherapyDTO>(therapyMapper.toDto(therapy), HttpStatus.OK);
 	}*/
 	
-	//kasnije rekla eva?
-	//@PreAuthorize("hasRole('ROLE_DOCTOR')")
-	/*@PostMapping("/{patient-id}/add-meal")
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@PostMapping("/{patient-id}/add-meal")
 	public ResponseEntity<MealDTO> addMeal(@PathVariable("patient-id") Long patientId, 
 			@RequestBody MealDTO mealDto) {
 		
-		Meal meal = mealMapper.toEntity(mealDto);
+		Meal meal = null;
 
-		log.debug("Add meal: " + meal);
+		log.debug("Add meal: " + mealDto.getId() + " to patient: " + patientId);
 		
 		try {
-            meal = doctorService.addMeal(patientId, meal);
+            meal = doctorService.addMeal(patientId, mealDto);
         }catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
 		return new ResponseEntity<MealDTO>(mealMapper.toDto(meal), HttpStatus.OK);
-	}*/
+	}
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("/potential-abuse")

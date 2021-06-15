@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Meal implements Serializable{
@@ -44,6 +45,10 @@ public class Meal implements Serializable{
 //	@ManyToOne
 //	@JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = true)
 //	private Patient patient;
+	
+	@ManyToOne
+	@JoinColumn(name = "daily_meal_id", referencedColumnName = "id", nullable = true)
+	private DailyMeal dailyMeal;
 	
 	public Meal() {
 		super();

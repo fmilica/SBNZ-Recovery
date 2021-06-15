@@ -64,9 +64,9 @@ public class Patient extends User {
 	@Column(name="daily_calory_intake_after_injury")
 	private double dailyCaloryIntakeAfterInjury;
 	
-//	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "patient")
-//	@Transient
-//	private List<Meal> meals;
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "patient")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<DailyMeal> dailyMeals;
 	
 	public Patient() {
 		super();
@@ -83,9 +83,9 @@ public class Patient extends User {
 		this.physicalActivityBeforeInjury = physicalActivityBeforeInjury;
 		this.anamnesis = anamnesis;
 		this.medicalHistory = new ArrayList<Injury>();
+		this.dailyMeals = new ArrayList<DailyMeal>();
 
 		//this.therapies = new ArrayList<AppliedTherapy>();
-//		this.meals = new ArrayList<Meal>();
 
 	}
 
@@ -104,7 +104,7 @@ public class Patient extends User {
 		this.physicalActivityAfterInjury = physicalActivityAfterInjury;
 		this.dailyCaloryIntakeAfterInjury = dailyCaloryIntakeAfterInjury;
 		this.medicalHistory = medicalHistory;
-//		this.meals = new ArrayList<Meal>();
+		this.dailyMeals = new ArrayList<DailyMeal>();
 	}
 
 	public void addIllness(Illness illness) {
@@ -123,6 +123,14 @@ public class Patient extends User {
 	public void addInjury(Injury injury) {
 		this.medicalHistory.add(injury);
 		this.physicalActivityAfterInjury = null;
+	}
+
+	public List<DailyMeal> getDailyMeals() {
+		return dailyMeals;
+	}
+
+	public void setDailyMeals(List<DailyMeal> dailyMeals) {
+		this.dailyMeals = dailyMeals;
 	}
 
 	public Gender getGender() {
@@ -216,17 +224,12 @@ public class Patient extends User {
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
-
-//	public List<Meal> getMeals() {
-//		return meals;
-//	}
-//
-//	public void setMeals(List<Meal> meals) {
-//		this.meals = meals;
-//	}
-//	
-//	public void addMeal(Meal meal) {
-//		this.meals.add(meal);
-//	}
+	
+	public void addDailyMeal(DailyMeal dailyMeal) {
+		if(this.dailyMeals == null) {
+			this.dailyMeals = new ArrayList<DailyMeal>();
+		}
+		this.dailyMeals.add(dailyMeal);
+	}
 
 }

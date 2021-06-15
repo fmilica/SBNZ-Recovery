@@ -23,6 +23,9 @@
             <a mat-list-item [routerLink]="'create-therapy'" routerLinkActive="active-link">
                 Create Therapy
             </a>
+            <a mat-list-item [routerLink]="'view-patients'" routerLinkActive="active-link">
+                View Patients
+            </a>
         </mat-nav-list>
         <mat-nav-list *ngIf="role==='ROLE_PATIENT'">
             <a mat-list-item [routerLink]="'medical-history'" routerLinkActive="active-link">

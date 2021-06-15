@@ -38,6 +38,7 @@ import { ViewIngredientsComponent } from './components/view-ingredients/view-ing
 import { AddTherapyComponent } from './components/add-therapy/add-therapy.component';
 import { ViewMealsComponent } from './components/view-meals/view-meals.component';
 import { ViewTherapiesComponent } from './components/view-therapies/view-therapies.component';
+import { ViewPatientsComponent } from './components/view-patients/view-patients.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { ViewTherapiesComponent } from './components/view-therapies/view-therapi
     ViewIngredientsComponent,
     AddTherapyComponent,
     ViewMealsComponent,
-    ViewTherapiesComponent
+    ViewTherapiesComponent,
+    ViewPatientsComponent
   ],
   imports: [
     BrowserModule,

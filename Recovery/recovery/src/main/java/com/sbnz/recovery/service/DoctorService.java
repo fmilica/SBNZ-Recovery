@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
 import org.kie.api.runtime.rule.QueryResults;
 import org.kie.api.runtime.rule.QueryResultsRow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,9 +164,10 @@ public class DoctorService {
 			throw new NonExistingIdException("Meal");
 		}
 		MealEvent mealEvent = new MealEvent(patient.getUsername(), meal.getTotalCalories());
-		cepSession.insert(mealEvent);
+		FactHandle handle =  cepSession.insert(mealEvent);
 		int firedRules = cepSession.fireAllRules();
 		if(firedRules > 0) {
+			cepSession.delete(handle);
 			throw new Exception("Calories overflow.");
 		}else {
 			DailyMeal dailyMeal = dailyMealRepository.findOneByPatientId(patientId);

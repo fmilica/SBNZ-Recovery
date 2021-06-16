@@ -21,7 +21,7 @@ rule "More than regular calories intake for patient"
             ) over window:time( 24h ),
             sum($totalCalories)
         )
-        not (CaloriesOverflow(username == $username, reason == "Calories intake overflow"))
+        //not (CaloriesOverflow(username == $username, reason == "Calories intake overflow"))
     then
         insert(new CaloriesOverflow($username, "Calories intake overflow"));
         System.out.println("More than regular calories intake for patient: " + $username);

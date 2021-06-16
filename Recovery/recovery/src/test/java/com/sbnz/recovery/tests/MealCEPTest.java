@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
 
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.enums.Gender;
@@ -56,8 +57,11 @@ private KieSession kieSession;
 		firedRules = kieSession.fireAllRules();
 		kieSession.insert(new MealEvent("username", 20.00));
 		firedRules = kieSession.fireAllRules();
-		kieSession.insert(new MealEvent("username", 90.00));
-		firedRules = kieSession.fireAllRules();		
+		FactHandle handle = kieSession.insert(new MealEvent("username", 90.00));
+		firedRules = kieSession.fireAllRules();	
+		kieSession.delete(handle);
+		kieSession.insert(new MealEvent("username", 1.00));
+		firedRules = kieSession.fireAllRules();	
 		
 		assertEquals(1, firedRules);
 	}

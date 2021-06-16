@@ -2,15 +2,15 @@ package rules;
 
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.enums.Gender;
+import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.utility.DateUtility;
-
-global String currentPatient;
 
 rule "Calculate BMR - Male"
 	agenda-group "bmr-regular-calorie"
 	salience 2
     when
-        $p: Patient( username == currentPatient, gender == Gender.MALE, 
+        $cp: ChosenPatient( $chosenPatientId: chosenPatientId, resolved == false )
+        $p: Patient( id == $chosenPatientId, gender == Gender.MALE, 
         	$height : height, $weight : weight, 
         	$age : DateUtility.getDiffYears(dateOfBirth) ) @Watch(!bmr)
     then
@@ -22,7 +22,8 @@ rule "Calculate BMR - Female"
 	agenda-group "bmr-regular-calorie"
 	salience 2
     when
-        $p: Patient( username == currentPatient, gender == Gender.FEMALE, 
+        $cp: ChosenPatient( $chosenPatientId: chosenPatientId, resolved == false )
+        $p: Patient( id == $chosenPatientId, gender == Gender.FEMALE, 
         	$height : height, $weight : weight, 
         	$age : DateUtility.getDiffYears(dateOfBirth) ) @Watch(!bmr)
     then

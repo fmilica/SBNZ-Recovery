@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,7 +41,7 @@ public class Therapy implements Serializable {
 	private int intensity;
 	
 	//@OneToMany(cascade = {CascadeType.DETACH}, fetch = FetchType.LAZY, mappedBy = "therapy")
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 	  name = "therapy_illness", 
 	  joinColumns = @JoinColumn(name = "therapy_id"), 
@@ -48,7 +49,7 @@ public class Therapy implements Serializable {
 	private Set<Illness> applicableIllness;
 	
 	//@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "therapy")
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 	  name = "therapy_injury_type", 
 	  joinColumns = @JoinColumn(name = "therapy_id"), 

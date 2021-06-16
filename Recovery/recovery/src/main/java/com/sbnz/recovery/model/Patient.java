@@ -15,9 +15,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 
@@ -46,7 +43,7 @@ public class Patient extends User {
 	  inverseJoinColumns = @JoinColumn(name = "illness_id"))
 	private Set<Illness> anamnesis;
 	
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "patient", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "patient", fetch = FetchType.EAGER)
 	private Set<Injury> medicalHistory;
 	
 	@Column(name="bmr")
@@ -67,7 +64,6 @@ public class Patient extends User {
 	private Set<DailyMeal> dailyMeals;
 	
 	public Patient() {
-		super();
 	}
 
 	// kreiranje pacijenta
@@ -110,13 +106,15 @@ public class Patient extends User {
 	}
 	
 	public void addTherapyForInjury(AppliedTherapy appliedTherapy, Injury injury) {
-		for (Iterator<Injury> it = this.medicalHistory.iterator(); it.hasNext(); ) {
-			Injury in = it.next();
-	        if (in.equals(injury)) {
-	        	in.addAppliedTherapy(appliedTherapy);
-	        	break;
-	        }
-	    }
+		appliedTherapy.setInjury(injury);
+		injury.addAppliedTherapy(appliedTherapy);
+		for (Injury in : this.medicalHistory) {
+			if (in.getId() == injury.getId()) {
+				this.medicalHistory.remove(in);
+				break;
+			}
+		}
+		this.medicalHistory.add(injury);
 		//this.medicalHistory.get(this.medicalHistory.indexOf(injury)).addAppliedTherapy(appliedTherapy);
 	}
 	

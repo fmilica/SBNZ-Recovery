@@ -7,18 +7,18 @@ import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
 import com.sbnz.recovery.model.InjuryType;
+import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.utility.DateUtility;
-
-global String currentPatient;
 
 rule "Sedentary injuries"
 	salience 3
 	agenda-group "new-activity-level"
     when
-    	$ir: InjuryRequirement($lowerAge: lowerAgeBoundry,  $upperAge: upperAgeBoundry, 
+    	$cp: ChosenPatient( $chosenPatientId: chosenPatientId, resolved == false )
+        $ir: InjuryRequirement($lowerAge: lowerAgeBoundry,  $upperAge: upperAgeBoundry, 
     		$injuryType: injuryType, $injuryBodyParts: injuryBodyPart, $newActivityLevel: activityAfterInjury,
     		activityAfterInjury == PhysicalActivity.SEDENTARY)
-    	$p: Patient( username == currentPatient, physicalActivityAfterInjury == null, 
+    	$p: Patient( id == $chosenPatientId, physicalActivityAfterInjury == null, 
     		 $age : DateUtility.getDiffYears(dateOfBirth),
     		 $age > $lowerAge, $age <= $upperAge)
 		$internalInjuries : List(size > 0) 
@@ -37,10 +37,11 @@ rule "Light active injuries"
 	salience 2
 	agenda-group "new-activity-level"
     when
-    	$ir: InjuryRequirement($lowerAge: lowerAgeBoundry,  $upperAge: upperAgeBoundry, 
+    	$cp: ChosenPatient( $chosenPatientId: chosenPatientId, resolved == false )
+        $ir: InjuryRequirement($lowerAge: lowerAgeBoundry,  $upperAge: upperAgeBoundry, 
     		$injuryType: injuryType, $injuryBodyParts: injuryBodyPart, $newActivityLevel: activityAfterInjury,
     		activityAfterInjury == PhysicalActivity.LIGHT_ACTIVE)
-    	$p: Patient( username == currentPatient, physicalActivityAfterInjury == null, 
+    	$p: Patient( id == $chosenPatientId, physicalActivityAfterInjury == null, 
     		 $age : DateUtility.getDiffYears(dateOfBirth),
     		 $age > $lowerAge, $age <= $upperAge)
 		$internalInjuries : List(size > 0) 
@@ -59,10 +60,11 @@ rule "Moderate injuries"
 	salience 1
 	agenda-group "new-activity-level"
     when
-    	$ir: InjuryRequirement($lowerAge: lowerAgeBoundry,  $upperAge: upperAgeBoundry, 
+    	$cp: ChosenPatient( $chosenPatientId: chosenPatientId, resolved == false )
+        $ir: InjuryRequirement($lowerAge: lowerAgeBoundry,  $upperAge: upperAgeBoundry, 
     		$injuryType: injuryType, $injuryBodyParts: injuryBodyPart, $newActivityLevel: activityAfterInjury,
     		activityAfterInjury == PhysicalActivity.MODERATE)
-    	$p: Patient( username == currentPatient, physicalActivityAfterInjury == null, 
+    	$p: Patient( id == $chosenPatientId, physicalActivityAfterInjury == null, 
     		 $age : DateUtility.getDiffYears(dateOfBirth),
     		 $age > $lowerAge, $age <= $upperAge)
 		$internalInjuries : List(size > 0) 
@@ -81,7 +83,8 @@ rule "Change agenda-group to calories-after-injury"
 	agenda-group "new-activity-level"
 	salience -1
 	when
-		Patient()
+		//Patient()
+		ChosenPatient( resolved == false )
 	then
 		System.out.println("Changed agenda-group from new-activity-level to calories-after-injury");
 		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("calories-after-injury").setFocus();

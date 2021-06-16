@@ -3,14 +3,21 @@ package com.sbnz.recovery.service;
 import java.util.List;
 
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.sbnz.recovery.exceptions.ExistingFieldValueException;
 import com.sbnz.recovery.exceptions.NonExistingIdException;
+import com.sbnz.recovery.model.AppliedTherapy;
+import com.sbnz.recovery.model.ChosenPatient;
+import com.sbnz.recovery.model.Injury;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Therapy;
+import com.sbnz.recovery.model.enums.AssignType;
+import com.sbnz.recovery.repository.AppliedTherapyRepository;
 import com.sbnz.recovery.repository.PatientRepository;
 import com.sbnz.recovery.repository.TherapyRepository;
 
@@ -19,6 +26,9 @@ public class TherapyService {
 
 	@Autowired
 	private TherapyRepository therapyRepository;
+	
+	@Autowired
+	private AppliedTherapyRepository appliedTherapyRepository;
 	
 	@Autowired
 	private PatientRepository patientRepository;
@@ -47,14 +57,22 @@ public class TherapyService {
 		if (patient == null) {
 			throw new NonExistingIdException("Patient");
 		}
+		rulesSession.insert(new ChosenPatient(patient.getId(), AssignType.THERAPY));
 		rulesSession.getAgenda().getAgendaGroup("find-therapy").setFocus();
-		rulesSession.setGlobal("chosenPatientUsername", patient.getUsername());
-		rulesSession.insert(patient);
-		int fired = rulesSession.fireAllRules();
-		System.out.println(fired);
+		rulesSession.fireAllRules();
 		rulesSession.getAgenda().getAgendaGroup("rank-therapy").setFocus();
-		fired = rulesSession.fireAllRules();
-		System.out.println(fired);
+		rulesSession.fireAllRules();
+		// dobavi izmenjenog pacijenta
+		rulesSession.getAgenda().getAgendaGroup("MAIN").setFocus();
+		QueryResults results = rulesSession.getQueryResults("getPatient", patient.getId());
+		for (QueryResultsRow row : results) {
+			patient = (Patient) row.get("$patient");
+		}
+		for (Injury in : patient.getMedicalHistory()) {
+			for (AppliedTherapy at : in.getAppliedTherapies()) {
+				appliedTherapyRepository.save(at);
+			}
+		}
 		patientRepository.save(patient);
 	}
 }

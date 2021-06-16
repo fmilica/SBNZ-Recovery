@@ -61,7 +61,6 @@ public class AuthController {
 
 			// Kreiraj token za tog korisnika
 			User user = (User) authentication.getPrincipal();
-			authService.loginSuccess(user);
 
 			String username = user.getUsername();
 			String jwt = tokenUtils.generateToken(user.getUsername());

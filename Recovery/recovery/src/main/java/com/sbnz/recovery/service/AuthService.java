@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sbnz.recovery.exceptions.ExistingFieldValueException;
+import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.User;
 import com.sbnz.recovery.model.events.LoginEvent;
@@ -46,14 +47,17 @@ public class AuthService {
 		// postavljanje authorities
 		user.setAuthorities(new HashSet<>(authorityService.findByName("ROLE_PATIENT")));
 
-		rulesSession.setGlobal("currentPatient", user.getUsername());
+		Patient patient = patientRepository.save(user);
+		
 		rulesSession.getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
-		rulesSession.insert(user);
+		rulesSession.insert(patient);
+		rulesSession.insert(new ChosenPatient(patient.getId()));
 		rulesSession.fireAllRules();
 		
-		return patientRepository.save(user);
+		return patientRepository.save(patient);
 	}
 
+	/* GOVNO OD OVCE
 	public void loginSuccess(User user) {
 		// postavljanje kao globalnog trenutno ulogovanog korisnika
 		try {
@@ -63,7 +67,7 @@ public class AuthService {
 		} catch (ClassCastException e) {
 			
 		}
-	}
+	}*/
 	
 	public void loginFailed(String username) {
 		LoginEvent event = new LoginEvent(username);

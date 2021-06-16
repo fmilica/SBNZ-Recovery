@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.sbnz.recovery.exceptions.NonExistingIdException;
 import com.sbnz.recovery.model.AppliedTherapy;
+import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.model.Injury;
 import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.Patient;
@@ -68,12 +69,8 @@ public class InjuryService {
 		injury.setPatient(patient);
 		injury.setInjuryType(injuryType);
 		
-		rulesSession.setGlobal("currentPatient", patient.getUsername());
-		// OVO BI TREBALO DA SE UBACI PRI LOGINU I RADI, ALI KREIRA NOVU SESIJU
-		//rulesSession.insert(patient);
-		// PROBA SA APPLICATION SCOPE
-		// application scope radi kada je fetch type za medical history eager
 		rulesSession.getAgenda().getAgendaGroup("new-injury").setFocus();
+		rulesSession.insert(new ChosenPatient(patient.getId(), injury.getId()));
 		rulesSession.insert(injury);
 		rulesSession.fireAllRules();
 		

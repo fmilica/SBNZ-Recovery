@@ -3,15 +3,15 @@ package rules;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
+import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.utility.DateUtility;
-
-global String currentPatient;
 
 rule "Calculate new daily calorie intake after injury"
 	agenda-group "calories-after-injury"
 	lock-on-active true
 	when
-		$p: Patient( username == currentPatient, 
+		$cp: ChosenPatient( $chosenPatientId: chosenPatientId, resolved == false )
+        $p: Patient( id == $chosenPatientId, 
 			bmr != 0, physicalActivityAfterInjury != null,
 			$regularCalories : regularDailyCaloryIntake, 
 			$activityBefore : physicalActivityBeforeInjury, 
@@ -21,5 +21,15 @@ rule "Calculate new daily calorie intake after injury"
 				(1 - (java.lang.Math.abs(
 					$activityBefore.getActivityCode() - $activityAfter.getActivityCode()
 				) / 10.0)) * $regularCalories); }
+    	modify ($cp) { setResolved(true); }
         System.out.println("Calculated new daily calorie intake after injury: " + $p.getDailyCaloryIntakeAfterInjury());
+end
+
+rule "Resolve unresolved chosen patient"
+	agenda-group "calories-after-injury"
+	salience -1
+	when
+		$cp: ChosenPatient(resolved == false)
+	then
+		modify ($cp) { setResolved(true); }
 end

@@ -5,29 +5,27 @@ import java.lang.Math;
 
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.AppliedTherapy;
+import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.model.enums.Gender;
+import com.sbnz.recovery.model.enums.AssignType;
 import com.sbnz.recovery.utility.DateUtility;
 
 global String chosenPatientUsername;
 
 declare ApplicableTherapy
-	patientUsername: String
+	patientId: Long
 	therapy: Therapy
-end
-
-declare DeterminedTherapy
 end
 
 
 rule "Rank therapy for patient"
 	agenda-group "rank-therapy"
-	no-loop
+	//no-loop
 	salience ($matchedIllnessCount + $matchedInjuries.size())
     when
-    	$p: Patient(username == chosenPatientUsername, $illnesses: anamnesis)
-    	//$p: Patient(username.equals(chosenPatientUsername), $illnesses: anamnesis)
-    	//$p: Patient($illnesses: anamnesis)
-    	$at: ApplicableTherapy(patientUsername == $p.username, 
+    	$cp: ChosenPatient($chosenPatientId: chosenPatientId, resolved == false, assignType == AssignType.THERAPY)
+    	$p: Patient(id == $chosenPatientId, $illnesses: anamnesis)
+    	$at: ApplicableTherapy(patientId == $chosenPatientId, 
     		$t: therapy, $therapyName : therapy.name, 
     		$til: therapy.applicableIllness, $tin: therapy.applicableInjury)
     	$activeInjuries : List() from collect(
@@ -45,13 +43,12 @@ rule "Rank therapy for patient"
 			$matchedInjuries : collectList($injury)
     	)
     	eval($matchedInjuries.size() >= Math.ceil($activeInjuries.size() / 2.0))
-    	//not(DeterminedTherapy())
     then
     	System.out.println("Assigned therapy " + $therapyName + " to patient " + $p.getUsername());
     	System.out.println($matchedInjuries);
-    	System.out.println($tin);
+    	System.out.println($activeInjuries);
+    	modify($cp) { setResolved(true); }
     	modify($p) { addTherapyForInjury(new AppliedTherapy(LocalDate.now(), $t), (Injury)$matchedInjuries.get(0)); }
-		//insert(new DeterminedTherapy());
 end
 
 
@@ -59,9 +56,8 @@ rule "Find all applicable therapies for patient"
 	agenda-group "find-therapy"
 	salience 1
 	when
-		$p: Patient(username == chosenPatientUsername, $injuries : medicalHistory)
-		//$p: Patient($injuries : medicalHistory)
-		//$p: Patient(username.equals(chosenPatientUsername), $injuries : medicalHistory)
+		$cp: ChosenPatient($chosenPatientId: chosenPatientId, resolved == false, assignType == AssignType.THERAPY)
+		$p: Patient(id == $chosenPatientId, $injuries : medicalHistory)
 		$t: Therapy($maximumApplication : maximumMonthlyApplication, $name : name)
 		Number(intValue < $maximumApplication) from accumulate(
 			Injury($appliedTherapies : appliedTherapies) from $injuries and
@@ -74,23 +70,6 @@ rule "Find all applicable therapies for patient"
 			sum($applicationPerInjury)
 		)
 	then
-		System.out.println(chosenPatientUsername + " " + $p.getUsername());
 		System.out.println("Therapy " + $name + " is applicable for patient with username: " + $p.getUsername());
-		insert(new ApplicableTherapy(chosenPatientUsername, $t));
+		insert(new ApplicableTherapy($chosenPatientId, $t));
 end;
-/*
-rule "Change agenda group after finding all applicable therapies"
-	agenda-group "find-therapy"
-	salience 0
-	when
-		ApplicableTherapy( )
-	then
-		System.out.println("Focus set to rank-therapy agenda-group");
-		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("rank-therapy").setFocus();
-end;*/
-    	//$matchedInjuryCount : Number($matchedInjuries.size() >= $activeInjuries.size() / 2)
-    	//$matchedInjuryCount : Number(intValue >= $activeInjuries.size() / 2) from accumulate(
-    		//											Injury($injuryType : injuryType) from $activeInjuries
-    			//										and InjuryType(this == $injuryType) from $tin,
-    				//									count($injuryType)
-    					//								)

@@ -4,29 +4,30 @@ import java.time.LocalDate;
 
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Injury;
-
-global String currentPatient;
-global Long injuryId;
+import com.sbnz.recovery.model.ChosenPatient;
+import com.sbnz.recovery.model.enums.AssignType;
 
 rule "Finalize injury"
 	agenda-group "finalize-injury"
     when
-        $p: Patient( username == currentPatient, $injuries: medicalHistory )
-        $i: Injury( id == injuryId, endDate == null, $injuryName: name ) from $injuries;
+    	$cp: ChosenPatient( $chosenPatientId: chosenPatientId, assignType == AssignType.INJURY, resolved == false, $injuryId: injuryId)
+        $p: Patient( id == $chosenPatientId, $injuries: medicalHistory )
+        $i: Injury( id == $injuryId, endDate == null, $injuryName: name ) from $injuries;
     then
     	modify ($p) { finalizeInjury($i, LocalDate.now()); }
-        System.out.println("Finalized injury " + $injuryName + " for patient " + currentPatient);
+        System.out.println("Finalized injury " + $injuryName + " for patient " + $p.getUsername());
 		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
 end
 
 rule "Add new injury"
 	agenda-group "new-injury"
     when
-        $p: Patient( username == currentPatient )
-        $i: Injury ( patient.username == currentPatient, proccesed == false )
+        $cp: ChosenPatient( $chosenPatientId: chosenPatientId, assignType == AssignType.INJURY, resolved == false, $injuryId: injuryId)
+        $p: Patient( id == $chosenPatientId )
+        $i: Injury ( patient.id == $chosenPatientId, proccesed == false )
     then
     	modify ($p) { addInjury($i); }
     	modify ($i) { setProccesed(true); }
-        System.out.println("Added new injury:" + $i.getName() + " for patient " + currentPatient);
+        System.out.println("Added new injury:" + $i.getName() + " for patient " + $p.getUsername());
 		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
 end

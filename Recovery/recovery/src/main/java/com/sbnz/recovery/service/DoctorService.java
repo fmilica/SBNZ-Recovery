@@ -27,6 +27,7 @@ import com.sbnz.recovery.model.IngredientAmount;
 import com.sbnz.recovery.model.Meal;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Therapy;
+import com.sbnz.recovery.model.enums.AssignType;
 import com.sbnz.recovery.model.events.MealEvent;
 import com.sbnz.recovery.repository.AppliedTherapyRepository;
 import com.sbnz.recovery.repository.DailyMealRepository;
@@ -126,7 +127,7 @@ public class DoctorService {
 		List<Meal> patientMeals = new ArrayList<Meal>();
 		rulesSession.getAgenda().getAgendaGroup("rank-meal").setFocus();
 		rulesSession.setGlobal("mealList", patientMeals);
-		rulesSession.insert(new ChosenPatient(patient.getId()));
+		rulesSession.insert(new ChosenPatient(patient.getId(), AssignType.MEAL));
 		rulesSession.fireAllRules();
 		
 		return patientMeals;

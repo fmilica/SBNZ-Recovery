@@ -3,9 +3,8 @@ package rules;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
-import com.sbnz.recovery.utility.DateUtility;
-
-global String currentPatient;
+import com.sbnz.recovery.model.enums.Gender;
+import com.sbnz.recovery.model.ChosenPatient;
 
 /*
  * Sedentary (little or no exercise) : Calorie-Calculation = BMR x 1.2
@@ -19,7 +18,8 @@ rule "Calculate Regular Daily Calorie Intake - SENDENTARY"
 	agenda-group "bmr-regular-calorie"
 	salience 1
     when
-        $p: Patient( username == currentPatient,
+        $cp: ChosenPatient( $chosenPatientId: chosenPatientId, resolved == false )
+        $p: Patient( id == $chosenPatientId,
         	physicalActivityBeforeInjury == PhysicalActivity.SEDENTARY, 
         	$bmr : bmr ) @Watch(!regularDailyCaloryIntake)
     then
@@ -31,7 +31,8 @@ rule "Calculate Regular Daily Calorie Intake - LIGHT_ACTIVE"
 	agenda-group "bmr-regular-calorie"
 	salience 1
     when
-        $p: Patient( username == currentPatient,
+        $cp: ChosenPatient( $chosenPatientId: chosenPatientId, resolved == false )
+        $p: Patient( id == $chosenPatientId,
         	physicalActivityBeforeInjury == PhysicalActivity.LIGHT_ACTIVE, 
         	$bmr : bmr ) @Watch(!regularDailyCaloryIntake)
     then
@@ -43,7 +44,8 @@ rule "Calculate Regular Daily Calorie Intake - MODERATE"
 	agenda-group "bmr-regular-calorie"
 	salience 1
     when
-        $p: Patient( username == currentPatient,
+        $cp: ChosenPatient( $chosenPatientId: chosenPatientId, resolved == false )
+        $p: Patient( id == $chosenPatientId,
         	physicalActivityBeforeInjury == PhysicalActivity.MODERATE, 
         	$bmr : bmr ) @Watch(!regularDailyCaloryIntake)
     then
@@ -55,7 +57,8 @@ rule "Calculate Regular Daily Calorie Intake - VERY_ACTIVE"
 	agenda-group "bmr-regular-calorie"
 	salience 1
     when
-        $p: Patient( username == currentPatient,
+        $cp: ChosenPatient( $chosenPatientId: chosenPatientId, resolved == false )
+        $p: Patient( id == $chosenPatientId,
         	physicalActivityBeforeInjury == PhysicalActivity.VERY_ACTIVE, 
         	$bmr : bmr ) @Watch(!regularDailyCaloryIntake)
     then
@@ -67,7 +70,8 @@ rule "Calculate Regular Daily Calorie Intake - EXTRA_ACTIVE"
 	agenda-group "bmr-regular-calorie"
 	salience 1
     when
-        $p: Patient( username == currentPatient,
+        $cp: ChosenPatient( $chosenPatientId: chosenPatientId, resolved == false )
+        $p: Patient( id == $chosenPatientId,
         	physicalActivityBeforeInjury == PhysicalActivity.EXTRA_ACTIVE, 
         	$bmr : bmr ) @Watch(!regularDailyCaloryIntake)
     then
@@ -79,7 +83,8 @@ rule "Change agenda-group to new-activity-level"
 	agenda-group "bmr-regular-calorie"
 	salience -1
 	when
-		Patient()
+		ChosenPatient( resolved == false )
+		//Patient(id == )
 	then
 		System.out.println("Changed agenda-group from bmr-regular-calorie to new-activity-level");
 		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("new-activity-level").setFocus();

@@ -47,7 +47,7 @@ public class Injury implements Serializable{
 	@Column(name="injury_body_parts")
 	private InjuryBodyPart injuryBodyPart;
 	
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "injury")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "injury")
 	private Set<AppliedTherapy> appliedTherapies;
 	
 	@ManyToOne

@@ -5,18 +5,15 @@ import static org.junit.Assert.assertEquals;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.FactHandle;
 
 import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.Injury;
@@ -70,7 +67,7 @@ public class NewUpdateInjuryTest {
 	public void AddInjuryTest() throws ParseException {
 		Date dateOfBirth = format.parse("1998/10/10");
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<>());
 		// bolesti
 		patient.addIllness(lbp);
 		
@@ -109,7 +106,7 @@ public class NewUpdateInjuryTest {
 	public void FinalizeInjuryTest() throws ParseException {
 		Date dateOfBirth = format.parse("1998/10/10");
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<>());
 		// bolesti
 		patient.addIllness(lbp);
 		// povreda

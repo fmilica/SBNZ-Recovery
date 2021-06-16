@@ -12,7 +12,7 @@ public class MealMapper implements MapperInterface<Meal, MealDTO>{
 	
 	@Override
 	public Meal toEntity(MealDTO dto) {
-		return new Meal(dto.getName(), iaMapper.toEntityList(dto.getIngredients()), dto.getMealDescription());
+		return new Meal(dto.getName(), iaMapper.toEntitySet(dto.getIngredients()), dto.getMealDescription());
 	}
 
 	@Override

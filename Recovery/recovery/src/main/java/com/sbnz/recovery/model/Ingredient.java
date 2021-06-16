@@ -1,8 +1,8 @@
 package com.sbnz.recovery.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +15,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 public class Ingredient implements Serializable {
@@ -56,7 +59,9 @@ public class Ingredient implements Serializable {
 	  name = "illness_ingredient", 
 	  joinColumns = @JoinColumn(name = "ingredient_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "illness_id"))
-	private List<Illness> illnesses;
+	//@LazyCollection(LazyCollectionOption.FALSE)
+	@Fetch(FetchMode.JOIN)
+	private Set<Illness> illnesses;
 	
 //	@Column(name="illnesses_string")
 //	private String illnessesString;
@@ -67,16 +72,14 @@ public class Ingredient implements Serializable {
 	
 //	@OneToMany(mappedBy = "ingredientAmounts")
 	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "ingredient")
-	private List<IngredientAmount> ingredientAmounts;
+	private Set<IngredientAmount> ingredientAmounts;
 	
 	public Ingredient() {
-		super();
-		this.illnesses = new ArrayList<Illness>();
+		this.illnesses = new HashSet<Illness>();
 	}
 
 	public Ingredient(String name, double calories, double waterPercentage, double proteins, double carbohydrates, double sugars,
 			double fibers, double fat) {
-		super();
 		this.name = name;
 		this.calories = calories;
 		this.waterPercentage = waterPercentage;
@@ -85,32 +88,19 @@ public class Ingredient implements Serializable {
 		this.sugars = sugars;
 		this.fibers = fibers;
 		this.fat = fat;
-		this.illnesses = new ArrayList<Illness>();
-		
-		/*String[] parts = illnesses.split("|");
-		for(int i=0;i<parts.length;i++) {
-			if(parts[i] == "DIABETES") {
-				this.illnesses.add(Illness.DIABETES);
-			}else if(parts[i] == "HIGH_BLOOD_PRESSURE") {
-				this.illnesses.add(Illness.HIGH_BLOOD_PRESSURE);
-			}else {
-				this.illnesses.add(Illness.LOW_BLOOD_PRESSURE);
-			}
-		}*/
+		this.illnesses = new HashSet<Illness>();
 	}
 	
 	public Ingredient(double calories, double carbohydrates, double sugars, double fat) {
-		super();
 		this.calories = calories;
 		this.carbohydrates = carbohydrates;
 		this.sugars = sugars;
 		this.fat = fat;
-		this.illnesses = new ArrayList<Illness>();
+		this.illnesses = new HashSet<Illness>();
 	}
 	
 	public Ingredient(Long id, String name, double calories, double waterPercentage, double proteins, double carbohydrates,
 			double sugars, double fibers, double fat) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.calories = calories;
@@ -120,11 +110,11 @@ public class Ingredient implements Serializable {
 		this.sugars = sugars;
 		this.fibers = fibers;
 		this.fat = fat;
-		this.illnesses = new ArrayList<Illness>();
+		this.illnesses = new HashSet<Illness>();
 	}
 
 	public Ingredient(Long id, String name, double calories, double waterPercentage, double proteins, double carbohydrates,
-			double sugars, double fibers, double fat, List<Illness> illnesses) {
+			double sugars, double fibers, double fat, Set<Illness> illnesses) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -210,11 +200,11 @@ public class Ingredient implements Serializable {
 		this.fat = fat;
 	}
 
-	public List<Illness> getIllnesses() {
+	public Set<Illness> getIllnesses() {
 		return illnesses;
 	}
 
-	public void setIllnesses(List<Illness> illnesses) {
+	public void setIllnesses(Set<Illness> illnesses) {
 		this.illnesses = illnesses;
 	}
 	
@@ -222,63 +212,12 @@ public class Ingredient implements Serializable {
 		this.illnesses.add(illness);
 	}
 
-//	public String getIllnessesString() {
-//		return illnessesString;
-//	}
-//
-//	public void setIllnessesString(String illnessesString) {
-//		this.illnessesString = illnessesString;
-//	}
-//	public Meal getMeal() {
-//		return meal;
-//	}
-//
-//	public void setMeal(Meal meal) {
-//		this.meal = meal;
-//	}
-
-	public List<IngredientAmount> getIngredientAmounts() {
+	public Set<IngredientAmount> getIngredientAmounts() {
 		return ingredientAmounts;
 	}
 
-	public void setIngredientAmounts(List<IngredientAmount> ingredientAmounts) {
+	public void setIngredientAmounts(Set<IngredientAmount> ingredientAmounts) {
 		this.ingredientAmounts = ingredientAmounts;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Ingredient other = (Ingredient) obj;
-		if (calories != other.calories)
-			return false;
-		if (carbohydrates != other.carbohydrates)
-			return false;
-		if (fat != other.fat)
-			return false;
-		if (fibers != other.fibers)
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (proteins != other.proteins)
-			return false;
-		if (sugars != other.sugars)
-			return false;
-		if (waterPercentage != other.waterPercentage)
-			return false;
-		return true;
 	}
 
 	@Override

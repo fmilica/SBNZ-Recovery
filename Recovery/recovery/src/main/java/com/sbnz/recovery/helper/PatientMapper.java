@@ -14,7 +14,7 @@ public class PatientMapper implements MapperInterface<Patient, PatientDTO>{
 	public Patient toEntity(PatientDTO dto) {
 		return new Patient(dto.getEmail(), dto.getPassword(), dto.getName(), dto.getSurname(), dto.getGender(),
 				dto.getDateOfBirth(), dto.getHeight(), dto.getWeight(), dto.getPhysicalActivity(), 
-				illnessMapper.toEntityList(dto.getAnamnesis()));
+				illnessMapper.toEntitySet(dto.getAnamnesis()));
 	}
 
 	@Override

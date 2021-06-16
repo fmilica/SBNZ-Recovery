@@ -13,11 +13,13 @@ import org.springframework.context.annotation.Configuration;
 import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.InjuryRequirement;
 import com.sbnz.recovery.model.InjuryType;
+import com.sbnz.recovery.model.Meal;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.repository.IllnessRepository;
 import com.sbnz.recovery.repository.InjuryRequirementRepository;
 import com.sbnz.recovery.repository.InjuryTypeRepository;
+import com.sbnz.recovery.repository.MealRepository;
 import com.sbnz.recovery.repository.PatientRepository;
 import com.sbnz.recovery.repository.TherapyRepository;
 
@@ -42,6 +44,9 @@ public class KieConfiguration {
 	@Autowired
 	private PatientRepository patientRepository;
 	
+	@Autowired
+	private MealRepository mealRepository;
+	
 	@Bean
 	public KieContainer kieContainer() {
 		KieServices ks = KieServices.Factory.get();
@@ -63,6 +68,7 @@ public class KieConfiguration {
 	//@SessionScope
 	public KieSession kieSession() {
 		KieSession kieSession = this.kieContainer().newKieSession("rulesSession");
+		kieSession.setGlobal("chosenPatientUsername", "");
 		System.out.println("Creating new kie session");
 		// ubacivanje svih injuryRequirement objekata
 		List<InjuryRequirement> injuryRequirements = injuryRequirementRepository.findAll();
@@ -88,6 +94,11 @@ public class KieConfiguration {
 		List<Patient> patients = patientRepository.findAll();
 		for (Patient patient : patients) {
 			kieSession.insert(patient);
+		}
+		// ubacivanje svih meal objekata
+		List<Meal> meals = mealRepository.findAll();
+		for (Meal meal : meals) {
+			kieSession.insert(meal);
 		}
 		//this.kieSessionHolder.add(kieSession);
 		return kieSession;

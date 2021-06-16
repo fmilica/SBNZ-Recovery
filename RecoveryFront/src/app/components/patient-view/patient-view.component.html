@@ -18,7 +18,7 @@
                 </app-injury-table>
             </div>
             <div *ngIf="applyMeals" class="m-3">
-                <app-meal-table [dataSource]="mealDataSource" [assignPatientMeal]="true">
+                <app-meal-table [dataSource]="mealDataSource" [assignPatientMeal]="true" [patientId]="patient.id">
                 </app-meal-table>
             </div>
         </mat-card-content>

@@ -1,6 +1,6 @@
 package com.sbnz.recovery.model;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,10 +25,10 @@ public class InjuryType {
 	//@ManyToOne
 	//@JoinColumn(name = "therapy_id", referencedColumnName = "id", nullable = true)
 	@ManyToMany(mappedBy = "applicableInjury")
-	private List<Therapy> therapies;
+	private Set<Therapy> therapies;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "injuryType")
-	private List<Injury> injury;
+	private Set<Injury> injury;
 
 	public InjuryType() {
 	}
@@ -42,12 +42,11 @@ public class InjuryType {
 	}
 
 	public InjuryType(Long id, String name) {
-		super();
 		this.id = id;
 		this.name = name;
 	}
 
-	public InjuryType(Long id, String name, List<Therapy> therapies) {
+	public InjuryType(Long id, String name, Set<Therapy> therapies) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -70,11 +69,11 @@ public class InjuryType {
 		this.name = name;
 	}
 
-	public List<Therapy> getTherapies() {
+	public Set<Therapy> getTherapies() {
 		return therapies;
 	}
 
-	public void setTherapies(List<Therapy> therapies) {
+	public void setTherapies(Set<Therapy> therapies) {
 		this.therapies = therapies;
 	}
 }

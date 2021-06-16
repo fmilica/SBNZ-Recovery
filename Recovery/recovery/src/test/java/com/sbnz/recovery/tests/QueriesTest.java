@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +69,7 @@ public class QueriesTest {
 		// patient
 		Date dateOfBirth = format.parse("1998/10/10");
 		patient = new Patient(chosenPatientUsername, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<>());
 		patient.setId(1L);
 		patient.setBmr(1484.0);
 		patient.setRegularDailyCaloryIntake(2040.5);

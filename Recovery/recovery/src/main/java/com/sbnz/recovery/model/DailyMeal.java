@@ -1,9 +1,9 @@
 package com.sbnz.recovery.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,23 +29,22 @@ public class DailyMeal implements Serializable {
 	private Date day;
 	
 	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "dailyMeal")
-	private List<Meal> meals;
+	private Set<Meal> meals;
 	
 	@ManyToOne
 	@JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false)
 	private Patient patient;
 
 	public DailyMeal() {
-		super();
 	}
 	
-	public DailyMeal(Date day, List<Meal> meals) {
+	public DailyMeal(Date day, Set<Meal> meals) {
 		super();
 		this.day = day;
 		this.meals = meals;
 	}
 
-	public DailyMeal(Long id, Date day, List<Meal> meals) {
+	public DailyMeal(Long id, Date day, Set<Meal> meals) {
 		super();
 		this.id = id;
 		this.day = day;
@@ -68,18 +67,26 @@ public class DailyMeal implements Serializable {
 		this.day = day;
 	}
 
-	public List<Meal> getMeals() {
+	public Set<Meal> getMeals() {
 		return meals;
 	}
 
-	public void setMeals(List<Meal> meals) {
+	public void setMeals(Set<Meal> meals) {
 		this.meals = meals;
 	}
 	
 	public void addMeal(Meal meal) {
 		if(this.meals == null) {
-			this.meals = new ArrayList<Meal>();
+			this.meals = new HashSet<Meal>();
 		}
 		this.meals.add(meal);
+	}
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 }

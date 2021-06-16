@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,13 +15,13 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
 import com.sbnz.recovery.model.AppliedTherapy;
+import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.Injury;
+import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.model.enums.Gender;
-import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
-import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 import com.sbnz.recovery.model.enums.TherapyType;
 
@@ -70,7 +70,7 @@ public class RankTherapyTest {
 		
 		Date dateOfBirth = format.parse("1998/10/10");
 		Patient patient = new Patient("username", "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<>());
 		patient.setBmr(1484.0);
 		patient.setRegularDailyCaloryIntake(2040.5);
 		patient.setPhysicalActivityAfterInjury(PhysicalActivity.SEDENTARY);

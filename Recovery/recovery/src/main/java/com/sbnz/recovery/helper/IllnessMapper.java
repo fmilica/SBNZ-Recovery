@@ -1,7 +1,9 @@
 package com.sbnz.recovery.helper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.sbnz.recovery.dto.IllnessDTO;
 import com.sbnz.recovery.model.Illness;
@@ -33,6 +35,28 @@ public class IllnessMapper implements MapperInterface<Illness, IllnessDTO> {
 
 	@Override
 	public List<IllnessDTO> toDtoList(List<Illness> entityList) {
+		if (entityList == null) {
+			return null;
+		}
+		List<IllnessDTO> dtoList = new ArrayList<IllnessDTO>();
+		for (Illness illness : entityList) {
+			dtoList.add(toDto(illness));
+		}
+		return dtoList;
+	}
+	
+	public Set<Illness> toEntitySet(List<IllnessDTO> dtoList) {
+		if (dtoList == null) {
+			return null;
+		}
+		Set<Illness> illnessList = new HashSet<Illness>();
+		for (IllnessDTO illnessDto : dtoList) {
+			illnessList.add(toEntity(illnessDto));
+		}
+		return illnessList;
+	}
+	
+	public List<IllnessDTO> toDtoList(Set<Illness> entityList) {
 		if (entityList == null) {
 			return null;
 		}

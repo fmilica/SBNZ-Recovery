@@ -1,10 +1,9 @@
 package com.sbnz.recovery.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,24 +33,22 @@ public class IngredientAmount implements Serializable{
 //	@ManyToOne
 //	@JoinColumn(name = "meal_id", referencedColumnName = "id", nullable = false)
 	@ManyToMany(mappedBy = "ingredients")
-	private List<Meal> meals;
+	private Set<Meal> meals;
 
 	public IngredientAmount() {
 		super();
 	}
 	
 	public IngredientAmount(Ingredient ingredient, double amount) {
-		super();
 		this.ingredient = ingredient;
 		this.amount = amount;
 	}
 
 	public IngredientAmount(Long id, Ingredient ingredient, double amount) {
-		super();
 		this.id = id;
 		this.ingredient = ingredient;
 		this.amount = amount;
-		this.meals = new ArrayList<Meal>();
+		this.meals = new HashSet<Meal>();
 	}
 
 	public Long getId() {
@@ -78,11 +75,11 @@ public class IngredientAmount implements Serializable{
 		this.amount = amount;
 	}
 
-	public List<Meal> getMeal() {
+	public Set<Meal> getMeal() {
 		return meals;
 	}
 
-	public void setMeal(List<Meal> meal) {
+	public void setMeal(Set<Meal> meal) {
 		this.meals = meal;
 	}
 	

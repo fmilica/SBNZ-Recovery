@@ -2,9 +2,13 @@ package com.sbnz.recovery.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -13,7 +17,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.sbnz.recovery.dto.MealDTO;
 import com.sbnz.recovery.dto.PatientDTO;
+import com.sbnz.recovery.exceptions.NonExistingIdException;
 import com.sbnz.recovery.model.AppliedTherapy;
+import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.model.DailyMeal;
 import com.sbnz.recovery.model.Ingredient;
 import com.sbnz.recovery.model.IngredientAmount;
@@ -98,22 +104,36 @@ public class DoctorService {
 		return mealRepository.findAll(); 
 	}
 	
-	public List<Meal> findAllAvailableMeals(PatientDTO patientDto) throws Exception{
-		Patient patient = patientService.findOneByUsername(patientDto.getEmail());
+	public List<Meal> findAllAvailableMeals(String patientUsername) throws Exception{
+		Patient patient = patientService.findOneByUsername(patientUsername);
 		if(patient == null) {
 			throw new Exception();
 		}
-		List<Meal> meals = mealRepository.findAll();
+		QueryResults results = rulesSession.getQueryResults("getAllPatients");
+		List<Patient> patients1 = new ArrayList<>();
+		for (QueryResultsRow row : results) {
+			Patient patient1 = (Patient) row.get("$patient");
+			patients1.add(patient1);
+		}
+		QueryResults results1 = rulesSession.getQueryResults("getAllMeals");
+		List<Meal> meals1 = new ArrayList<>();
+		for (QueryResultsRow row : results1) {
+			Meal meal1 = (Meal) row.get("$meal");
+			meals1.add(meal1);
+		}
+		
 		List<Meal> patientMeals = new ArrayList<Meal>();
 		rulesSession.getAgenda().getAgendaGroup("rank-meal").setFocus();
-		rulesSession.setGlobal("chosenPatientUsername", patient.getUsername());
 		rulesSession.setGlobal("mealList", patientMeals);
-		for (Meal meal : meals) {
-			rulesSession.insert(meal);
-		}
-		rulesSession.insert(patient);
+		rulesSession.insert(new ChosenPatient(patient.getId()));
 		rulesSession.fireAllRules();
+		
 		return patientMeals;
+		
+//		rulesSession.getAgenda().getAgendaGroup("test").setFocus();
+//		rulesSession.insert(new ChosenPatient(patient.getId()));
+//		rulesSession.fireAllRules();
+//		return new ArrayList<Meal>();
 	}
 	
 	public List<AppliedTherapy> findAllAvailableTherapies(PatientDTO patientDto) throws Exception{
@@ -132,27 +152,29 @@ public class DoctorService {
 		return atRepository.findAllByInjuryPatientUsername(patient.getUsername());
 	}
 	
-	public Meal addMeal(Long patientId, MealDTO mealDto) {
+	public Meal addMeal(Long patientId, MealDTO mealDto) throws Exception {
 		Patient patient = patientService.findOneById(patientId);
 		if(patient == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient doesn't exist.");
+			throw new NonExistingIdException("Patient");
 		}
 		cepSession.insert(patient);
 		Meal meal = mealRepository.findOneById(mealDto.getId());
 		if(meal == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Meal doesn't exist.");
+			throw new NonExistingIdException("Meal");
 		}
 		MealEvent mealEvent = new MealEvent(patient.getUsername(), meal.getTotalCalories());
 		cepSession.insert(mealEvent);
 		int firedRules = cepSession.fireAllRules();
 		if(firedRules > 0) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Calories overflow.");
+			throw new Exception("Calories overflow.");
 		}else {
 			DailyMeal dailyMeal = dailyMealRepository.findOneByPatientId(patientId);
 			if(dailyMeal == null) {
-				List<Meal> meals = new ArrayList<Meal>();
+				Set<Meal> meals = new HashSet<Meal>();
 				meals.add(meal);
-				dailyMeal = dailyMealRepository.save(new DailyMeal(new Date(), meals));
+				dailyMeal = new DailyMeal(new Date(), meals);
+				dailyMeal.setPatient(patient);
+				dailyMeal = dailyMealRepository.save(dailyMeal);
 				patient.addDailyMeal(dailyMeal);
 				patientRepository.save(patient);
 			}

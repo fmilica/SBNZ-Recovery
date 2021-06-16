@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import org.apache.maven.shared.invoker.MavenInvocationException;
@@ -73,7 +73,7 @@ public class TemplateGenderIntervalTest {
 	public void templateRulesTest() throws ParseException {
 		Date dateOfBirth = format.parse("1998/10/10");
 		Patient patient = new Patient("username", "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<>());
 		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 1), null, "desc", fracture, InjuryBodyPart.LEG);
 		patient.addInjury(injury1);
 		kieSession.insert(patient);

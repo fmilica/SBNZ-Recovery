@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class DailyCalorieIntakeAfterInjury {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<>());
 	
 		patient.setBmr(1484.0);
 		patient.setRegularDailyCaloryIntake(2040.5);
@@ -57,7 +57,7 @@ public class DailyCalorieIntakeAfterInjury {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.EXTRA_ACTIVE, new ArrayList<>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.EXTRA_ACTIVE, new HashSet<>());
 	
 		patient.setBmr(1484.0);
 		patient.setRegularDailyCaloryIntake(2040.5);
@@ -74,7 +74,7 @@ public class DailyCalorieIntakeAfterInjury {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.VERY_ACTIVE, new ArrayList<>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.VERY_ACTIVE, new HashSet<>());
 	
 		patient.setBmr(1484.0);
 		patient.setRegularDailyCaloryIntake(2040.5);

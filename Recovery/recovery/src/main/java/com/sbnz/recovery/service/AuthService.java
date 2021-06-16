@@ -1,6 +1,6 @@
 package com.sbnz.recovery.service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class AuthService {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		user.setPassword(encoder.encode(user.getPassword()));
 		// postavljanje authorities
-		user.setAuthorities(new ArrayList<>(authorityService.findByName("ROLE_PATIENT")));
+		user.setAuthorities(new HashSet<>(authorityService.findByName("ROLE_PATIENT")));
 
 		rulesSession.setGlobal("currentPatient", user.getUsername());
 		rulesSession.getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();

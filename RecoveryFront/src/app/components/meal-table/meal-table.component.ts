@@ -1,7 +1,10 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { IngredientAmount } from 'src/app/model/ingredient-amount.model';
 import { Meal } from 'src/app/model/meal.model';
+import { MealService } from 'src/app/services/meal.service';
 
 @Component({
   selector: 'app-meal-table',
@@ -21,10 +24,15 @@ export class MealTableComponent implements OnInit {
   displayedIngredientColumns: string[] = ['ingredientName', 'amount'];
   @Input() dataSource: Meal[] = [];
   @Input() assignPatientMeal: boolean = false;
+  @Input() patientId: number = 0;
   expandedElement: any | null;
   chosenIngredients: IngredientAmount[] = [];
 
-  constructor() { }
+  constructor(
+    private mealService: MealService,
+    private toastr: ToastrService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     if (this.assignPatientMeal) {
@@ -40,5 +48,17 @@ export class MealTableComponent implements OnInit {
         this.chosenIngredients = element.ingredients;
       }
     })
+  }
+
+  addMeal(meal: Meal) {
+    
+    this.mealService.addMeal(meal, this.patientId).subscribe(
+      response => {
+        this.toastr.success('Successfully added meal!');
+        this.router.navigate(['homepage/view-patients']);
+      },
+      error => {
+        this.toastr.error(error.error.message)
+      });
   }
 }

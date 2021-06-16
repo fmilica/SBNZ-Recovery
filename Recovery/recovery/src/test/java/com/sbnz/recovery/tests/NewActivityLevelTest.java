@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -16,13 +15,13 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
+import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.Injury;
 import com.sbnz.recovery.model.InjuryRequirement;
+import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.enums.Gender;
-import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
-import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 
 public class NewActivityLevelTest {
@@ -91,7 +90,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("povreda bubrega", LocalDate.now(), null, "opis", internal, InjuryBodyPart.KIDNEY);
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
 		
 		patient.addInjury(injury);
 		
@@ -109,7 +108,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("povreda jetre", LocalDate.now(), null, "opis", internal, InjuryBodyPart.LIVER);
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
 		
 		patient.addInjury(injury);
 		
@@ -127,7 +126,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("istegnuce noge", LocalDate.now(), null, "opis", muscle, InjuryBodyPart.ARM);
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
 		
 		patient.addInjury(injury);
 		
@@ -145,7 +144,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("istegnuce noge", LocalDate.now(), null, "opis", muscle, InjuryBodyPart.ARM);
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
 		
 		patient.addInjury(injury);
 		
@@ -163,7 +162,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("istegnuce noge", LocalDate.now(), null, "opis", muscle, InjuryBodyPart.ARM);
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
 		
 		patient.addInjury(injury);
 		
@@ -181,7 +180,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("prelom noge", LocalDate.now(), null, "opis", fracture, InjuryBodyPart.LEG);
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
 		
 		patient.addInjury(injury);
 		
@@ -199,7 +198,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("prelom ruke", LocalDate.now(), null, "opis", fracture, InjuryBodyPart.ARM);
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
 		
 		patient.addInjury(injury);
 		
@@ -217,7 +216,7 @@ public class NewActivityLevelTest {
 		Injury injury = new Injury("prelom ruke", LocalDate.now(), null, "opis", fracture, InjuryBodyPart.ARM);
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
 		
 		patient.addInjury(injury);
 		
@@ -236,7 +235,7 @@ public class NewActivityLevelTest {
 		Injury liverInjury = new Injury("povreda jetre", LocalDate.now(), null, "opis", internal, InjuryBodyPart.LIVER);
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<Illness>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
 		
 		patient.addInjury(injury);
 		patient.addInjury(liverInjury);
@@ -253,7 +252,7 @@ public class NewActivityLevelTest {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.MALE, dateOfBirth, 172, 68, PhysicalActivity.SEDENTARY, new ArrayList<>());
+				Gender.MALE, dateOfBirth, 172, 68, PhysicalActivity.SEDENTARY, new HashSet<>());
 	
 		kieSession.insert(patient);
 		

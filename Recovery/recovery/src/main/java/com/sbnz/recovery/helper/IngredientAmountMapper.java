@@ -1,7 +1,9 @@
 package com.sbnz.recovery.helper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.sbnz.recovery.dto.IngredientAmountDTO;
 import com.sbnz.recovery.model.IngredientAmount;
@@ -36,6 +38,22 @@ public class IngredientAmountMapper implements MapperInterface<IngredientAmount,
 			iaDTOs.add(toDto(ingredientAmount));
 		}
 		return iaDTOs;
+	}
+	
+	public List<IngredientAmountDTO> toDtoList(Set<IngredientAmount> entityList) {
+		List<IngredientAmountDTO> iaDTOs = new ArrayList<IngredientAmountDTO>();
+		for (IngredientAmount ingredientAmount : entityList) {
+			iaDTOs.add(toDto(ingredientAmount));
+		}
+		return iaDTOs;
+	}
+	
+	public Set<IngredientAmount> toEntitySet(List<IngredientAmountDTO> dtoList) {
+		Set<IngredientAmount> ias = new HashSet<IngredientAmount>();
+		for (IngredientAmountDTO iaDto : dtoList) {
+			ias.add(toEntity(iaDto));
+		}
+		return ias;
 	}
 
 }

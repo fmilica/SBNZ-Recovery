@@ -2,8 +2,8 @@ package com.sbnz.recovery.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,9 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
 
@@ -50,9 +47,8 @@ public class Injury implements Serializable{
 	@Column(name="injury_body_parts")
 	private InjuryBodyPart injuryBodyPart;
 	
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "injury")
-	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<AppliedTherapy> appliedTherapies;
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "injury")
+	private Set<AppliedTherapy> appliedTherapies;
 	
 	@ManyToOne
 	@JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false)
@@ -62,7 +58,6 @@ public class Injury implements Serializable{
 	private boolean proccesed;
 	
 	public Injury() {
-		super();
 	}
 
 	public Injury(String name, LocalDate startDate, LocalDate endDate, String description, InjuryType injuryType,
@@ -73,7 +68,7 @@ public class Injury implements Serializable{
 		this.description = description;
 		this.injuryType = injuryType;
 		this.injuryBodyPart = injuryBodyPart;
-		this.appliedTherapies = new ArrayList<AppliedTherapy>();
+		this.appliedTherapies = new HashSet<AppliedTherapy>();
 	}
 	
 	public Injury(Long id, String name, LocalDate startDate, LocalDate endDate, String description,
@@ -83,7 +78,7 @@ public class Injury implements Serializable{
 		this.endDate = endDate;
 		this.description = description;
 		this.injuryBodyPart = injuryBodyPart;
-		this.appliedTherapies = new ArrayList<AppliedTherapy>();
+		this.appliedTherapies = new HashSet<AppliedTherapy>();
 	}
 	
 	public Injury(Long id, String name, LocalDate startDate, LocalDate endDate, String description, InjuryType injuryType,
@@ -95,7 +90,7 @@ public class Injury implements Serializable{
 		this.description = description;
 		this.injuryType = injuryType;
 		this.injuryBodyPart = injuryBodyPart;
-		this.appliedTherapies = new ArrayList<AppliedTherapy>();
+		this.appliedTherapies = new HashSet<AppliedTherapy>();
 	}
 	
 	public Injury(Long id, String name, LocalDate startDate, LocalDate endDate, String description, InjuryType injuryType,
@@ -170,11 +165,11 @@ public class Injury implements Serializable{
 		this.injuryBodyPart = injuryBodyPart;
 	}
 	
-	public List<AppliedTherapy> getAppliedTherapies() {
+	public Set<AppliedTherapy> getAppliedTherapies() {
 		return appliedTherapies;
 	}
 
-	public void setAppliedTherapies(List<AppliedTherapy> appliedTherapies) {
+	public void setAppliedTherapies(Set<AppliedTherapy> appliedTherapies) {
 		this.appliedTherapies = appliedTherapies;
 	}
 
@@ -192,47 +187,6 @@ public class Injury implements Serializable{
 
 	public void setProccesed(boolean proccesed) {
 		this.proccesed = proccesed;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Injury other = (Injury) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (endDate == null) {
-			if (other.endDate != null)
-				return false;
-		} else if (!endDate.equals(other.endDate))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (injuryBodyPart != other.injuryBodyPart)
-			return false;
-		if (injuryType != other.injuryType)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (startDate == null) {
-			if (other.startDate != null)
-				return false;
-		} else if (!startDate.equals(other.startDate))
-			return false;
-		return true;
 	}
 
 	@Override

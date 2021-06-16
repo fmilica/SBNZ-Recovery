@@ -2,6 +2,7 @@ package com.sbnz.recovery.helper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.sbnz.recovery.dto.TherapyDTO;
@@ -38,14 +39,14 @@ public class ViewTherapyMapper implements MapperInterface<Therapy, ViewTherapyDT
 		return therapyDTOs;
 	}
 
-	private List<String> toNameListIllness(List<Illness> illnesses) {
+	private List<String> toNameListIllness(Set<Illness> illnesses) {
 		List<String> namesList = illnesses.stream()
                 .map(Illness::getName)
                 .collect(Collectors.toList());
 		return namesList;
 	}
 	
-	private List<String> toNameListInjuryType(List<InjuryType> injuryTypes) {
+	private List<String> toNameListInjuryType(Set<InjuryType> injuryTypes) {
 		List<String> namesList = injuryTypes.stream()
                 .map(InjuryType::getName)
                 .collect(Collectors.toList());

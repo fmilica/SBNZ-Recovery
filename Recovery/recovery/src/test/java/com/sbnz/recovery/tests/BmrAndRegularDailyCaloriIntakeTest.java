@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class BmrAndRegularDailyCaloriIntakeTest {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
-				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new ArrayList<>());
+				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<>());
 	
 		kieSession.insert(patient);
 		
@@ -55,7 +55,7 @@ public class BmrAndRegularDailyCaloriIntakeTest {
 		Date dateOfBirth = format.parse("1998/10/10");
 		
 		Patient patient = new Patient("username", "password", "name", "surname",
-				Gender.MALE, dateOfBirth, 172, 68, PhysicalActivity.SEDENTARY, new ArrayList<>());
+				Gender.MALE, dateOfBirth, 172, 68, PhysicalActivity.SEDENTARY, new HashSet<>());
 	
 		kieSession.insert(patient);
 		

@@ -1,20 +1,22 @@
 package com.sbnz.recovery.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
@@ -37,21 +39,15 @@ public class Patient extends User {
 	@Column(name="physical_activity_before_injury")
 	private PhysicalActivity physicalActivityBeforeInjury;
 	
-//	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "patient")
-//	@Transient
-//	@ManyToMany(mappedBy = "patients")
-	@ManyToMany
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 	  name = "patient_illness", 
 	  joinColumns = @JoinColumn(name = "patient_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "illness_id"))
-	private List<Illness> anamnesis;
+	private Set<Illness> anamnesis;
 	
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "patient")
-	@LazyCollection(LazyCollectionOption.FALSE)
-//	@Transient
-	private List<Injury> medicalHistory;
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "patient", fetch = FetchType.EAGER)
+	private Set<Injury> medicalHistory;
 	
 	@Column(name="bmr")
 	private double bmr;
@@ -65,9 +61,10 @@ public class Patient extends User {
 	@Column(name="daily_calory_intake_after_injury")
 	private double dailyCaloryIntakeAfterInjury;
 	
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "patient")
-	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<DailyMeal> dailyMeals;
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "patient", fetch = FetchType.EAGER)
+	//@LazyCollection(LazyCollectionOption.FALSE)
+	//@Fetch(FetchMode.JOIN)
+	private Set<DailyMeal> dailyMeals;
 	
 	public Patient() {
 		super();
@@ -75,7 +72,7 @@ public class Patient extends User {
 
 	// kreiranje pacijenta
 	public Patient(String username, String password, String name, String surname, Gender gender, Date dateOfBirth, double height,
-			double weight, PhysicalActivity physicalActivityBeforeInjury, List<Illness> anamnesis) {
+			double weight, PhysicalActivity physicalActivityBeforeInjury, Set<Illness> anamnesis) {
 		super(username, password, name, surname);
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
@@ -83,8 +80,8 @@ public class Patient extends User {
 		this.weight = weight;
 		this.physicalActivityBeforeInjury = physicalActivityBeforeInjury;
 		this.anamnesis = anamnesis;
-		this.medicalHistory = new ArrayList<Injury>();
-		this.dailyMeals = new ArrayList<DailyMeal>();
+		this.medicalHistory = new HashSet<Injury>();
+		this.dailyMeals = new HashSet<DailyMeal>();
 
 		//this.therapies = new ArrayList<AppliedTherapy>();
 
@@ -93,7 +90,7 @@ public class Patient extends User {
 	public Patient(String username, String password, String name, String surname, Gender gender, Date dateOfBirth,
 			double height, double weight, PhysicalActivity physicalActivityBeforeInjury, double bmr,
 			double regularDailyCaloryIntake, PhysicalActivity physicalActivityAfterInjury,
-			double dailyCaloryIntakeAfterInjury, List<Injury> medicalHistory) {
+			double dailyCaloryIntakeAfterInjury, Set<Injury> medicalHistory) {
 		super(username, password, name, surname);
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
@@ -105,7 +102,7 @@ public class Patient extends User {
 		this.physicalActivityAfterInjury = physicalActivityAfterInjury;
 		this.dailyCaloryIntakeAfterInjury = dailyCaloryIntakeAfterInjury;
 		this.medicalHistory = medicalHistory;
-		this.dailyMeals = new ArrayList<DailyMeal>();
+		this.dailyMeals = new HashSet<DailyMeal>();
 	}
 
 	public void addIllness(Illness illness) {
@@ -113,12 +110,25 @@ public class Patient extends User {
 	}
 	
 	public void addTherapyForInjury(AppliedTherapy appliedTherapy, Injury injury) {
-		appliedTherapy.setInjury(injury);
-		this.medicalHistory.get(this.medicalHistory.indexOf(injury)).addAppliedTherapy(appliedTherapy);
+		for (Iterator<Injury> it = this.medicalHistory.iterator(); it.hasNext(); ) {
+			Injury in = it.next();
+	        if (in.equals(injury)) {
+	        	in.addAppliedTherapy(appliedTherapy);
+	        	break;
+	        }
+	    }
+		//this.medicalHistory.get(this.medicalHistory.indexOf(injury)).addAppliedTherapy(appliedTherapy);
 	}
 	
 	public void finalizeInjury(Injury injury, LocalDate endDate) {
-		this.medicalHistory.get(this.medicalHistory.indexOf(injury)).setEndDate(endDate);
+		for (Iterator<Injury> it = this.medicalHistory.iterator(); it.hasNext(); ) {
+			Injury in = it.next();
+	        if (in.equals(injury)) {
+	        	in.setEndDate(endDate);
+	        	break;
+	        }
+	    }
+		//this.medicalHistory.get(this.medicalHistory.indexOf(injury)).setEndDate(endDate);
 		this.physicalActivityAfterInjury = null;
 	}
 	
@@ -127,11 +137,11 @@ public class Patient extends User {
 		this.physicalActivityAfterInjury = null;
 	}
 
-	public List<DailyMeal> getDailyMeals() {
+	public Set<DailyMeal> getDailyMeals() {
 		return dailyMeals;
 	}
 
-	public void setDailyMeals(List<DailyMeal> dailyMeals) {
+	public void setDailyMeals(Set<DailyMeal> dailyMeals) {
 		this.dailyMeals = dailyMeals;
 	}
 
@@ -167,11 +177,11 @@ public class Patient extends User {
 		this.weight = weight;
 	}
 
-	public List<Injury> getMedicalHistory() {
+	public Set<Injury> getMedicalHistory() {
 		return medicalHistory;
 	}
 
-	public void setMedicalHistory(List<Injury> medicalHistory) {
+	public void setMedicalHistory(Set<Injury> medicalHistory) {
 		this.medicalHistory = medicalHistory;
 	}
 
@@ -183,11 +193,11 @@ public class Patient extends User {
 		this.physicalActivityBeforeInjury = physicalActivityBeforeInjury;
 	}
 	
-	public List<Illness> getAnamnesis() {
+	public Set<Illness> getAnamnesis() {
 		return anamnesis;
 	}
 	
-	public void setAnamnesis(List<Illness> anamnesis) {
+	public void setAnamnesis(Set<Illness> anamnesis) {
 		this.anamnesis = anamnesis;
 	}
 
@@ -229,7 +239,7 @@ public class Patient extends User {
 	
 	public void addDailyMeal(DailyMeal dailyMeal) {
 		if(this.dailyMeals == null) {
-			this.dailyMeals = new ArrayList<DailyMeal>();
+			this.dailyMeals = new HashSet<DailyMeal>();
 		}
 		this.dailyMeals.add(dailyMeal);
 	}

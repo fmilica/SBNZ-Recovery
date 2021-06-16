@@ -3,8 +3,8 @@ package com.sbnz.recovery.tests;
 import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -84,7 +84,7 @@ public class MealTest {
 		Ingredient ing1 = new Ingredient(100.00, 50.00, 30.00, 5.00);
 		Ingredient ing2 = new Ingredient(90.00, 200.00, 30.00, 5.00);
 		Ingredient ing3 = new Ingredient(20.00, 200.00, 70.00, 5.00);
-		List<IngredientAmount> ingredients = new ArrayList<IngredientAmount>();
+		Set<IngredientAmount> ingredients = new HashSet<IngredientAmount>();
 		ingredients.add(new IngredientAmount(ing1, 100.00));
 		ingredients.add(new IngredientAmount(ing2, 100.00));
 		ingredients.add(new IngredientAmount(ing3, 100.00));

@@ -1,8 +1,7 @@
 package com.sbnz.recovery.model;
 
-
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -46,14 +45,13 @@ public class User implements UserDetails {
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
-	private List<Authority> authorities;
+	private Set<Authority> authorities;
 	
 	public User() {
 		super();
 	}
 
 	public User(String username, String password, String name, String surname) {
-		super();
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -99,29 +97,13 @@ public class User implements UserDetails {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	
-	@Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        return true;
-    }
-
-	@Override
-	public String toString() {
-		return "User [name=" + name + ", surname=" + surname + "]";
-	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.authorities;
 	}
 	
-	public void setAuthorities(List<Authority> authorities) {
+	public void setAuthorities(Set<Authority> authorities) {
 		this.authorities = authorities;
 	}
 
@@ -145,4 +127,9 @@ public class User implements UserDetails {
 		return true;
 	}
 
+
+	@Override
+	public String toString() {
+		return "User [name=" + name + ", surname=" + surname + "]";
+	}
 }

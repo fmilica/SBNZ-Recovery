@@ -37,6 +37,8 @@ insert into user_authority (user_id, authority_id) values (9, 2);
 
 insert into meal(name, meal_description, total_calories)
 values ('Apple soup', 'Low cooking', 470.00);
+insert into meal(name, meal_description, total_calories)
+values ('Pecenje', 'Pork based', 2000.00);
 
 insert into ingredient (name, calories, carbohydrates, sugars, fat, fibers, proteins, water_percentage)
 values ('ingredient1', 100.00, 50.00, 30.00, 5.00, 20.00, 20.00, 20.00);
@@ -179,11 +181,15 @@ insert into ingredient_amount(ingredient_id, amount)
 values (1, 200.00);
 insert into ingredient_amount(ingredient_id, amount)
 values (2, 300.00);
+insert into ingredient_amount(ingredient_id, amount)
+values (3, 10000.00);
 
 insert into meal_ingredient(meal_id, ingredient_amount_id)
 values (1, 1);
 insert into meal_ingredient(meal_id, ingredient_amount_id)
 values (1, 2);
+insert into meal_ingredient(meal_id, ingredient_amount_id)
+values (2, 3);
 
 insert into illness_ingredient(ingredient_id, illness_id)
 values (1, 1);
@@ -199,3 +205,8 @@ insert into illness_ingredient(ingredient_id, illness_id)
 values (3, 2);
 insert into illness_ingredient(ingredient_id, illness_id)
 values (3, 3);
+
+insert into patient_illness(patient_id, illness_id)
+values (5, 3);
+insert into patient_illness(patient_id, illness_id)
+values (5, 2);

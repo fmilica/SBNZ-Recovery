@@ -1,21 +1,17 @@
 package com.sbnz.recovery.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import com.sbnz.recovery.model.enums.TherapyType;
 
@@ -45,21 +41,19 @@ public class Therapy implements Serializable {
 	
 	//@OneToMany(cascade = {CascadeType.DETACH}, fetch = FetchType.LAZY, mappedBy = "therapy")
 	@ManyToMany
-	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(
 	  name = "therapy_illness", 
 	  joinColumns = @JoinColumn(name = "therapy_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "illness_id"))
-	private List<Illness> applicableIllness;
+	private Set<Illness> applicableIllness;
 	
 	//@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "therapy")
 	@ManyToMany
-	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(
 	  name = "therapy_injury_type", 
 	  joinColumns = @JoinColumn(name = "therapy_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "injury_type_id"))
-	private List<InjuryType> applicableInjury;
+	private Set<InjuryType> applicableInjury;
 	
 	public Therapy() {
 	}
@@ -75,8 +69,8 @@ public class Therapy implements Serializable {
 		this.maximumMonthlyApplication = maximumMonthlyApplication;
 		this.temperature = temperature;
 		this.intensity = intensity;
-		this.applicableIllness = new ArrayList<Illness>();
-		this.applicableInjury = new ArrayList<InjuryType>();
+		this.applicableIllness = new HashSet<Illness>();
+		this.applicableInjury = new HashSet<InjuryType>();
 	}
 
 	public Therapy(Long id, String name, TherapyType therapyType, int maximumMonthlyApplication,
@@ -138,19 +132,19 @@ public class Therapy implements Serializable {
 		this.maximumMonthlyApplication = maximumMonthlyApplication;
 	}
 
-	public List<Illness> getApplicableIllness() {
+	public Set<Illness> getApplicableIllness() {
 		return applicableIllness;
 	}
 
-	public void setApplicableIllness(List<Illness> applicableIllness) {
+	public void setApplicableIllness(Set<Illness> applicableIllness) {
 		this.applicableIllness = applicableIllness;
 	}
 
-	public List<InjuryType> getApplicableInjury() {
+	public Set<InjuryType> getApplicableInjury() {
 		return applicableInjury;
 	}
 
-	public void setApplicableInjury(List<InjuryType> applicableInjury) {
+	public void setApplicableInjury(Set<InjuryType> applicableInjury) {
 		this.applicableInjury = applicableInjury;
 	}
 
@@ -160,34 +154,6 @@ public class Therapy implements Serializable {
 
 	public void setIntensity(int intensity) {
 		this.intensity = intensity;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Therapy other = (Therapy) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (maximumMonthlyApplication != other.maximumMonthlyApplication)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (Double.doubleToLongBits(temperature) != Double.doubleToLongBits(other.temperature))
-			return false;
-		if (therapyType != other.therapyType)
-			return false;
-		return true;
 	}
 
 	@Override

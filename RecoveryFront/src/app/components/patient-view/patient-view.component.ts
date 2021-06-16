@@ -36,13 +36,13 @@ export class PatientViewComponent implements OnInit {
         },
         error => {
         });
-    this.mealService
-      .getMeals().subscribe(
-        response => {
-          this.mealDataSource = response;
-        },
-        error => {
-        });
+    // this.mealService
+    //   .getMeals().subscribe(
+    //     response => {
+    //       this.mealDataSource = response;
+    //     },
+    //     error => {
+    //     });
   }
 
   getPatientName(): string {
@@ -66,11 +66,12 @@ export class PatientViewComponent implements OnInit {
   }
 
   assignMeals(): void {
+    this.mealDataSource = []
     console.log(this.patient);
     this.applyMeals = true;
     // dobavi sve obroke pogodne za korisnika
     this.mealService
-      .getMeals().subscribe(
+      .getRankMeals(this.patient.email).subscribe(
         response => {
           this.mealDataSource = response;
         },

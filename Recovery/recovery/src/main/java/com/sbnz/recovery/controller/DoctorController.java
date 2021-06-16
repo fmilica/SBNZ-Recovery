@@ -157,15 +157,15 @@ public class DoctorController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
-	@GetMapping("/patient-rank-meals")
-	public ResponseEntity<List<MealDTO>> getPatientMeals(@RequestBody PatientDTO patientDto) {
+	@GetMapping("/patient-rank-meals/{patient-username}")
+	public ResponseEntity<List<MealDTO>> getPatientMeals(@PathVariable("patient-username") String patientUsername) {
 
-		log.debug("List available meals for patient : " + patientDto.getEmail());
+		log.debug("List available meals for patient : " + patientUsername);
 		
 		List<Meal> availableMeals = new ArrayList<Meal>();
 		
 		try {
-            availableMeals = doctorService.findAllAvailableMeals(patientDto);
+            availableMeals = doctorService.findAllAvailableMeals(patientUsername);
         }catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

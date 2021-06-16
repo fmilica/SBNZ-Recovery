@@ -1,11 +1,12 @@
 package com.sbnz.recovery.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,15 +27,13 @@ public class Meal implements Serializable{
 	@Column(name="name")
 	private String name;
 	
-//	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "meal")
-//	@Transient
-//	private Map<Ingredient, Double> ingredients;
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 	  name = "meal_ingredient", 
 	  joinColumns = @JoinColumn(name = "meal_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "ingredient_amount_id"))
-	private List<IngredientAmount> ingredients;
+	//@Fetch(FetchMode.JOIN)
+	private Set<IngredientAmount> ingredients;
 	
 	@Column(name="meal_description")
 	private String mealDescription;
@@ -51,19 +50,16 @@ public class Meal implements Serializable{
 	private DailyMeal dailyMeal;
 	
 	public Meal() {
-		super();
-		this.ingredients = new ArrayList<IngredientAmount>();
+		this.ingredients = new HashSet<IngredientAmount>();
 	}
 	
-	public Meal(String name, List<IngredientAmount> ingredients, String mealDescription) {
-		super();
+	public Meal(String name, Set<IngredientAmount> ingredients, String mealDescription) {
 		this.name = name;
 		this.ingredients = ingredients;
 		this.mealDescription = mealDescription;
 	}
 
-	public Meal(Long id, String name, List<IngredientAmount> nutrition, String mealDescription, double totalCalories) {
-		super();
+	public Meal(Long id, String name, Set<IngredientAmount> nutrition, String mealDescription, double totalCalories) {
 		this.id = id;
 		this.name = name;
 		this.ingredients = nutrition;
@@ -88,11 +84,11 @@ public class Meal implements Serializable{
 		this.name = name;
 	}
 
-	public List<IngredientAmount> getIngredients() {
+	public Set<IngredientAmount> getIngredients() {
 		return ingredients;
 	}
 
-	public void setIngredients(List<IngredientAmount> ingredients) {
+	public void setIngredients(Set<IngredientAmount> ingredients) {
 		this.ingredients = ingredients;
 	}
 
@@ -114,50 +110,10 @@ public class Meal implements Serializable{
 
 	public void addIngredient(Ingredient ingredient, double quantity) {
 		if (this.ingredients == null) {
-			this.ingredients = new ArrayList<IngredientAmount>();
+			this.ingredients = new HashSet<IngredientAmount>();
 		}
 		//kreiranje ingredientamount u bazi pa dodavanje u listu 
 		this.ingredients.add(new IngredientAmount(ingredient, quantity));
-	}
-
-//	public Patient getPatient() {
-//		return patient;
-//	}
-//
-//	public void setPatient(Patient patient) {
-//		this.patient = patient;
-//	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Meal other = (Meal) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (mealDescription == null) {
-			if (other.mealDescription != null)
-				return false;
-		} else if (!mealDescription.equals(other.mealDescription))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (ingredients == null) {
-			if (other.ingredients != null)
-				return false;
-		} else if (!ingredients.equals(other.ingredients))
-			return false;
-		return true;
 	}
 
 	@Override

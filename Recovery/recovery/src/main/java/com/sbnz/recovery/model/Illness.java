@@ -1,16 +1,14 @@
 package com.sbnz.recovery.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -27,7 +25,7 @@ public class Illness implements Serializable {
 	
 //	@JoinColumn(name = "ingredient_id", referencedColumnName = "id", nullable = true)
 	@ManyToMany(mappedBy = "illnesses")
-	private List<Ingredient> ingredients;
+	private Set<Ingredient> ingredients;
 	
 //	@ManyToOne
 //	@JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = true)
@@ -37,36 +35,33 @@ public class Illness implements Serializable {
 //	  joinColumns = @JoinColumn(name = "illness_id"), 
 //	  inverseJoinColumns = @JoinColumn(name = "patient_id"))
 	@ManyToMany(mappedBy = "anamnesis")
-	private List<Patient> patients;
+	private Set<Patient> patients;
 	
 	//@ManyToOne
 	//@JoinColumn(name = "therapy_id", referencedColumnName = "id", nullable = true)
 	@ManyToMany(mappedBy = "applicableIllness")
-	private List<Therapy> therapies;
+	private Set<Therapy> therapies;
 
 	public Illness() {
-		super();
-		this.patients = new ArrayList<Patient>();
-		this.ingredients = new ArrayList<Ingredient>();
-		this.therapies = new ArrayList<Therapy>();
+		this.patients = new HashSet<Patient>();
+		this.ingredients = new HashSet<Ingredient>();
+		this.therapies = new HashSet<Therapy>();
 	}
 	
 	public Illness(Long id, String name) {
-		super();
 		this.id = id;
 		this.name = name;
-		this.patients = new ArrayList<Patient>();
-		this.ingredients = new ArrayList<Ingredient>();
-		this.therapies = new ArrayList<Therapy>();
+		this.patients = new HashSet<Patient>();
+		this.ingredients = new HashSet<Ingredient>();
+		this.therapies = new HashSet<Therapy>();
 	}
 
-	public Illness(Long id, String name, List<Ingredient> ingredients, List<Therapy> therapies) {
-		super();
+	public Illness(Long id, String name, Set<Ingredient> ingredients, Set<Therapy> therapies) {
 		this.id = id;
 		this.name = name;
 		this.ingredients = ingredients;
 		this.therapies = therapies;
-		this.patients = new ArrayList<Patient>();
+		this.patients = new HashSet<Patient>();
 	}
 
 	public Long getId() {
@@ -85,11 +80,11 @@ public class Illness implements Serializable {
 		this.name = name;
 	}
 
-	public List<Patient> getPatient() {
+	public Set<Patient> getPatient() {
 		return patients;
 	}
 
-	public void setPatient(List<Patient> patient) {
+	public void setPatient(Set<Patient> patient) {
 		this.patients = patient;
 	}
 	
@@ -97,27 +92,27 @@ public class Illness implements Serializable {
 		this.patients.add(patient);
 	}
 
-	public List<Therapy> getTherapies() {
+	public Set<Therapy> getTherapies() {
 		return therapies;
 	}
 
-	public void setTherapies(List<Therapy> therapies) {
+	public void setTherapies(Set<Therapy> therapies) {
 		this.therapies = therapies;
 	}
 
-	public List<Ingredient> getIngredients() {
+	public Set<Ingredient> getIngredients() {
 		return ingredients;
 	}
 
-	public void setIngredients(List<Ingredient> ingredients) {
+	public void setIngredients(Set<Ingredient> ingredients) {
 		this.ingredients = ingredients;
 	}
 
-	public List<Patient> getPatients() {
+	public Set<Patient> getPatients() {
 		return patients;
 	}
 
-	public void setPatients(List<Patient> patients) {
+	public void setPatients(Set<Patient> patients) {
 		this.patients = patients;
 	}
 }

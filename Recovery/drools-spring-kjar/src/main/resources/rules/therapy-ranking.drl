@@ -34,7 +34,7 @@ rule "Rank therapy for patient"
 		)
     	$matchedIllnessCount : Number(intValue >= $illnesses.size() / 2) from accumulate(
     													Illness($illness : this) from $illnesses
-    													and Illness(this == $illness) from $til,
+    													and Illness(id == $illness.id) from $til,
     													count($illness)
     													)
     	accumulate(
@@ -51,6 +51,14 @@ rule "Rank therapy for patient"
     	modify($p) { addTherapyForInjury(new AppliedTherapy(LocalDate.now(), $t), (Injury)$matchedInjuries.get(0)); }
 end
 
+rule "Resolve unresolved therapies"
+	agenda-group "rank-therapy"
+	salience -1
+	when
+		$cp: ChosenPatient(resolved == false)
+	then
+		modify ($cp) { setResolved(true); }
+end
 
 rule "Find all applicable therapies for patient"
 	agenda-group "find-therapy"

@@ -19,4 +19,8 @@ export class TherapyService {
     createTherapy(therapy: Therapy): Observable<Therapy> {
         return this.http.post<Therapy>(environment.apiEndpoint + 'therapy', therapy);
     }
+
+    assignTherapy(patientId: number): Observable<void> {
+        return this.http.get<void>(environment.apiEndpoint + 'therapy/assign/' + patientId);
+    }
 }

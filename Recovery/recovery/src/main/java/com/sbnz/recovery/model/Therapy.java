@@ -6,12 +6,16 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.sbnz.recovery.model.enums.TherapyType;
 
@@ -41,6 +45,7 @@ public class Therapy implements Serializable {
 	
 	//@OneToMany(cascade = {CascadeType.DETACH}, fetch = FetchType.LAZY, mappedBy = "therapy")
 	@ManyToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(
 	  name = "therapy_illness", 
 	  joinColumns = @JoinColumn(name = "therapy_id"), 
@@ -49,6 +54,7 @@ public class Therapy implements Serializable {
 	
 	//@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "therapy")
 	@ManyToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(
 	  name = "therapy_injury_type", 
 	  joinColumns = @JoinColumn(name = "therapy_id"), 

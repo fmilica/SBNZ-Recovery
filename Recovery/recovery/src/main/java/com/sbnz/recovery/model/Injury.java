@@ -17,6 +17,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
 
 @Entity
@@ -47,7 +50,8 @@ public class Injury implements Serializable{
 	@Column(name="injury_body_parts")
 	private InjuryBodyPart injuryBodyPart;
 	
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "injury")
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "injury")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<AppliedTherapy> appliedTherapies;
 	
 	@ManyToOne

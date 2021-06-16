@@ -1,6 +1,7 @@
 package rules;
 
 import java.time.LocalDate;
+import java.lang.Math;
 
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.AppliedTherapy;
@@ -24,7 +25,9 @@ rule "Rank therapy for patient"
 	salience ($matchedIllnessCount + $matchedInjuries.size())
     when
     	$p: Patient(username == chosenPatientUsername, $illnesses: anamnesis)
-    	$at: ApplicableTherapy(patientUsername == chosenPatientUsername, 
+    	//$p: Patient(username.equals(chosenPatientUsername), $illnesses: anamnesis)
+    	//$p: Patient($illnesses: anamnesis)
+    	$at: ApplicableTherapy(patientUsername == $p.username, 
     		$t: therapy, $therapyName : therapy.name, 
     		$til: therapy.applicableIllness, $tin: therapy.applicableInjury)
     	$activeInjuries : List() from collect(
@@ -38,13 +41,15 @@ rule "Rank therapy for patient"
     													)
     	accumulate(
     		Injury($injury: this, $injuryType : injuryType) from $activeInjuries
-			and InjuryType(this == $injuryType) from $tin,
+			and InjuryType(id == $injuryType.id) from $tin,
 			$matchedInjuries : collectList($injury)
     	)
-    	eval($matchedInjuries.size() >= $activeInjuries.size() / 2)
+    	eval($matchedInjuries.size() >= Math.ceil($activeInjuries.size() / 2.0))
     	//not(DeterminedTherapy())
     then
-    	System.out.println("Assigned therapy " + $therapyName + " to patient " + chosenPatientUsername);
+    	System.out.println("Assigned therapy " + $therapyName + " to patient " + $p.getUsername());
+    	System.out.println($matchedInjuries);
+    	System.out.println($tin);
     	modify($p) { addTherapyForInjury(new AppliedTherapy(LocalDate.now(), $t), (Injury)$matchedInjuries.get(0)); }
 		//insert(new DeterminedTherapy());
 end
@@ -55,6 +60,8 @@ rule "Find all applicable therapies for patient"
 	salience 1
 	when
 		$p: Patient(username == chosenPatientUsername, $injuries : medicalHistory)
+		//$p: Patient($injuries : medicalHistory)
+		//$p: Patient(username.equals(chosenPatientUsername), $injuries : medicalHistory)
 		$t: Therapy($maximumApplication : maximumMonthlyApplication, $name : name)
 		Number(intValue < $maximumApplication) from accumulate(
 			Injury($appliedTherapies : appliedTherapies) from $injuries and
@@ -67,7 +74,8 @@ rule "Find all applicable therapies for patient"
 			sum($applicationPerInjury)
 		)
 	then
-		System.out.println("Therapy " + $name + " is applicable for patient with username: " + chosenPatientUsername);
+		System.out.println(chosenPatientUsername + " " + $p.getUsername());
+		System.out.println("Therapy " + $name + " is applicable for patient with username: " + $p.getUsername());
 		insert(new ApplicableTherapy(chosenPatientUsername, $t));
 end;
 /*

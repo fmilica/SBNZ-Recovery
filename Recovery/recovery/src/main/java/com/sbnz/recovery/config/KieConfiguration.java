@@ -13,9 +13,13 @@ import org.springframework.context.annotation.Configuration;
 import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.InjuryRequirement;
 import com.sbnz.recovery.model.InjuryType;
+import com.sbnz.recovery.model.Patient;
+import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.repository.IllnessRepository;
 import com.sbnz.recovery.repository.InjuryRequirementRepository;
 import com.sbnz.recovery.repository.InjuryTypeRepository;
+import com.sbnz.recovery.repository.PatientRepository;
+import com.sbnz.recovery.repository.TherapyRepository;
 
 @Configuration
 public class KieConfiguration {
@@ -31,6 +35,12 @@ public class KieConfiguration {
 	
 	@Autowired
 	private InjuryTypeRepository injuryTypeRepository;
+	
+	@Autowired
+	private TherapyRepository therapyRepository;
+	
+	@Autowired
+	private PatientRepository patientRepository;
 	
 	@Bean
 	public KieContainer kieContainer() {
@@ -68,6 +78,16 @@ public class KieConfiguration {
 		List<InjuryType> injuryTypes = injuryTypeRepository.findAll();
 		for (InjuryType injuryType : injuryTypes) {
 			kieSession.insert(injuryType);
+		}
+		// ubacivanje svih therapy objekata
+		List<Therapy> therapies = therapyRepository.findAll();
+		for (Therapy therapy : therapies) {
+			kieSession.insert(therapy);
+		}
+		// ubacivanje svih patient objekata
+		List<Patient> patients = patientRepository.findAll();
+		for (Patient patient : patients) {
+			kieSession.insert(patient);
 		}
 		//this.kieSessionHolder.add(kieSession);
 		return kieSession;

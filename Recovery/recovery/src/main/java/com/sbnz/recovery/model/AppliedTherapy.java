@@ -47,11 +47,9 @@ public class AppliedTherapy {
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 	public LocalDate getApplicationDate() {
 		return applicationDate;
 	}
@@ -63,5 +61,11 @@ public class AppliedTherapy {
 	}
 	public void setTherapy(Therapy therapy) {
 		this.therapy = therapy;
+	}
+	public Injury getInjury() {
+		return injury;
+	}
+	public void setInjury(Injury injury) {
+		this.injury = injury;
 	}
 }

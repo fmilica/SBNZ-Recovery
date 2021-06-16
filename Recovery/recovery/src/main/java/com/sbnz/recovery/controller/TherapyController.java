@@ -63,16 +63,15 @@ public class TherapyController {
         return new ResponseEntity<>(therapyMapper.toDto(therapy), HttpStatus.OK);
 	}
 	
-	/*@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping(value = "/assign/{patientId}")
-	public ResponseEntity<TherapyDTO> assignTherapy(@PathVariable("patientId") Long patientId) {
-		Therapy therapy = therapyMapper.toEntity(therapyDto);
+	public ResponseEntity<Void> assignTherapy(@PathVariable("patientId") Long patientId) {
         try {
-        	therapy = therapyService.createTherapy(therapy);
+        	therapyService.assignTherapy(patientId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
-        return new ResponseEntity<>(therapyMapper.toDto(therapy), HttpStatus.OK);
-	}*/
+        return new ResponseEntity<>(HttpStatus.OK);
+	}
 }

@@ -35,9 +35,6 @@ insert into user_authority (user_id, authority_id) values (7, 2);
 insert into user_authority (user_id, authority_id) values (8, 2);
 insert into user_authority (user_id, authority_id) values (9, 2);
 
-insert into therapy (name, therapy_type, maximum_monthly_application, temperature, intensity)
-values ('Terapija', 1, 20, 25.0, 3);
-
 insert into meal(name, meal_description, total_calories)
 values ('Apple soup', 'Low cooking', 470.00);
 
@@ -48,12 +45,28 @@ values ('ingredient2', 90.00, 20.00, 30.00, 5.00, 20.00, 20.00, 20.00);
 insert into ingredient (name, calories, carbohydrates, sugars, fat, fibers, proteins, water_percentage)
 values ('ingredient3', 20.00, 20.00, 45.00, 5.00, 20.00, 20.00, 20.00);
 
+insert into illness(name)
+values ('Diabetes');
+insert into illness(name)
+values ('High blood pressure');
+insert into illness(name)
+values ('Low blood pressure');
+
 insert into injury_type(name)
 values ('Muscle strain');
 insert into injury_type(name)
 values ('Fracture');
 insert into injury_type(name)
 values ('Internal');
+
+insert into therapy (name, therapy_type, maximum_monthly_application, temperature, intensity)
+values ('Terapija', 1, 20, 25.0, 3);
+insert into therapy_illness(therapy_id, illness_id)
+values (1, 1);
+insert into therapy_illness(therapy_id, illness_id)
+values (1, 2);
+insert into therapy_injury_type(therapy_id, injury_type_id)
+values (1, 1);
 
 -- INJURY REQUIREMENTS
 -- muscle strain
@@ -161,13 +174,6 @@ insert into injury(name, start_date, end_date, description, injury_type_id, pati
 values ('Istegnuce ruke', '2021-05-25', null, 'opis', 1, 7, 0);
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
 values ('Prelom ruke', '2021-05-25', null, 'opis', 3, 7, 0);
-
-insert into illness(name)
-values ('Diabetes');
-insert into illness(name)
-values ('High blood pressure');
-insert into illness(name)
-values ('Low blood pressure');
 
 insert into ingredient_amount(ingredient_id, amount)
 values (1, 200.00);

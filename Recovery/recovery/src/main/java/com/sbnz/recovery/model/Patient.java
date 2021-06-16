@@ -41,6 +41,7 @@ public class Patient extends User {
 //	@Transient
 //	@ManyToMany(mappedBy = "patients")
 	@ManyToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(
 	  name = "patient_illness", 
 	  joinColumns = @JoinColumn(name = "patient_id"), 
@@ -112,6 +113,7 @@ public class Patient extends User {
 	}
 	
 	public void addTherapyForInjury(AppliedTherapy appliedTherapy, Injury injury) {
+		appliedTherapy.setInjury(injury);
 		this.medicalHistory.get(this.medicalHistory.indexOf(injury)).addAppliedTherapy(appliedTherapy);
 	}
 	

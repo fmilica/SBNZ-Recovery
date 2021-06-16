@@ -60,7 +60,6 @@ public class AuthService {
 			Patient patient = (Patient) user;
 			patient = patientRepository.getOne(patient.getId());
 			rulesSession.setGlobal("currentPatient", user.getUsername());
-			rulesSession.insert(patient);
 		} catch (ClassCastException e) {
 			
 		}

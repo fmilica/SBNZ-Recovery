@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Injury } from 'src/app/model/injury.model';
 import { Meal } from 'src/app/model/meal.model';
 import { Patient } from 'src/app/model/patient.model';
 import { InjuryService } from 'src/app/services/injury.service';
 import { MealService } from 'src/app/services/meal.service';
+import { TherapyService } from 'src/app/services/therapy.service';
 
 @Component({
   selector: 'app-patient-view',
@@ -19,7 +21,9 @@ export class PatientViewComponent implements OnInit {
 
   constructor(
     private injuryService: InjuryService,
-    private mealService: MealService
+    private therapyService: TherapyService,
+    private mealService: MealService,
+    private toastr: ToastrService
   ) {
   }
 
@@ -47,6 +51,18 @@ export class PatientViewComponent implements OnInit {
 
   assignTherapy(): void {
     console.log(this.patient);
+    this.therapyService
+      .assignTherapy(this.patient.id).subscribe(
+        response => {
+          this.toastr.success("Succesfully assign therapy for " + this.patient.name);
+        },
+        error => {
+          if (error.error.message) {
+            this.toastr.error(error.error.message);
+          } else {
+            this.toastr.error('503 Server Unavailable');
+          }
+        });
   }
 
   assignMeals(): void {

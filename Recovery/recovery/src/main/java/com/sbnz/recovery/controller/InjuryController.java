@@ -67,7 +67,7 @@ public class InjuryController {
         return new ResponseEntity<>(injuryMapper.toDtoList(injuries), HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
 	@GetMapping(value = "/applied-therapies/{injuryId}")
 	public ResponseEntity<List<AppliedTherapyDTO>> findAllTherapiesForCurrentForInjury(@PathVariable("injuryId") Long injuryId) {
 		List<AppliedTherapy> appliedTherapies = null;

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Injury } from 'src/app/model/injury.model';
 import { Meal } from 'src/app/model/meal.model';
@@ -23,7 +24,8 @@ export class PatientViewComponent implements OnInit {
     private injuryService: InjuryService,
     private therapyService: TherapyService,
     private mealService: MealService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {
   }
 
@@ -50,7 +52,7 @@ export class PatientViewComponent implements OnInit {
   }
 
   assignTherapy(): void {
-    console.log(this.patient);
+    // console.log(this.patient);
     this.therapyService
       .assignTherapy(this.patient.id).subscribe(
         response => {
@@ -66,16 +68,17 @@ export class PatientViewComponent implements OnInit {
   }
 
   assignMeals(): void {
-    this.mealDataSource = []
-    console.log(this.patient);
-    this.applyMeals = true;
-    // dobavi sve obroke pogodne za korisnika
-    this.mealService
-      .getRankMeals(this.patient.email).subscribe(
-        response => {
-          this.mealDataSource = response;
-        },
-        error => {
-        });
+    this.router.navigate(['homepage/assign-meal'],{ state: { data: { patient: this.patient } } } )
+    // this.mealDataSource = []
+    // // console.log(this.patient);
+    // this.applyMeals = true;
+    // // dobavi sve obroke pogodne za korisnika
+    // this.mealService
+    //   .getRankMeals(this.patient.email).subscribe(
+    //     response => {
+    //       this.mealDataSource = response;
+    //     },
+    //     error => {
+    //     });
   }
 }

@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.List;
 
 import com.sbnz.recovery.model.Patient;
+import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.model.Meal;
 import com.sbnz.recovery.model.Ingredient;
 import com.sbnz.recovery.model.IngredientAmount;

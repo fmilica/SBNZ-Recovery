@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.sbnz.recovery.dto.InjuryCountDTO;
 import com.sbnz.recovery.dto.MealDTO;
 import com.sbnz.recovery.dto.PatientDTO;
+import com.sbnz.recovery.exceptions.ExistingFieldValueException;
 import com.sbnz.recovery.exceptions.NonExistingIdException;
 import com.sbnz.recovery.model.AppliedTherapy;
 import com.sbnz.recovery.model.ChosenPatient;
@@ -164,6 +165,10 @@ public class DoctorService {
 		if(meal == null) {
 			throw new NonExistingIdException("Meal");
 		}
+		DailyMeal dailyMeal = dailyMealRepository.findOneByPatientIdAndDayAndMealsId(patientId, new Date(), mealDto.getId());
+		if(dailyMeal != null) {
+			throw new ExistingFieldValueException("DailyMeal", "Meal");
+		}
 		MealEvent mealEvent = new MealEvent(patient.getUsername(), meal.getTotalCalories());
 		FactHandle handle =  cepSession.insert(mealEvent);
 		int firedRules = cepSession.fireAllRules();
@@ -171,7 +176,7 @@ public class DoctorService {
 			cepSession.delete(handle);
 			throw new Exception("Calories overflow.");
 		}else {
-			DailyMeal dailyMeal = dailyMealRepository.findOneByPatientId(patientId);
+			dailyMeal = dailyMealRepository.findOneByPatientIdAndDay(patientId, new Date());
 			if(dailyMeal == null) {
 				Set<Meal> meals = new HashSet<Meal>();
 				meals.add(meal);
@@ -187,6 +192,10 @@ public class DoctorService {
 			}
 		}
 		return meal;
+	}
+	
+	public DailyMeal findAllDailyMeals(Long patientId){
+		return dailyMealRepository.findOneByPatientIdAndDay(patientId, new Date());
 	}
 	
 	public List<Patient> findPotentialAbuse() {

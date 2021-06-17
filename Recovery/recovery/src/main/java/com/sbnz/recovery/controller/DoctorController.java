@@ -19,16 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.sbnz.recovery.dto.AppliedTherapyDTO;
+import com.sbnz.recovery.dto.DailyMealDTO;
 import com.sbnz.recovery.dto.IngredientDTO;
 import com.sbnz.recovery.dto.InjuryCountDTO;
 import com.sbnz.recovery.dto.MealDTO;
 import com.sbnz.recovery.dto.PatientDTO;
 import com.sbnz.recovery.helper.AppliedTherapyMapper;
+import com.sbnz.recovery.helper.DailyMealMapper;
 import com.sbnz.recovery.helper.IngredientMapper;
 import com.sbnz.recovery.helper.MealMapper;
 import com.sbnz.recovery.helper.PatientMapper;
 import com.sbnz.recovery.helper.TherapyMapper;
 import com.sbnz.recovery.model.AppliedTherapy;
+import com.sbnz.recovery.model.DailyMeal;
 import com.sbnz.recovery.model.Ingredient;
 import com.sbnz.recovery.model.Meal;
 import com.sbnz.recovery.model.Patient;
@@ -48,6 +51,7 @@ public class DoctorController {
 	private final MealMapper mealMapper;
 	private final PatientMapper patientMapper;
 	private final AppliedTherapyMapper appliedTherapyMapper;
+	private final DailyMealMapper dailyMealMapper;
 
 	@Autowired
 	public DoctorController(DoctorService doctorService, PatientService patientService) {
@@ -57,6 +61,7 @@ public class DoctorController {
 		this.mealMapper = new MealMapper();
 		this.patientMapper = new PatientMapper();
 		this.appliedTherapyMapper = new AppliedTherapyMapper();
+		this.dailyMealMapper = new DailyMealMapper();
 	}
 	
 //	@PreAuthorize("hasRole('ROLE_DOCTOR')")
@@ -210,6 +215,20 @@ public class DoctorController {
         }
 
 		return new ResponseEntity<MealDTO>(mealMapper.toDto(meal), HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@GetMapping("/{patient-id}/get-daily-meals")
+	public ResponseEntity<DailyMealDTO> getAllDailyMeals(@PathVariable("patient-id") Long patientId) {
+		DailyMeal meals = new DailyMeal();
+		log.debug("Get all daily meals: ");
+		
+		try {
+			meals = doctorService.findAllDailyMeals(patientId);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+		return new ResponseEntity<DailyMealDTO>(dailyMealMapper.toDto(meals), HttpStatus.OK);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")

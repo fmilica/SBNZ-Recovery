@@ -13,8 +13,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class DailyMeal implements Serializable {
@@ -26,9 +30,14 @@ public class DailyMeal implements Serializable {
 	private Long id;
 	
 	@Column(name="day")
+	@Temporal(TemporalType.DATE)
 	private Date day;
 	
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "dailyMeal")
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+	  name = "daily_meal_meal", 
+	  joinColumns = @JoinColumn(name = "daily_meal_id"), 
+	  inverseJoinColumns = @JoinColumn(name = "meal_id"))
 	private Set<Meal> meals;
 	
 	@ManyToOne

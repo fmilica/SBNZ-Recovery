@@ -44,6 +44,7 @@ import { InjuryTableComponent } from './components/injury-table/injury-table.com
 import { MealTableComponent } from './components/meal-table/meal-table.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { PatientTableComponent } from './components/tables/patient-table/patient-table.component';
+import { AssignMealComponent } from './components/assign-meal/assign-meal.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { PatientTableComponent } from './components/tables/patient-table/patient
     InjuryTableComponent,
     MealTableComponent,
     ReportsComponent,
-    PatientTableComponent
+    PatientTableComponent,
+    AssignMealComponent
   ],
   imports: [
     BrowserModule,

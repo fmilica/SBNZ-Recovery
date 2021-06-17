@@ -20,11 +20,13 @@ values (6, 'patient6@patient.com', '$2y$12$Mz9aZQZcPPdrctescbnAD.ceatxTOuZdXFzxw
 insert into patient (id, username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
 values (7, 'patient7@patient.com', '$2y$12$Mz9aZQZcPPdrctescbnAD.ceatxTOuZdXFzxwId9kKRsYBjQQfqAK', 'Lena', 'Lenic', 1, '2003-10-10', 172, 68, 1, 0.0, 0.0, 0, 700.0);
 insert into patient (id, username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
-values (8, 'patient8@patient.com', '$2y$12$Mz9aZQZcPPdrctescbnAD.ceatxTOuZdXFzxwId9kKRsYBjQQfqAK', 'Marina', 'Marinic', 1, '1968-10-10', 172, 68, 1, 0.0, 0.0, 0, 3300.0);
+values (8, 'patient8@patient.com', '$2y$12$Mz9aZQZcPPdrctescbnAD.ceatxTOuZdXFzxwId9kKRsYBjQQfqAK', 'Marina', 'Marinic', 1, '1968-10-10', 105.4, 16.9, 1, 0.0, 0.0, 0, 3300.0);
 insert into patient (id, username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
 values (9, 'patient9@patient.com', '$2y$12$Mz9aZQZcPPdrctescbnAD.ceatxTOuZdXFzxwId9kKRsYBjQQfqAK', 'Zeva', 'Zevic', 0, '1998-10-10', 172, 68, 0, 0.0, 0.0, 0, 5000.0);
+insert into patient (id, username, password, name, surname, gender, date_of_birth, height, weight, physical_activity_before_injury, bmr, regular_daily_calory_intake, physical_activity_after_injury, daily_calory_intake_after_injury)
+values (10, 'patient10@patient.com', '$2y$12$Mz9aZQZcPPdrctescbnAD.ceatxTOuZdXFzxwId9kKRsYBjQQfqAK', 'Kreva', 'Krevic', 0, '1998-10-10', 172, 68, 0, 0.0, 0.0, 0, 5000.0);
 
-alter sequence hibernate_sequence restart with 10;
+alter sequence hibernate_sequence restart with 11;
 
 insert into user_authority (user_id, authority_id) values (2, 2);
 insert into user_authority (user_id, authority_id) values (3, 2);
@@ -69,6 +71,21 @@ insert into therapy_illness(therapy_id, illness_id)
 values (1, 2);
 insert into therapy_injury_type(therapy_id, injury_type_id)
 values (1, 1);
+
+insert into therapy (name, therapy_type, maximum_monthly_application, temperature, intensity)
+values ('Odmaranje', 0, 31, 0.0, 1);
+insert into therapy_illness(therapy_id, illness_id)
+values (2, 1);
+insert into therapy_illness(therapy_id, illness_id)
+values (2, 2);
+insert into therapy_illness(therapy_id, illness_id)
+values (2, 3);
+insert into therapy_injury_type(therapy_id, injury_type_id)
+values (2, 1);
+insert into therapy_injury_type(therapy_id, injury_type_id)
+values (2, 2);
+insert into therapy_injury_type(therapy_id, injury_type_id)
+values (2, 3);
 
 -- INJURY REQUIREMENTS
 -- muscle strain
@@ -176,6 +193,38 @@ insert into injury(name, start_date, end_date, description, injury_type_id, pati
 values ('Istegnuce ruke', '2021-05-25', null, 'opis', 1, 7, 0);
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
 values ('Prelom ruke', '2021-05-25', null, 'opis', 3, 7, 0);
+
+-- IZVESTAJI
+-- abuse
+insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
+values ('Prelom ruke', '2021-05-01', null, 'opis', 2, 9, 0);
+insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
+values ('Prelom noge', '2021-04-12', null, 'opis', 2, 9, 2);
+insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
+values ('Prelom kuka', '2021-02-12', null, 'opis', 2, 9, 3);
+-- eating disorder
+insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
+values ('Prelom ruke', '2021-06-12', null, 'opis', 2, 8, 0);
+insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
+values ('Prelom noge', '2021-05-20', null, 'opis', 2, 8, 2);
+-- atrophy
+insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
+values ('Prelom ruke', '2021-05-01', null, 'opis', 2, 10, 0);
+insert into applied_therapy(application_date, therapy_id, injury_id) 
+values ('2021-05-03', 2, 14);
+insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
+values ('Prelom noge', '2021-04-12', null, 'opis', 2, 10, 2);
+insert into applied_therapy(application_date, therapy_id, injury_id) 
+values ('2021-04-13', 2, 15);
+insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
+values ('Prelom noge', '2021-03-20', null, 'opis', 2, 10, 2);
+insert into applied_therapy(application_date, therapy_id, injury_id) 
+values ('2021-03-23', 2, 16);
+insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
+values ('Prelom noge', '2020-07-30', null, 'opis', 2, 10, 2);
+insert into applied_therapy(application_date, therapy_id, injury_id) 
+values ('2020-06-02', 2, 17);
+
 
 insert into ingredient_amount(ingredient_id, amount)
 values (1, 200.00);

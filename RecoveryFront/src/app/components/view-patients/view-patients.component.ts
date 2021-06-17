@@ -10,12 +10,10 @@ import { PatientService } from 'src/app/services/patient.service';
 })
 export class ViewPatientsComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'surname', 'dateOfBirth', 'gender', 'height', 'weight', 'physicalActivity'];
   dataSource: Patient[] = [];
 
   constructor(
-    private patientService: PatientService,
-    private router: Router
+    private patientService: PatientService
   ) { }
 
   ngOnInit(): void {
@@ -28,7 +26,4 @@ export class ViewPatientsComponent implements OnInit {
         });
   }
 
-  patientView(patient: Patient) {
-    this.router.navigate(['homepage/patient-view'], { state: { data: { patient } } });
-  }
 }

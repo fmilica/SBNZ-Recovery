@@ -3,50 +3,7 @@
 <div class="table-title">View Patients</div>
 <div class="ng-container row justify-content-md-center">
     <div class="col-md-11">
-        <table mat-table [dataSource]="dataSource" id="ingredient-table">
-            <!-- No data row -->
-            <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="7">No registered patients.</td>
-            </tr>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="patientView(row)"></tr>
-
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-                <td mat-cell *matCellDef="let row"> {{row.name}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="surname">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Surname </th>
-                <td mat-cell *matCellDef="let row"> {{row.surname}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="dateOfBirth">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date of Birth </th>
-                <td mat-cell *matCellDef="let row"> {{row.dateOfBirth | date:'dd-MM-yyyy'}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="gender">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Gender </th>
-                <td mat-cell *matCellDef="let row"> {{row.gender}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="height">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Height </th>
-                <td mat-cell *matCellDef="let row"> {{row.height}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="weight">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Weight </th>
-                <td mat-cell *matCellDef="let row"> {{row.weight}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="physicalActivity">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Physical Activity </th>
-                <td mat-cell *matCellDef="let row">
-                    {{row.physicalActivityAfterInjury ? row.physicalActivityAfterInjury : row.physicalActivity}} </td>
-            </ng-container>
-        </table>
+        <app-patient-table [dataSource]="dataSource">
+        </app-patient-table>
     </div>
 </div>

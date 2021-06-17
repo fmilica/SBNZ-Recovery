@@ -11,24 +11,26 @@ global List<Patient> patientReport;
 rule "Potential abuse"
 	agenda-group "abuse-report"
 	when
+		$r: Report(active == true)
 		accumulate(
 			Patient($p: this, $injuries: medicalHistory) and
 	        Number(intValue >= 3) from accumulate(
-	        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(6)), injuryType.name == "FRACTURE") from $injuries,
+	        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(6)), injuryType.name == "Fracture") from $injuries,
 	         	count($i)
 	        ), 
 	        $potentialAbuse: collectList($p)
 	    )
 	    eval($potentialAbuse.size() > 0)
 	then
+		modify ($r) { setActive(false); }
 		patientReport.addAll($potentialAbuse);
-		System.out.println($potentialAbuse);
 		System.out.println("Created report for potentially abused patients");
 end 
 
 rule "Potential atrophy"
 	agenda-group "atrophy-report"
 	when
+		$r: Report(active == true)
 		accumulate(
 			Patient($p: this, $injuries : medicalHistory) and
 	        Number(intValue >= 4) from accumulate(
@@ -43,6 +45,7 @@ rule "Potential atrophy"
 		)
 		eval($potentialAtrophy.size() > 0)
 	then
+		modify ($r) { setActive(false); }
 		patientReport.addAll($potentialAtrophy);
 		System.out.println("Created report for patients with potential muscle atrophy");
 end
@@ -50,16 +53,18 @@ end
 rule "Potential eating disorder"
 	agenda-group "eating-report"
 	when
+		$r: Report(active == true)
 		accumulate(
 			Patient($p: this, $injuries: medicalHistory, (weight/(height * height)) * 10000 < 18.5) and
 	        Number(intValue >= 2) from accumulate(
-	        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(3)), injuryType.name == "FRACTURE") from $injuries,
+	        	Injury($i: this, $injuryDate: startDate, $injuryDate.isAfter(LocalDate.now().minusMonths(3)), injuryType.name == "Fracture") from $injuries,
 	         	count($i)
 	        ),
 	        $potentialEatingDisorder : collectList($p)
         )
 		eval($potentialEatingDisorder.size() > 0)
 	then
+		modify ($r) { setActive(false); }
 		patientReport.addAll($potentialEatingDisorder);
 		System.out.println("Created report for patients with a potential eating disorder");
 end

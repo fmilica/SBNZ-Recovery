@@ -4,7 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -44,12 +48,12 @@ public class ReportsTest {
 	
 	@Before
 	public void setUp() throws ParseException {
-		fracture = new InjuryType(1L, "FRACTURE");
-		muscle = new InjuryType(2L, "MUSCLE_STRAIN");
-		internal = new InjuryType(3L, "INTERNAL");
-		diabetes = new Illness(1L, "DIABETES");
-		hbp = new Illness(2L, "HIGH_BLOOD_PRESSURE");
-		lbp = new Illness(3L, "LOW_BLOOD_PRESSURE");
+		fracture = new InjuryType(1L, "Fracture");
+		muscle = new InjuryType(2L, "Muscle strain");
+		internal = new InjuryType(3L, "Internal");
+		diabetes = new Illness(1L, "Diabetes");
+		hbp = new Illness(2L, "High blood pressure");
+		lbp = new Illness(3L, "Low blood pressure");
 		patientReport = new ArrayList<Patient>();
 		KieServices ks = KieServices.Factory.get();
 		KieContainer kContainer = ks
@@ -79,7 +83,7 @@ public class ReportsTest {
 		// povreda 2
 		Injury injury2 = new Injury("I2", LocalDate.of(2021, 4, 12), null, "desc", fracture, InjuryBodyPart.ARM);
 		// povreda 3
-		Injury injury3 = new Injury("I3", LocalDate.of(2021, 1, 12), null, "desc", fracture, InjuryBodyPart.ARM);
+		Injury injury3 = new Injury("I3", LocalDate.of(2021, 2, 12), null, "desc", fracture, InjuryBodyPart.ARM);
 		patient.addInjury(injury1);
 		patient.addInjury(injury2);
 		patient.addInjury(injury3);
@@ -87,6 +91,11 @@ public class ReportsTest {
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
+		assertEquals(1, firedRules);
+		assertEquals(1, patientReport.size());
+		assertEquals(patient.getUsername(), patientReport.get(0).getUsername());
+		
+		firedRules = kieSession.fireAllRules();
 		assertEquals(1, firedRules);
 		assertEquals(1, patientReport.size());
 		assertEquals(patient.getUsername(), patientReport.get(0).getUsername());

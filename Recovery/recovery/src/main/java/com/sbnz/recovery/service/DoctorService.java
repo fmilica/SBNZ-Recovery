@@ -12,10 +12,9 @@ import org.kie.api.runtime.rule.QueryResults;
 import org.kie.api.runtime.rule.QueryResultsRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
+import com.sbnz.recovery.dto.InjuryCountDTO;
 import com.sbnz.recovery.dto.MealDTO;
 import com.sbnz.recovery.dto.PatientDTO;
 import com.sbnz.recovery.exceptions.NonExistingIdException;
@@ -26,6 +25,7 @@ import com.sbnz.recovery.model.Ingredient;
 import com.sbnz.recovery.model.IngredientAmount;
 import com.sbnz.recovery.model.Meal;
 import com.sbnz.recovery.model.Patient;
+import com.sbnz.recovery.model.Report;
 import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.model.enums.AssignType;
 import com.sbnz.recovery.model.events.MealEvent;
@@ -189,39 +189,54 @@ public class DoctorService {
 		return meal;
 	}
 	
-	public List<Patient> findPotentialAbuse(){
-		List<Patient> patients = patientService.findAll();
+	public List<Patient> findPotentialAbuse() {
 		List<Patient> patientReport = new ArrayList<Patient>();
 		rulesSession.setGlobal("patientReport", patientReport);
 		rulesSession.getAgenda().getAgendaGroup("abuse-report").setFocus();
-		for (Patient patient : patients) {
-			rulesSession.insert(patient);
-			rulesSession.fireAllRules();
-		}
+		rulesSession.insert(new Report());
+		rulesSession.fireAllRules();
 		return patientReport;
 	}
 	
-	public List<Patient> findPotentialAtrophy(){
-		List<Patient> patients = patientService.findAll();
+	public List<Patient> findPotentialAtrophy() {
 		List<Patient> patientReport = new ArrayList<Patient>();
 		rulesSession.setGlobal("patientReport", patientReport);
 		rulesSession.getAgenda().getAgendaGroup("atrophy-report").setFocus();
-		for (Patient patient : patients) {
-			rulesSession.insert(patient);
-			rulesSession.fireAllRules();
-		}
+		rulesSession.insert(new Report());
+		rulesSession.fireAllRules();
 		return patientReport;
 	}
 	
-	public List<Patient> findPotentialEatingDisorder(){
-		List<Patient> patients = patientService.findAll();
+	public List<Patient> findPotentialEatingDisorder() {
 		List<Patient> patientReport = new ArrayList<Patient>();
 		rulesSession.setGlobal("patientReport", patientReport);
 		rulesSession.getAgenda().getAgendaGroup("eating-report").setFocus();
-		for (Patient patient : patients) {
-			rulesSession.insert(patient);
-			rulesSession.fireAllRules();
-		}
+		rulesSession.insert(new Report());
+		rulesSession.fireAllRules();
 		return patientReport;
+	}
+	
+	public int findInjuryCountByAgeGroupAndInterval(InjuryCountDTO countByAge) {
+		QueryResults results = 
+				rulesSession.getQueryResults("getInjuriesCountByAgeGroup", 
+						countByAge.getStartAge(), countByAge.getEndAge(), 
+						countByAge.getStartDate(), countByAge.getEndDate());
+		int total = 0;
+		for (QueryResultsRow row : results) {
+			total = ((Number)row.get("$totalInjuriesInAgeGroup")).intValue();
+		}
+		return total;
+	}
+	
+	public int findInjuryCountByInjuryTypeAndInterval(InjuryCountDTO countByType) {
+		QueryResults results = 
+				rulesSession.getQueryResults("getTotalInjuriesCountByInjuryType", 
+						countByType.getInjuryTypeId(), 
+						countByType.getStartDate(), countByType.getEndDate());
+		int total = 0;
+		for (QueryResultsRow row : results) {
+			total = ((Number)row.get("$totalInjuriesForInjuryType")).intValue();
+		}
+		return total;
 	}
 }

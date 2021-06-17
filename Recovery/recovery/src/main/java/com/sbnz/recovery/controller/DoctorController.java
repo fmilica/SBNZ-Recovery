@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.sbnz.recovery.dto.AppliedTherapyDTO;
 import com.sbnz.recovery.dto.IngredientDTO;
+import com.sbnz.recovery.dto.InjuryCountDTO;
 import com.sbnz.recovery.dto.MealDTO;
 import com.sbnz.recovery.dto.PatientDTO;
 import com.sbnz.recovery.helper.AppliedTherapyMapper;
@@ -215,7 +216,7 @@ public class DoctorController {
 	@GetMapping("/potential-abuse")
 	public ResponseEntity<List<PatientDTO>> getPotentialAbuse() {
 
-		log.debug("List patients with potential abuse.");
+		log.info("List patients with potential abuse.");
 		
 		List<Patient> patients = new ArrayList<Patient>();
 		try {
@@ -231,7 +232,7 @@ public class DoctorController {
 	@GetMapping("/potential-atrophy")
 	public ResponseEntity<List<PatientDTO>> getPotentialAtrophy() {
 
-		log.debug("List patients with potential atrophy.");
+		log.info("List patients with potential atrophy.");
 		
 		List<Patient> patients = new ArrayList<Patient>();
 		try {
@@ -247,7 +248,7 @@ public class DoctorController {
 	@GetMapping("/potential-eating-disorder")
 	public ResponseEntity<List<PatientDTO>> getPotentialEatingDisorder() {
 
-		log.debug("List patients with potential eating disorder.");
+		log.info("List patients with potential eating disorder.");
 		
 		List<Patient> patients = new ArrayList<Patient>();
 		try {
@@ -257,5 +258,31 @@ public class DoctorController {
         }
 
 		return new ResponseEntity<List<PatientDTO>>(patientMapper.toDtoList(patients), HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@PostMapping("/injury-count-by-age")
+	public ResponseEntity<Integer> getInjuryCountByAge(@RequestBody InjuryCountDTO countByAgeDto) {
+		int total = 0;
+		try {
+            total = doctorService.findInjuryCountByAgeGroupAndInterval(countByAgeDto);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
+		return new ResponseEntity<Integer>(total, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@PostMapping("/injury-count-by-type")
+	public ResponseEntity<Integer> getInjuryCountByType(@RequestBody InjuryCountDTO countByTypeDto) {
+		int total = 0;
+		try {
+			total = doctorService.findInjuryCountByInjuryTypeAndInterval(countByTypeDto);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
+		return new ResponseEntity<Integer>(total, HttpStatus.OK);
 	}
 }

@@ -42,6 +42,8 @@ import { ViewPatientsComponent } from './components/view-patients/view-patients.
 import { PatientViewComponent } from './components/patient-view/patient-view.component';
 import { InjuryTableComponent } from './components/injury-table/injury-table.component';
 import { MealTableComponent } from './components/meal-table/meal-table.component';
+import { ReportsComponent } from './components/reports/reports.component';
+import { PatientTableComponent } from './components/tables/patient-table/patient-table.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import { MealTableComponent } from './components/meal-table/meal-table.component
     ViewPatientsComponent,
     PatientViewComponent,
     InjuryTableComponent,
-    MealTableComponent
+    MealTableComponent,
+    ReportsComponent,
+    PatientTableComponent
   ],
   imports: [
     BrowserModule,

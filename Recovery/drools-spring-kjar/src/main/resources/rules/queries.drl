@@ -81,7 +81,9 @@ query "getAllPatientTherapiesByInjury"(Long patientId, Long injuryId)
 end;
 
 
-query "getInjuriesCountByAgeGroup"(int startAge, int endAge, LocalDate startDateInterval, LocalDate endDateInterval)
+// IZVESTAJI //
+query "getInjuriesCountByAgeGroup"(int startAge, int endAge, 
+	LocalDate startDateInterval, LocalDate endDateInterval)
 	$totalInjuriesInAgeGroup: Number() from accumulate(
 		Patient(DateUtility.getDiffYears(dateOfBirth) > startAge,
 				DateUtility.getDiffYears(dateOfBirth) < endAge,
@@ -97,12 +99,12 @@ query "getInjuriesCountByAgeGroup"(int startAge, int endAge, LocalDate startDate
 	)
 end;
 
-query "getTotalInjuriesCountByInjuryType"(InjuryType type, 
+query "getTotalInjuriesCountByInjuryType"(Long injuryTypeId, 
 	LocalDate startDateInterval, LocalDate endDateInterval)
 	$totalInjuriesForInjuryType : Number() from accumulate(
 		Patient($injuries: medicalHistory) and
 		$injuryPerPatient: Number() from accumulate(
-			Injury($i: this, injuryType == type,
+			Injury($i: this, injuryType.id == injuryTypeId,
 				$injuryDate: startDate,
 				$injuryDate.isAfter(startDateInterval),
 				$injuryDate.isBefore(endDateInterval)

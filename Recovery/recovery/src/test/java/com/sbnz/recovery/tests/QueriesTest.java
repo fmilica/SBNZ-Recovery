@@ -228,7 +228,7 @@ public class QueriesTest {
 		LocalDate endDate = LocalDate.parse("2022-01-01");
 		QueryResults results = 
 				kieSession.getQueryResults("getTotalInjuriesCountByInjuryType", 
-						fracture, startDate, endDate);
+						fracture.getId(), startDate, endDate);
 		int total = 0;
 		for (QueryResultsRow row : results) {
 			total = ((Number)row.get("$totalInjuriesForInjuryType")).intValue();

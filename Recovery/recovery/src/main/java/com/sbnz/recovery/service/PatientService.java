@@ -3,9 +3,11 @@ package com.sbnz.recovery.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.sbnz.recovery.model.Patient;
+import com.sbnz.recovery.model.User;
 import com.sbnz.recovery.repository.PatientRepository;
 
 @Service
@@ -28,5 +30,9 @@ public class PatientService {
 	
 	public Patient findOneByUsername(String username) {
 		return patientRepository.findOneByUsername(username);
+	}
+	
+	public Patient findCurrentPatient() {
+		return (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 }

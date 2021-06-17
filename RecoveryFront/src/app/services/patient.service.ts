@@ -19,4 +19,8 @@ export class PatientService {
   getPatients(): Observable<Patient[]> {
     return this.http.get<Patient[]>(environment.apiEndpoint + 'patient/get-patients');
   }
+
+  getPatientDetails(): Observable<Patient> {
+    return this.http.get<Patient>(environment.apiEndpoint + 'patient/get-details');
+  }
 }

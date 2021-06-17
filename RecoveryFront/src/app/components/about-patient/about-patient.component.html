@@ -1,0 +1,20 @@
+<div class="jumbotron bg-transparent col-md-10 m-auto p-5 bg-white rounded">
+    <mat-card class="shadow">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image">
+            </div>
+            <mat-card-title>Patient Details: {{getFullName()}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-3 fontSize">
+            <div>Date of birth: {{patientDetails.dateOfBirth | date:'dd-MM-yyyy'}}</div>
+            <div>Gender: {{patientDetails.gender | titlecase}}</div>
+            <div>Height: {{patientDetails.height}}</div>
+            <div>Weight: {{patientDetails.weight}}</div>
+            <div>Physical Activity: {{getPhysicalActivity(patientDetails.physicalActivity)}}</div>
+            <div>Snamnesis: {{getFullAmnessis()}}</div>
+            <div>Physical Activity After Injury: {{getPhysicalActivity(patientDetails.physicalActivityAfterInjury)}}</div>
+            <div>Regular Daily Calory Intake: {{patientDetails.regularDailyCaloryIntake}}</div>
+            <div>Daily Calory Intake After Injury: {{patientDetails.dailyCaloryIntakeAfterInjury}}</div>
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -49,4 +49,18 @@ private static Logger log = LoggerFactory.getLogger(DoctorController.class);
         }
 		return new ResponseEntity<List<PatientDTO>>(patientMapper.toDtoList(patients), HttpStatus.OK);
 	}
+	
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@GetMapping("/get-details")
+	public ResponseEntity<PatientDTO> getPatientDetails() {
+		Patient patient = new Patient();
+		log.debug("Get current patient: ");
+		
+		try {
+			patient = patientService.findCurrentPatient();
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+		return new ResponseEntity<PatientDTO>(patientMapper.toDto(patient), HttpStatus.OK);
+	}
 }

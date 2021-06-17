@@ -22,8 +22,8 @@ query "getAllMealsByIllness"(Illness illness)
 	accumulate(
 		Meal($m : this, $ingredients: ingredients) and
 		Number(intValue > 0) from accumulate(
-			Ingredient($i: this, illnesses contains illness) from $ingredients,
-			count($i)
+			IngredientAmount($ia: this, ingredient.illnesses contains illness) from $ingredients,
+			count($ia)
 		),
 		$meals: collectList($m)
 	)

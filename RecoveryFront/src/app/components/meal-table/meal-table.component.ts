@@ -2,6 +2,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Illness } from 'src/app/model/illness.model';
 import { IngredientAmount } from 'src/app/model/ingredient-amount.model';
 import { Meal } from 'src/app/model/meal.model';
 import { MealService } from 'src/app/services/meal.service';
@@ -21,7 +22,7 @@ import { MealService } from 'src/app/services/meal.service';
 export class MealTableComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'mealDescription', 'totalCalories', 'assignMeal'];
-  displayedIngredientColumns: string[] = ['ingredientName', 'amount'];
+  displayedIngredientColumns: string[] = ['ingredientName', 'amount', 'illnesses'];
   @Input() dataSource: Meal[] = [];
   @Input() assignPatientMeal: boolean = false;
   @Input() patientId: number = 0;
@@ -51,7 +52,7 @@ export class MealTableComponent implements OnInit {
   }
 
   addMeal(meal: Meal) {
-    
+
     this.mealService.addMeal(meal, this.patientId).subscribe(
       response => {
         this.toastr.success('Successfully added meal!');
@@ -60,5 +61,16 @@ export class MealTableComponent implements OnInit {
       error => {
         this.toastr.error(error.error.message)
       });
+  }
+
+  formatIllnesses(illnesses: Illness[]) {
+    let illnessesString = ""
+    illnesses.forEach((element, index) => {
+      illnessesString += element.name;
+      if (index != illnesses.length - 1) {
+        illnessesString += ", ";
+      }
+    })
+    return illnessesString;
   }
 }

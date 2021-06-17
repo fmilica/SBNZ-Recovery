@@ -28,6 +28,10 @@ export class DoctorService {
         return this.http.get<Ingredient[]>(environment.apiEndpoint + 'doctor/get-ingredients');
     }
 
+    filterIngredients(illnessId: number): Observable<Ingredient[]> {
+        return this.http.get<Ingredient[]>(environment.apiEndpoint + 'doctor/filter-ingredients/' + illnessId);
+    }
+
     createMeal(mealDto: Meal): Observable<Meal> {
         return this.http.post<Meal>(environment.apiEndpoint + 'doctor/create-meal', mealDto, {
             headers: this.headers

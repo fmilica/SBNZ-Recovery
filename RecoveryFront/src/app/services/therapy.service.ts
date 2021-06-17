@@ -16,6 +16,10 @@ export class TherapyService {
         return this.http.get<ViewTherapy[]>(environment.apiEndpoint + 'therapy');
     }
 
+    filterTherapies(illnessId: number, injuryTypeId: number): Observable<ViewTherapy[]> {
+        return this.http.get<ViewTherapy[]>(environment.apiEndpoint + 'therapy/filter?illnessId=' + illnessId + '&injuryTypeId=' + injuryTypeId);
+    }
+
     createTherapy(therapy: Therapy): Observable<Therapy> {
         return this.http.post<Therapy>(environment.apiEndpoint + 'therapy', therapy);
     }

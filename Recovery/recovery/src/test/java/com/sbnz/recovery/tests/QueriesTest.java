@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,8 +23,11 @@ import org.kie.api.runtime.rule.QueryResultsRow;
 
 import com.sbnz.recovery.model.AppliedTherapy;
 import com.sbnz.recovery.model.Illness;
+import com.sbnz.recovery.model.Ingredient;
+import com.sbnz.recovery.model.IngredientAmount;
 import com.sbnz.recovery.model.Injury;
 import com.sbnz.recovery.model.InjuryType;
+import com.sbnz.recovery.model.Meal;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.model.enums.Gender;
@@ -44,6 +48,9 @@ public class QueriesTest {
 	private Illness diabetes;
 	private Illness hbp;
 	private Illness lbp;
+	
+	private Ingredient ingredient;
+	private Meal meal;
 	
 	private Map<InjuryType, Double> injuryTypeCountMap;
 	
@@ -109,6 +116,17 @@ public class QueriesTest {
 		patient.addInjury(injury4);
 		
 		kieSession.insert(patient);
+		
+		ingredient = new Ingredient();
+		ingredient.setName("ingredient");
+		ingredient.setIllnesses(new HashSet<Illness>(Arrays.asList(hbp, lbp)));
+		kieSession.insert(ingredient);
+		
+		meal = new Meal();
+		meal.setName("meal");
+		IngredientAmount ia = new IngredientAmount(ingredient, 200);
+		meal.setIngredients(new HashSet<IngredientAmount>(Arrays.asList(ia)));
+		kieSession.insert(meal);
 	}
 	
 	@Test
@@ -168,6 +186,57 @@ public class QueriesTest {
 	}
 	
 	@Test
+	public void getAllIngredientsTest() throws ParseException {
+		QueryResults results = kieSession.getQueryResults("getAllIngredients");
+		List<Ingredient> ingredients = new ArrayList<>();
+		
+		for (QueryResultsRow row : results) {
+			Ingredient ingredient = (Ingredient) row.get("$ingredient");
+			ingredients.add(ingredient);
+		}
+		assertEquals(1, ingredients.size());
+		assertEquals(ingredient.getName(), ingredients.get(0).getName());
+	}
+	
+	@Test
+	public void getAllIngredientsByIllnessTest() throws ParseException {
+		QueryResults results = kieSession.getQueryResults("getAllIngredientsByIllness", hbp);
+		List<Ingredient> ingredients = new ArrayList<>();
+		
+		for (QueryResultsRow row : results) {
+			Ingredient ingredient = (Ingredient) row.get("$ingredient");
+			ingredients.add(ingredient);
+		}
+		assertEquals(1, ingredients.size());
+		assertEquals(ingredient.getName(), ingredients.get(0).getName());
+	}
+	
+	@Test
+	public void getAllMealsTest() throws ParseException {
+		QueryResults results = kieSession.getQueryResults("getAllMeals");
+		List<Meal> meals = new ArrayList<>();
+		
+		for (QueryResultsRow row : results) {
+			Meal meal = (Meal) row.get("$meal");
+			meals.add(meal);
+		}
+		assertEquals(1, meals.size());
+		assertEquals(meal.getName(), meals.get(0).getName());
+	}
+	
+	@Test
+	public void getAllMealsByIllnessTest() throws ParseException {
+		QueryResults results = kieSession.getQueryResults("getAllMealsByIllness", lbp);
+		List<Meal> meals = new ArrayList<>();
+		
+		for (QueryResultsRow row : results) {
+			meals = (List<Meal>) row.get("$meals");
+		}
+		assertEquals(1, meals.size());
+		assertEquals(meal.getName(), meals.get(0).getName());
+	}
+	
+	@Test
 	public void getAllTherapiesTest() throws ParseException {
 		QueryResults results = kieSession.getQueryResults("getAllTherapies");
 		List<Therapy> therapies = new ArrayList<>();
@@ -205,6 +274,30 @@ public class QueriesTest {
 		assertEquals(0, therapies.size());
 	}
 	
+	@Test
+	public void getAllTherapiesByInjuryTypeTestPositive() throws ParseException {
+		QueryResults results = kieSession.getQueryResults("getAllTherapiesByInjuryType", fracture);
+		List<Therapy> therapies = new ArrayList<>();
+		
+		for (QueryResultsRow row : results) {
+			Therapy therapy = (Therapy) row.get("$therapy");
+			therapies.add(therapy);
+		}
+		assertEquals(1, therapies.size());
+		assertEquals("T1", therapies.get(0).getName());
+	}
+	
+	@Test
+	public void getAllTherapiesByInjuryTypeTestNegative() throws ParseException {
+		QueryResults results = kieSession.getQueryResults("getAllTherapiesByInjuryType", muscle);
+		List<Therapy> therapies = new ArrayList<>();
+		
+		for (QueryResultsRow row : results) {
+			Therapy therapy = (Therapy) row.get("$therapy");
+			therapies.add(therapy);
+		}
+		assertEquals(0, therapies.size());
+	}
 	
 	@Test
 	public void getInjuriesCountByAgeGroupTest() throws ParseException {

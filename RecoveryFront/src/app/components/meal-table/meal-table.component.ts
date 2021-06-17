@@ -1,10 +1,11 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Illness } from 'src/app/model/illness.model';
 import { IngredientAmount } from 'src/app/model/ingredient-amount.model';
 import { Meal } from 'src/app/model/meal.model';
+import { Patient } from 'src/app/model/patient.model';
 import { MealService } from 'src/app/services/meal.service';
 
 @Component({
@@ -28,6 +29,8 @@ export class MealTableComponent implements OnInit {
   @Input() patientId: number = 0;
   expandedElement: any | null;
   chosenIngredients: IngredientAmount[] = [];
+  patient: Patient = {} as Patient;
+  @Output() countCalories = new EventEmitter<number>();
 
   constructor(
     private mealService: MealService,
@@ -37,7 +40,9 @@ export class MealTableComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.assignPatientMeal) {
+      this.patient = history.state.data.patient;
       this.displayedColumns = ['name', 'mealDescription', 'totalCalories', 'assignMeal'];
+      this.assignMeals();
     } else {
       this.displayedColumns = ['name', 'mealDescription', 'totalCalories'];
     }
@@ -52,17 +57,28 @@ export class MealTableComponent implements OnInit {
   }
 
   addMeal(meal: Meal) {
-
-    this.mealService.addMeal(meal, this.patientId).subscribe(
+    this.mealService.addMeal(meal, this.patient.id).subscribe(
       response => {
         this.toastr.success('Successfully added meal!');
-        this.router.navigate(['homepage/view-patients']);
+        this.countCalories.emit(meal.totalCalories)
       },
       error => {
         this.toastr.error(error.error.message)
       });
   }
 
+  assignMeals(): void {
+    this.dataSource = []
+    // dobavi sve obroke pogodne za korisnika
+    this.mealService
+      .getRankMeals(this.patient.email).subscribe(
+        response => {
+          this.dataSource = response;
+        },
+        error => {
+        });
+  }
+    
   formatIllnesses(illnesses: Illness[]) {
     let illnessesString = ""
     illnesses.forEach((element, index) => {

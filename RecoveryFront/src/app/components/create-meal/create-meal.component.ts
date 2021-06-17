@@ -54,6 +54,8 @@ export class CreateMealComponent implements OnInit {
   }
 
   removevalue(i: number){
+    this.newMealForm.removeControl('name'+i);
+    this.newMealForm.removeControl('amount'+i);
     this.values.splice(i,1);
   }
 

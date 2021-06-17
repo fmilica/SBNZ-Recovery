@@ -45,9 +45,8 @@ public class Meal implements Serializable{
 //	@JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = true)
 //	private Patient patient;
 	
-	@ManyToOne
-	@JoinColumn(name = "daily_meal_id", referencedColumnName = "id", nullable = true)
-	private DailyMeal dailyMeal;
+	@ManyToMany(mappedBy = "meals")
+	private Set<DailyMeal> dailyMeal;
 	
 	public Meal() {
 		this.ingredients = new HashSet<IngredientAmount>();
@@ -114,6 +113,15 @@ public class Meal implements Serializable{
 		}
 		//kreiranje ingredientamount u bazi pa dodavanje u listu 
 		this.ingredients.add(new IngredientAmount(ingredient, quantity));
+	}
+	
+
+	public Set<DailyMeal> getDailyMeal() {
+		return dailyMeal;
+	}
+
+	public void setDailyMeal(Set<DailyMeal> dailyMeal) {
+		this.dailyMeal = dailyMeal;
 	}
 
 	@Override

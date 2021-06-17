@@ -2,6 +2,7 @@ package com.sbnz.recovery.helper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.sbnz.recovery.dto.MealDTO;
 import com.sbnz.recovery.model.Meal;
@@ -32,6 +33,14 @@ public class MealMapper implements MapperInterface<Meal, MealDTO>{
 
 	@Override
 	public List<MealDTO> toDtoList(List<Meal> entityList) {
+		List<MealDTO> mealDTOs = new ArrayList<MealDTO>();
+		for (Meal meal : entityList) {
+			mealDTOs.add(toDto(meal));
+		}
+		return mealDTOs;
+	}
+	
+	public List<MealDTO> toDtoList(Set<Meal> entityList) {
 		List<MealDTO> mealDTOs = new ArrayList<MealDTO>();
 		for (Meal meal : entityList) {
 			mealDTOs.add(toDto(meal));

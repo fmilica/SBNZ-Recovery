@@ -68,7 +68,7 @@ export class PatientViewComponent implements OnInit {
   }
 
   assignMeals(): void {
-    this.router.navigate(['homepage/assign-meal'],{ state: { data: { patient: this.patient } } } )
+    this.router.navigate(['homepage/patient/assign-meal'], { state: { data: { patient: this.patient } } })
     // this.mealDataSource = []
     // // console.log(this.patient);
     // this.applyMeals = true;

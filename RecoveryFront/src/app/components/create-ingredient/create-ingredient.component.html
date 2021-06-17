@@ -1,70 +1,76 @@
-<div class="table-title">Create Ingredient</div>
-<div class="col">
-    <form id="create-ingredient-form" [formGroup]="newIngredientForm" #createIngredientDirective="ngForm" (ngSubmit)="onSubmit(createIngredientDirective)">
-        <div class="form-group">
-            <mat-form-field id="name-form-field" appearance="fill" class="form-field">
-                <mat-label>Name</mat-label>
-                <input id="name-input" matInput placeholder="Ex. Apple" formControlName ="name">
-                <mat-error id="name-error" *ngIf="newIngredientForm.get('name')?.invalid">{{getFieldErrorMessage('name')}}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <mat-form-field id="calories-form-field" appearance="fill" class="form-field">
-                <mat-label>Calories</mat-label>
-                <input id="calories-input" matInput placeholder="Ex. 200.00" formControlName ="calories">
-                <mat-error id="calories-error" *ngIf="newIngredientForm.get('calories')?.invalid">{{getFieldErrorMessage('calories')}}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <mat-form-field id="water-percentage-form-field" appearance="fill" class="form-field">
-                <mat-label>Water Percentage</mat-label>
-                <input id="water-percentage-input" matInput placeholder="Ex. 70.00" formControlName ="waterPercentage">
-                <mat-error id="water-percentage-error" *ngIf="newIngredientForm.get('waterPercentage')?.invalid">{{getFieldErrorMessage('waterPercentage')}}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <mat-form-field id="proteins-name-form-field" appearance="fill" class="form-field">
-                <mat-label>Proteins</mat-label>
-                <input id="proteins-name-input" matInput placeholder="Ex. 250.00" formControlName ="proteins">
-                <mat-error id="proteins-name-error" *ngIf="newIngredientForm.get('proteins')?.invalid">{{getFieldErrorMessage('proteins')}}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <mat-form-field id="carbohydrates-form-field" appearance="fill" class="form-field">
-                <mat-label>Carbohydrates</mat-label>
-                <input id="carbohydrates-input" matInput placeholder="Ex. 300.00" formControlName ="carbohydrates">
-                <mat-error id="carbohydrates-error" *ngIf="newIngredientForm.get('carbohydrates')?.invalid">{{getFieldErrorMessage('carbohydrates')}}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <mat-form-field id="sugars-form-field" appearance="fill" class="form-field">
-                <mat-label>Sugars</mat-label>
-                <input id="sugars-input" matInput placeholder="Ex. 100.00" formControlName ="sugars">
-                <mat-error id="sugars-error" *ngIf="newIngredientForm.get('sugars')?.invalid">{{getFieldErrorMessage('sugars')}}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <mat-form-field id="fiber-form-field" appearance="fill" class="form-field">
-                <mat-label>Fiber</mat-label>
-                <input id="fiber-input" matInput placeholder="Ex. 80.00" formControlName ="fiber">
-                <mat-error id="fiber-error" *ngIf="newIngredientForm.get('fiber')?.invalid">{{getFieldErrorMessage('fiber')}}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <mat-form-field id="fat-form-field" appearance="fill" class="form-field">
-                <mat-label>Fat</mat-label>
-                <input id="fat-input" matInput placeholder="Ex. 20.00" formControlName ="fat">
-                <mat-error id="fat-error" *ngIf="newIngredientForm.get('fat')?.invalid">{{getFieldErrorMessage('fat')}}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="row justify-content-md-center">
-            <button
-                id="create-ingredient"
-                class="btn btn-color"
-                [disabled] = "newIngredientForm.invalid"
-            >
-                Create Ingredient
-            </button>
-        </div>
-    </form>
+<div class="jumbotron bg-transparent col-md-10 m-auto p-5 bg-white rounded">
+    <mat-card class="shadow">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image">
+            </div>
+            <mat-card-title>Create Ingredient</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-3">
+            <form id="create-ingredient-form" [formGroup]="newIngredientForm" #createIngredientDirective="ngForm"
+                (ngSubmit)="onSubmit(createIngredientDirective)">
+                <div class="form-group">
+                    <mat-form-field id="name-form-field" appearance="fill" class="form-field">
+                        <mat-label>Name</mat-label>
+                        <input id="name-input" matInput placeholder="Ex. Apple" formControlName="name">
+                        <mat-error id="name-error" *ngIf="newIngredientForm.get('name')?.invalid">
+                            {{getFieldErrorMessage('name')}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field id="calories-form-field" appearance="fill" class="form-field">
+                        <mat-label>Calories</mat-label>
+                        <input id="calories-input" matInput placeholder="Ex. 200.00" formControlName="calories">
+                        <mat-error id="calories-error" *ngIf="newIngredientForm.get('calories')?.invalid">
+                            {{getFieldErrorMessage('calories')}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <mat-form-field id="water-percentage-form-field" appearance="fill" class="form-field">
+                        <mat-label>Water Percentage</mat-label>
+                        <input id="water-percentage-input" matInput placeholder="Ex. 70.00"
+                            formControlName="waterPercentage">
+                        <mat-error id="water-percentage-error"
+                            *ngIf="newIngredientForm.get('waterPercentage')?.invalid">
+                            {{getFieldErrorMessage('waterPercentage')}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field id="proteins-name-form-field" appearance="fill" class="form-field">
+                        <mat-label>Proteins</mat-label>
+                        <input id="proteins-name-input" matInput placeholder="Ex. 250.00" formControlName="proteins">
+                        <mat-error id="proteins-name-error" *ngIf="newIngredientForm.get('proteins')?.invalid">
+                            {{getFieldErrorMessage('proteins')}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <mat-form-field id="carbohydrates-form-field" appearance="fill" class="form-field">
+                        <mat-label>Carbohydrates</mat-label>
+                        <input id="carbohydrates-input" matInput placeholder="Ex. 300.00"
+                            formControlName="carbohydrates">
+                        <mat-error id="carbohydrates-error" *ngIf="newIngredientForm.get('carbohydrates')?.invalid">
+                            {{getFieldErrorMessage('carbohydrates')}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field id="sugars-form-field" appearance="fill" class="form-field">
+                        <mat-label>Sugars</mat-label>
+                        <input id="sugars-input" matInput placeholder="Ex. 100.00" formControlName="sugars">
+                        <mat-error id="sugars-error" *ngIf="newIngredientForm.get('sugars')?.invalid">
+                            {{getFieldErrorMessage('sugars')}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <mat-form-field id="fiber-form-field" appearance="fill" class="form-field">
+                        <mat-label>Fiber</mat-label>
+                        <input id="fiber-input" matInput placeholder="Ex. 80.00" formControlName="fiber">
+                        <mat-error id="fiber-error" *ngIf="newIngredientForm.get('fiber')?.invalid">
+                            {{getFieldErrorMessage('fiber')}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field id="fat-form-field" appearance="fill" class="form-field">
+                        <mat-label>Fat</mat-label>
+                        <input id="fat-input" matInput placeholder="Ex. 20.00" formControlName="fat">
+                        <mat-error id="fat-error" *ngIf="newIngredientForm.get('fat')?.invalid">
+                            {{getFieldErrorMessage('fat')}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <button id="create-ingredient" class="btn btn-color" [disabled]="newIngredientForm.invalid">
+                    Create Ingredient
+                </button>
+            </form>
+        </mat-card-content>
+    </mat-card>
 </div>

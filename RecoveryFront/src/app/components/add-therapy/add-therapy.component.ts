@@ -51,7 +51,7 @@ export class AddTherapyComponent implements OnInit {
           this.toastr.info('Hope it helps a lot of people.', 'Succesfully created new therapy!');
           this.addTherapyForm.reset();
           addTherapyDirective.resetForm();
-          this.router.navigate(['homepage/view-therapies'])
+          this.router.navigate(['homepage/therapy/view-therapies'])
         },
         error => {
           if (error.error.message) {

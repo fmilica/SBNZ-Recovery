@@ -5,6 +5,9 @@
             <span style="vertical-align:middle;">Recovery</span>
         </div>
         <mat-nav-list *ngIf="role==='ROLE_DOCTOR'">
+            <app-menu-list-item *ngFor="let item of navDoctorData" [item]="item"></app-menu-list-item>
+        </mat-nav-list>
+        <!-- <mat-nav-list *ngIf="role==='ROLE_DOCTOR'">
             <a mat-list-item [routerLink]="'view-ingredients'" routerLinkActive="active-link">
                 View Ingredients
             </a>
@@ -43,7 +46,7 @@
             <a mat-list-item [routerLink]="'add-injury'" routerLinkActive="active-link">
                 Add Injury
             </a>
-        </mat-nav-list>
+        </mat-nav-list> -->
     </mat-drawer>
     <mat-drawer-content>
         <mat-toolbar>

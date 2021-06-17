@@ -45,6 +45,7 @@ import { MealTableComponent } from './components/meal-table/meal-table.component
 import { ReportsComponent } from './components/reports/reports.component';
 import { PatientTableComponent } from './components/tables/patient-table/patient-table.component';
 import { AssignMealComponent } from './components/assign-meal/assign-meal.component';
+import { MenuListItemComponent } from './components/menu-list-item/menu-list-item.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { AssignMealComponent } from './components/assign-meal/assign-meal.compon
     MealTableComponent,
     ReportsComponent,
     PatientTableComponent,
-    AssignMealComponent
+    AssignMealComponent,
+    MenuListItemComponent
   ],
   imports: [
     BrowserModule,

@@ -20,6 +20,6 @@ export class PatientTableComponent implements OnInit {
   }
 
   patientView(patient: Patient) {
-    this.router.navigate(['homepage/patient-view'], { state: { data: { patient } } });
+    this.router.navigate(['homepage/patient/patient-view'], { state: { data: { patient } } });
   }
 }

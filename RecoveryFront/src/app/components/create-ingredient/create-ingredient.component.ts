@@ -19,7 +19,7 @@ export class CreateIngredientComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private doctorService: DoctorService
-  ) { 
+  ) {
     this.newIngredientForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       calories: new FormControl('', [Validators.required]),
@@ -40,7 +40,7 @@ export class CreateIngredientComponent implements OnInit {
       return;
     }
 
-    const ingredient: Ingredient = new Ingredient (
+    const ingredient: Ingredient = new Ingredient(
       this.newIngredientForm.value.name,
       this.newIngredientForm.value.calories,
       this.newIngredientForm.value.waterPercentage,
@@ -52,18 +52,18 @@ export class CreateIngredientComponent implements OnInit {
     );
 
     this.doctorService.createIngredient(ingredient)
-    .subscribe(
-      response => {
-        this.toastr.success('Successfully created ingredient!');
-        this.router.navigate(['homepage/create-ingredient']);
-        this.newIngredientForm.reset();
-        createIngredientDirective.resetForm();
-      },
-      error => {
-        this.toastr.error(error.error.fieldErrors[0].defaultMessage)
-        this.newIngredientForm.reset();
-        createIngredientDirective.resetForm();
-      });
+      .subscribe(
+        response => {
+          this.toastr.success('Successfully created ingredient!');
+          this.router.navigate(['homepage/ingredient/create-ingredient']);
+          this.newIngredientForm.reset();
+          createIngredientDirective.resetForm();
+        },
+        error => {
+          this.toastr.error(error.error.fieldErrors[0].defaultMessage)
+          this.newIngredientForm.reset();
+          createIngredientDirective.resetForm();
+        });
   }
 
   getFieldErrorMessage(fieldName: string): string {

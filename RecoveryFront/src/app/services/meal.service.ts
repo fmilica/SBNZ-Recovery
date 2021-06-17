@@ -7,9 +7,9 @@ import { Patient } from "../model/patient.model";
 
 @Injectable({
     providedIn: 'root',
-  })
-  export class MealService {
-      
+})
+export class MealService {
+
     constructor(
         private http: HttpClient
     ) { }
@@ -20,7 +20,11 @@ import { Patient } from "../model/patient.model";
         return this.http.get<Meal[]>(environment.apiEndpoint + 'doctor/get-meals');
     }
 
-    createMeal(mealDto : Meal): Observable<Meal>{
+    filterMeals(illnessId: number): Observable<Meal[]> {
+        return this.http.get<Meal[]>(environment.apiEndpoint + 'doctor/filter-meals/' + illnessId);
+    }
+
+    createMeal(mealDto: Meal): Observable<Meal> {
         return this.http.post<Meal>(environment.apiEndpoint + 'doctor/create-meal', mealDto, {
             headers: this.headers
         });
@@ -30,9 +34,9 @@ import { Patient } from "../model/patient.model";
         return this.http.get<Meal[]>(environment.apiEndpoint + 'doctor/patient-rank-meals/' + patientUsername);
     }
 
-    addMeal(mealDto : Meal, patientId: number): Observable<Meal>{
+    addMeal(mealDto: Meal, patientId: number): Observable<Meal> {
         return this.http.post<Meal>(environment.apiEndpoint + 'doctor/' + patientId + "/add-meal", mealDto, {
             headers: this.headers
         });
     }
-  }
+}

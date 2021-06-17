@@ -1,6 +1,18 @@
 <mat-progress-bar class="progress-bar" mode="indeterminate" *ngIf="dataSource.length===0">
 </mat-progress-bar>
 <div class="table-title">View Ingredients</div>
+<form [formGroup]="filterForm" (ngSubmit)="onFilter()" class="w-100">
+    <mat-form-field appearance="standard" class="col-md-5">
+        <mat-label>Applicable Illnesses</mat-label>
+        <mat-select formControlName="illness">
+            <mat-option *ngFor="let illness of allIllnesses" [value]="illness.id">
+                {{illness.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button class="btn btn-color m-2">
+        Filter
+    </button>
+</form>
 <div class="ng-container row justify-content-md-center">
     <div class="col-md-11">
         <table mat-table [dataSource]="dataSource" id="ingredient-table">

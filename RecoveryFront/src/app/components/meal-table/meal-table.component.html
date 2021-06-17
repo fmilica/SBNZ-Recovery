@@ -34,6 +34,13 @@
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Ingredient Amount </th>
                         <td mat-cell *matCellDef="let ingredientAmount"> {{ingredientAmount.amount}} g </td>
                     </ng-container>
+
+                    <ng-container matColumnDef="illnesses">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Applicable Illnesses </th>
+                        <td mat-cell *matCellDef="let ingredientAmount">
+                            {{formatIllnesses(ingredientAmount.ingredient.illnesses)}}
+                        </td>
+                    </ng-container>
                 </table>
             </div>
         </td>

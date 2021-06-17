@@ -76,4 +76,25 @@ public class InjuryType {
 	public void setTherapies(Set<Therapy> therapies) {
 		this.therapies = therapies;
 	}
+
+	@Override
+	public int hashCode() {
+		return id.intValue();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InjuryType other = (InjuryType) obj;
+		if (id == other.id) {
+			return true;
+		}
+		return false;
+	}
+	
 }

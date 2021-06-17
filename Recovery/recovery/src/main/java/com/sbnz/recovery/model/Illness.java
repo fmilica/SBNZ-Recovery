@@ -115,4 +115,24 @@ public class Illness implements Serializable {
 	public void setPatients(Set<Patient> patients) {
 		this.patients = patients;
 	}
+
+	@Override
+	public int hashCode() {
+		return id.intValue();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Illness other = (Illness) obj;
+		if (id == other.id) {
+			return true;
+		}
+		return false;
+	}
 }

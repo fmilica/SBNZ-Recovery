@@ -22,6 +22,7 @@ import com.sbnz.recovery.exceptions.NonExistingIdException;
 import com.sbnz.recovery.model.AppliedTherapy;
 import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.model.DailyMeal;
+import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.Ingredient;
 import com.sbnz.recovery.model.IngredientAmount;
 import com.sbnz.recovery.model.Meal;
@@ -32,6 +33,7 @@ import com.sbnz.recovery.model.enums.AssignType;
 import com.sbnz.recovery.model.events.MealEvent;
 import com.sbnz.recovery.repository.AppliedTherapyRepository;
 import com.sbnz.recovery.repository.DailyMealRepository;
+import com.sbnz.recovery.repository.IllnessRepository;
 import com.sbnz.recovery.repository.IngredientAmountRepository;
 import com.sbnz.recovery.repository.IngredientRepository;
 import com.sbnz.recovery.repository.MealRepository;
@@ -64,6 +66,9 @@ public class DoctorService {
 	
 	@Autowired
 	private PatientRepository patientRepository;
+	
+	@Autowired
+	private IllnessRepository illnessRepository;
 
 	@Autowired
 	@Qualifier(value = "rulesSession")
@@ -73,19 +78,12 @@ public class DoctorService {
 	@Qualifier(value = "cepSession")
 	private KieSession cepSession;
 	
-//	public Therapy createTherapy(Therapy therapy) {
-//		return therapyRepository.save(therapy);
-//	}
 	
 	public Ingredient createIngredient(Ingredient ingredient) {
 		rulesSession.getAgenda().getAgendaGroup("classify-ingredient").setFocus();
 		rulesSession.insert(ingredient);
 		rulesSession.fireAllRules();
 		return ingredientRepository.save(ingredient);
-	}
-	
-	public List<Ingredient> findAllIngredients(){
-		return ingredientRepository.findAll(); 
 	}
 	
 	public Meal createMeal(Meal meal) throws Exception {
@@ -101,10 +99,6 @@ public class DoctorService {
 		rulesSession.insert(meal);
 		rulesSession.fireAllRules();
 		return mealRepository.save(meal);
-	}
-	
-	public List<Meal> findAllMeals(){
-		return mealRepository.findAll(); 
 	}
 	
 	public List<Meal> findAllAvailableMeals(String patientUsername) throws Exception{
@@ -197,7 +191,8 @@ public class DoctorService {
 	public DailyMeal findAllDailyMeals(Long patientId){
 		return dailyMealRepository.findOneByPatientIdAndDay(patientId, new Date());
 	}
-	
+
+  // reports
 	public List<Patient> findPotentialAbuse() {
 		List<Patient> patientReport = new ArrayList<Patient>();
 		rulesSession.setGlobal("patientReport", patientReport);
@@ -248,4 +243,60 @@ public class DoctorService {
 		}
 		return total;
 	}
+	
+	// filter
+	public List<Ingredient> filterIngredients(Long illnessId) throws NonExistingIdException {
+		Illness illness = illnessRepository.findById(illnessId).orElse(null);
+		if (illness == null) {
+			throw new NonExistingIdException("Illness");
+		}
+		QueryResults results = rulesSession.getQueryResults("getAllIngredientsByIllness", illness);
+		List<Ingredient> ingredients = new ArrayList<>();
+		
+		for (QueryResultsRow row : results) {
+			Ingredient ingredient = (Ingredient) row.get("$ingredient");
+			ingredients.add(ingredient);
+		}
+		return ingredients;
+	}
+	
+	public List<Meal> filterMeals(Long illnessId) throws NonExistingIdException {
+		Illness illness = illnessRepository.findById(illnessId).orElse(null);
+		if (illness == null) {
+			throw new NonExistingIdException("Illness");
+		}
+		QueryResults results = rulesSession.getQueryResults("getAllMealsByIllness", illness);
+		List<Meal> meals = new ArrayList<>();
+		
+		for (QueryResultsRow row : results) {
+			meals = (List<Meal>) row.get("$meals");
+		}
+		return meals;
+	}
+	
+	// find all iz sesije
+	public List<Ingredient> findAllIngredients(){
+		QueryResults results = rulesSession.getQueryResults("getAllIngredients");
+		List<Ingredient> ingredients = new ArrayList<>();
+		
+		for (QueryResultsRow row : results) {
+			Ingredient ingredient = (Ingredient) row.get("$ingredient");
+			ingredients.add(ingredient);
+		}
+		return ingredients;
+		//return ingredientRepository.findAll(); 
+	}
+	
+	public List<Meal> findAllMeals(){
+		QueryResults results = rulesSession.getQueryResults("getAllMeals");
+		List<Meal> meals = new ArrayList<>();
+		
+		for (QueryResultsRow row : results) {
+			Meal meal = (Meal) row.get("$meal");
+			meals.add(meal);
+		}
+		return meals;
+		//return mealRepository.findAll(); 
+	}
+	
 }

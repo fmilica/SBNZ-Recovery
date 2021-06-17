@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -43,6 +44,21 @@ public class TherapyController {
         List<Therapy> therapies;
 		try {
 			therapies = therapyService.getAllTherapies();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
+        return new ResponseEntity<>(viewTherapyMapper.toDtoList(therapies), HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@GetMapping(value = "/filter")
+	public ResponseEntity<List<ViewTherapyDTO>> filterTherapies(
+			@RequestParam(name = "illnessId") Long illnessId,
+			@RequestParam(name = "injuryTypeId") Long injuryTypeId) {
+        List<Therapy> therapies;
+		try {
+			therapies = therapyService.filterTherapiesByIllness(illnessId, injuryTypeId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

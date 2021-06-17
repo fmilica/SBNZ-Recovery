@@ -1,5 +1,6 @@
 package com.sbnz.recovery.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kie.api.runtime.KieSession;
@@ -13,11 +14,15 @@ import com.sbnz.recovery.exceptions.ExistingFieldValueException;
 import com.sbnz.recovery.exceptions.NonExistingIdException;
 import com.sbnz.recovery.model.AppliedTherapy;
 import com.sbnz.recovery.model.ChosenPatient;
+import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.Injury;
+import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.model.enums.AssignType;
 import com.sbnz.recovery.repository.AppliedTherapyRepository;
+import com.sbnz.recovery.repository.IllnessRepository;
+import com.sbnz.recovery.repository.InjuryTypeRepository;
 import com.sbnz.recovery.repository.PatientRepository;
 import com.sbnz.recovery.repository.TherapyRepository;
 
@@ -34,11 +39,71 @@ public class TherapyService {
 	private PatientRepository patientRepository;
 	
 	@Autowired
+	private IllnessRepository illnessRepository;
+	
+	@Autowired
+	private InjuryTypeRepository injuryTypeRepository;
+	
+	@Autowired
 	@Qualifier(value = "rulesSession")
 	private KieSession rulesSession;
 	
 	public List<Therapy> getAllTherapies() {
-		return therapyRepository.findAll();
+		QueryResults results = rulesSession.getQueryResults("getAllTherapies");
+		List<Therapy> therapies = new ArrayList<>();
+		
+		for (QueryResultsRow row : results) {
+			Therapy therapy = (Therapy) row.get("$therapy");
+			therapies.add(therapy);
+		}
+		return therapies;
+		//return therapyRepository.findAll();
+	}
+	
+	public List<Therapy> filterTherapiesByIllness(Long illnessId, Long injuryTypeId) throws NonExistingIdException {
+		QueryResults allResult = rulesSession.getQueryResults("getAllTherapies");
+		List<Therapy> therapies = new ArrayList<>();
+		
+		for (QueryResultsRow row : allResult) {
+			Therapy therapy = (Therapy) row.get("$therapy");
+			therapies.add(therapy);
+		}
+		
+		if (illnessId != -1) {
+			Illness illness = illnessRepository.findById(illnessId).orElse(null);
+			if (illness == null) {
+				throw new NonExistingIdException("Illness");
+			}
+			
+			QueryResults resultsIllness = rulesSession.getQueryResults("getAllTherapiesByIllness", illness);
+			List<Therapy> therapiesIllness = new ArrayList<>();
+			
+			for (QueryResultsRow row : resultsIllness) {
+				Therapy therapy = (Therapy) row.get("$therapy");
+				therapiesIllness.add(therapy);
+			}
+			// presek dve liste
+			therapies.retainAll(therapiesIllness);
+			
+		} else if (injuryTypeId != -1) {
+			InjuryType injuryType = injuryTypeRepository.findById(injuryTypeId).orElse(null);
+			if (injuryType == null) {
+				throw new NonExistingIdException("Injury type");
+			}
+			
+			QueryResults resultsInjuryType = rulesSession.getQueryResults("getAllTherapiesByInjuryType", injuryType);
+			List<Therapy> therapiesInjuryType = new ArrayList<>();
+			
+			for (QueryResultsRow row : resultsInjuryType) {
+				Therapy therapy = (Therapy) row.get("$therapy");
+				therapiesInjuryType.add(therapy);
+			}
+			// presek dve liste
+			therapies.retainAll(therapiesInjuryType);
+			
+		}
+		
+		return therapies;
 	}
 	
 	public Therapy createTherapy(Therapy therapy) throws ExistingFieldValueException, NonExistingIdException {

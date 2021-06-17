@@ -11,12 +11,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.sbnz.recovery.model.Illness;
+import com.sbnz.recovery.model.Ingredient;
 import com.sbnz.recovery.model.InjuryRequirement;
 import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.Meal;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.repository.IllnessRepository;
+import com.sbnz.recovery.repository.IngredientRepository;
 import com.sbnz.recovery.repository.InjuryRequirementRepository;
 import com.sbnz.recovery.repository.InjuryTypeRepository;
 import com.sbnz.recovery.repository.MealRepository;
@@ -43,6 +45,9 @@ public class KieConfiguration {
 	
 	@Autowired
 	private PatientRepository patientRepository;
+
+	@Autowired
+	private IngredientRepository ingredientRepository;
 	
 	@Autowired
 	private MealRepository mealRepository;
@@ -94,6 +99,11 @@ public class KieConfiguration {
 		List<Patient> patients = patientRepository.findAll();
 		for (Patient patient : patients) {
 			kieSession.insert(patient);
+		}
+		// ubacivanje svih ingredient objekata
+		List<Ingredient> ingredients = ingredientRepository.findAll();
+		for (Ingredient ingredient : ingredients) {
+			kieSession.insert(ingredient);
 		}
 		// ubacivanje svih meal objekata
 		List<Meal> meals = mealRepository.findAll();

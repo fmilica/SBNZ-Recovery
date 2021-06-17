@@ -115,6 +115,18 @@ public class DoctorController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@GetMapping("/filter-ingredients/{illnessId}")
+	public ResponseEntity<List<IngredientDTO>> filterIngredients(@PathVariable("illnessId") Long illnessId) {
+		List<Ingredient> ingredients = new ArrayList<Ingredient>();
+		try {
+            ingredients = doctorService.filterIngredients(illnessId);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+		return new ResponseEntity<List<IngredientDTO>>(ingredientMapper.toDtoList(ingredients), HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@PostMapping("/create-meal")
 	public ResponseEntity<MealDTO> createMeal(@RequestBody MealDTO mealDto) {
 
@@ -139,6 +151,18 @@ public class DoctorController {
 		
 		try {
 			meals = doctorService.findAllMeals();
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+		return new ResponseEntity<List<MealDTO>>(mealMapper.toDtoList(meals), HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@GetMapping("/filter-meals/{illnessId}")
+	public ResponseEntity<List<MealDTO>> filterMeals(@PathVariable("illnessId") Long illnessId) {
+		List<Meal> meals = new ArrayList<Meal>();
+		try {
+			meals = doctorService.filterMeals(illnessId);
         }catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

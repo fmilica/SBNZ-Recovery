@@ -65,7 +65,7 @@ public class TherapyController {
 			@RequestParam(name = "injuryTypeId") Long injuryTypeId) {
         List<Therapy> therapies;
 		try {
-			therapies = therapyService.filterTherapiesByIllness(illnessId, injuryTypeId);
+			therapies = therapyService.filterTherapiesByIllnessAndInjuryType(illnessId, injuryTypeId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

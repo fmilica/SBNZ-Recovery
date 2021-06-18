@@ -20,7 +20,7 @@ rule "Sedentary injuries"
     		activityAfterInjury == PhysicalActivity.SEDENTARY)
     	$p: Patient( id == $chosenPatientId, physicalActivityAfterInjury == null, 
     		 $age : DateUtility.getDiffYears(dateOfBirth),
-    		 $age > $lowerAge, $age <= $upperAge)
+    		 $age >= $lowerAge, $age <= $upperAge)
 		$internalInjuries : List(size > 0) 
 			from collect(
 				Injury(injuryType.name == $injuryType.name,
@@ -43,7 +43,7 @@ rule "Light active injuries"
     		activityAfterInjury == PhysicalActivity.LIGHT_ACTIVE)
     	$p: Patient( id == $chosenPatientId, physicalActivityAfterInjury == null, 
     		 $age : DateUtility.getDiffYears(dateOfBirth),
-    		 $age > $lowerAge, $age <= $upperAge)
+    		 $age >= $lowerAge, $age <= $upperAge)
 		$internalInjuries : List(size > 0) 
 			from collect(
 				Injury(injuryType.name == $injuryType.name,
@@ -66,7 +66,7 @@ rule "Moderate injuries"
     		activityAfterInjury == PhysicalActivity.MODERATE)
     	$p: Patient( id == $chosenPatientId, physicalActivityAfterInjury == null, 
     		 $age : DateUtility.getDiffYears(dateOfBirth),
-    		 $age > $lowerAge, $age <= $upperAge)
+    		 $age >= $lowerAge, $age <= $upperAge)
 		$internalInjuries : List(size > 0) 
 			from collect(
 				Injury(injuryType.name == $injuryType.name,

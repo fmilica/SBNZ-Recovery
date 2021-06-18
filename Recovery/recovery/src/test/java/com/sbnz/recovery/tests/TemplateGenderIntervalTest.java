@@ -2,16 +2,28 @@ package com.sbnz.recovery.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.maven.shared.invoker.DefaultInvocationRequest;
+import org.apache.maven.shared.invoker.DefaultInvoker;
+import org.apache.maven.shared.invoker.InvocationRequest;
+import org.apache.maven.shared.invoker.Invoker;
 import org.apache.maven.shared.invoker.MavenInvocationException;
+import org.drools.template.ObjectDataCompiler;
 import org.junit.Before;
 import org.junit.Test;
 import org.kie.api.KieServices;
@@ -24,6 +36,7 @@ import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
+import com.sbnz.recovery.model.templates.GenderIntervalTemplateModel;
 
 public class TemplateGenderIntervalTest {
 
@@ -35,7 +48,7 @@ public class TemplateGenderIntervalTest {
 	@Before
 	public void setUp() throws IOException, MavenInvocationException {
 		// generate template file
-		/*List<GenderIntervalTemplateModel> data = new ArrayList<GenderIntervalTemplateModel>();
+		List<GenderIntervalTemplateModel> data = new ArrayList<GenderIntervalTemplateModel>();
 		LocalDate startDate = LocalDate.of(2020, 1, 1);
 		LocalDate endDate = LocalDate.of(2022, 1, 1);
 		data.add(new GenderIntervalTemplateModel(startDate, endDate, Gender.FEMALE));
@@ -58,7 +71,7 @@ public class TemplateGenderIntervalTest {
 
 		Invoker invoker = new DefaultInvoker();
 		invoker.setMavenHome(new File(System.getenv("MAVEN_HOME")));
-		invoker.execute(request);*/
+		invoker.execute(request);
 		fracture = new InjuryType(1L, "FRACTURE");
 		// setup session
 		KieServices ks = KieServices.Factory.get();

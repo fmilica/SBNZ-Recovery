@@ -121,8 +121,8 @@ export class ReportsComponent implements OnInit {
           new InjuryCount(
             this.reportForm.value.startDate,
             this.reportForm.value.endDate,
-            this.reportForm.value.injuryType
-            - 1,
+            this.reportForm.value.injuryType,
+            -1,
             -1
           );
         this.doctorService.getInjuryCountByInjuryType(injuryCount)
@@ -137,6 +137,9 @@ export class ReportsComponent implements OnInit {
           )
         break;
       case "GENDER":
+        if (this.reportForm.value.startDate === "" || this.reportForm.value.endDate === "") {
+          return;
+        }
         interval =
           new GenderCount(
             this.reportForm.value.startDate,

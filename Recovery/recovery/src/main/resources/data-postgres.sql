@@ -40,14 +40,14 @@ insert into user_authority (user_id, authority_id) values (9, 2);
 insert into meal(name, meal_description, total_calories)
 values ('Apple soup', 'Low cooking', 470.00);
 insert into meal(name, meal_description, total_calories)
-values ('Pecenje', 'Pork based', 2000.00);
+values ('Steak', 'Pork based', 2000.00);
 
 insert into ingredient (name, calories, carbohydrates, sugars, fat, fibers, proteins, water_percentage)
-values ('ingredient1', 100.00, 50.00, 30.00, 5.00, 20.00, 20.00, 20.00);
+values ('Apple', 100.00, 50.00, 30.00, 5.00, 20.00, 20.00, 20.00);
 insert into ingredient (name, calories, carbohydrates, sugars, fat, fibers, proteins, water_percentage)
-values ('ingredient2', 90.00, 20.00, 30.00, 5.00, 20.00, 20.00, 20.00);
+values ('Carrot', 90.00, 20.00, 30.00, 5.00, 20.00, 20.00, 20.00);
 insert into ingredient (name, calories, carbohydrates, sugars, fat, fibers, proteins, water_percentage)
-values ('ingredient3', 20.00, 20.00, 45.00, 5.00, 20.00, 20.00, 20.00);
+values ('Meat', 20.00, 20.00, 45.00, 5.00, 20.00, 20.00, 20.00);
 
 insert into illness(name)
 values ('Diabetes');
@@ -64,7 +64,7 @@ insert into injury_type(name)
 values ('Internal');
 
 insert into therapy (name, therapy_type, maximum_monthly_application, temperature, intensity)
-values ('Terapija', 1, 20, 25.0, 3);
+values ('Electrode', 1, 20, 25.0, 3);
 insert into therapy_illness(therapy_id, illness_id)
 values (1, 1);
 insert into therapy_illness(therapy_id, illness_id)
@@ -73,7 +73,7 @@ insert into therapy_injury_type(therapy_id, injury_type_id)
 values (1, 1);
 
 insert into therapy (name, therapy_type, maximum_monthly_application, temperature, intensity)
-values ('Odmaranje', 0, 3, 0.0, 1);
+values ('Bed rest', 0, 3, 0.0, 1);
 insert into therapy_illness(therapy_id, illness_id)
 values (2, 1);
 insert into therapy_illness(therapy_id, illness_id)
@@ -171,15 +171,15 @@ values (7, 7);
 
 -- PACIJENT 5 -> povrede i terapije
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Povreda bubrega', '2021-05-25', null, 'opis', 2, 5, 7);
+values ('Kidney injury', '2021-05-25', null, 'desc', 3, 5, 7);
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Povreda jetre', '2021-05-25', null, 'opis', 2, 5, 6);
+values ('Liver injury', '2021-05-25', null, 'desc', 3, 5, 6);
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Istegnuce ruke', '2021-05-25', null, 'opis', 1, 5, 0);
+values ('Deltoid muscle strain', '2021-05-25', null, 'desc', 1, 5, 0);
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Prelom noge', '2021-05-25', null, 'opis', 3, 5, 2);
+values ('Tibia fracture', '2021-05-25', null, 'desc', 2, 5, 2);
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Prelom ruke', '2021-05-25', null, 'opis', 3, 5, 0);
+values ('Radius fracture', '2021-05-25', null, 'desc', 2, 5, 0);
 -- primenjena terapija
 insert into applied_therapy(application_date, therapy_id, injury_id) 
 values ('2021-05-26', 1, 4);
@@ -187,41 +187,41 @@ insert into applied_therapy(application_date, therapy_id, injury_id)
 values ('2021-05-26', 1, 5);
 
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Istegnuce ruke', '2021-05-25', null, 'opis', 1, 6, 0);
+values ('Deltoid muscle strain', '2021-05-25', null, 'desc', 1, 6, 0);
 
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Istegnuce ruke', '2021-05-25', null, 'opis', 1, 7, 0);
+values ('Triceps muscle strain', '2021-05-25', null, 'desc', 1, 7, 0);
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Prelom ruke', '2021-05-25', null, 'opis', 3, 7, 0);
+values ('Humerus fracture', '2021-05-25', null, 'desc', 2, 7, 0);
 
 -- IZVESTAJI
 -- abuse
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Prelom ruke', '2021-05-01', null, 'opis', 2, 9, 0);
+values ('Humerus fracture', '2021-05-01', null, 'desc', 2, 9, 0);
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Prelom noge', '2021-04-12', null, 'opis', 2, 9, 2);
+values ('Fibula fracture', '2021-04-12', null, 'desc', 2, 9, 2);
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Prelom kuka', '2021-02-12', null, 'opis', 2, 9, 3);
+values ('Hip fracture', '2021-02-12', null, 'desc', 2, 9, 3);
 -- eating disorder
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Prelom ruke', '2021-06-12', null, 'opis', 2, 8, 0);
+values ('Ulna fracture', '2021-06-12', null, 'desc', 2, 8, 0);
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Prelom noge', '2021-05-20', null, 'opis', 2, 8, 2);
+values ('Femur fracture', '2021-05-20', null, 'desc', 2, 8, 2);
 -- atrophy
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Prelom ruke', '2021-05-01', null, 'opis', 2, 10, 0);
+values ('Ulna fracture', '2021-05-01', null, 'desc', 2, 10, 0);
 insert into applied_therapy(application_date, therapy_id, injury_id) 
 values ('2021-05-03', 2, 14);
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Prelom noge', '2021-04-12', null, 'opis', 2, 10, 2);
+values ('Tibia fracture', '2021-04-12', null, 'desc', 2, 10, 2);
 insert into applied_therapy(application_date, therapy_id, injury_id) 
 values ('2021-04-13', 2, 15);
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Prelom noge', '2021-03-20', null, 'opis', 2, 10, 2);
+values ('Tibia fracture', '2021-03-20', null, 'desc', 2, 10, 2);
 insert into applied_therapy(application_date, therapy_id, injury_id) 
 values ('2021-03-23', 2, 16);
 insert into injury(name, start_date, end_date, description, injury_type_id, patient_id, injury_body_parts)
-values ('Prelom noge', '2020-07-30', null, 'opis', 2, 10, 2);
+values ('Femur fracture', '2020-07-30', null, 'desc', 2, 10, 2);
 insert into applied_therapy(application_date, therapy_id, injury_id) 
 values ('2020-06-02', 2, 17);
 

@@ -61,7 +61,8 @@ public class TherapyService {
 		//return therapyRepository.findAll();
 	}
 	
-	public List<Therapy> filterTherapiesByIllness(Long illnessId, Long injuryTypeId) throws NonExistingIdException {
+	public List<Therapy> filterTherapiesByIllnessAndInjuryType(
+			Long illnessId, Long injuryTypeId) throws NonExistingIdException {
 		QueryResults allResult = rulesSession.getQueryResults("getAllTherapies");
 		List<Therapy> therapies = new ArrayList<>();
 		
@@ -86,7 +87,8 @@ public class TherapyService {
 			// presek dve liste
 			therapies.retainAll(therapiesIllness);
 			
-		} else if (injuryTypeId != -1) {
+		}
+		if (injuryTypeId != -1) {
 			InjuryType injuryType = injuryTypeRepository.findById(injuryTypeId).orElse(null);
 			if (injuryType == null) {
 				throw new NonExistingIdException("Injury type");

@@ -56,8 +56,10 @@ export class AboutPatientComponent implements OnInit {
     }
     else if(activity === "VERY_ACTIVE"){
       return "Very active"
+    } else if(activity === "EXTRA_ACTIVE"){
+      return "Extra active";
     }
-    return "Extra active";
+    return "No active injuries";
   }
 
 }

@@ -4,11 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -25,6 +21,7 @@ import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.Injury;
 import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.Patient;
+import com.sbnz.recovery.model.Report;
 import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
@@ -90,12 +87,8 @@ public class ReportsTest {
 		
 		kieSession.insert(patient);
 		
+		kieSession.insert(new Report());
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(1, firedRules);
-		assertEquals(1, patientReport.size());
-		assertEquals(patient.getUsername(), patientReport.get(0).getUsername());
-		
-		firedRules = kieSession.fireAllRules();
 		assertEquals(1, firedRules);
 		assertEquals(1, patientReport.size());
 		assertEquals(patient.getUsername(), patientReport.get(0).getUsername());
@@ -118,6 +111,7 @@ public class ReportsTest {
 
 		kieSession.insert(patient);
 		
+		kieSession.insert(new Report());
 		int firedRules = kieSession.fireAllRules();
 		assertEquals(0, firedRules);
 		assertEquals(0, patientReport.size());
@@ -156,6 +150,7 @@ public class ReportsTest {
 
 		kieSession.insert(patient);
 		
+		kieSession.insert(new Report());
 		int firedRules = kieSession.fireAllRules();
 		assertEquals(1, firedRules);
 		assertEquals(1, patientReport.size());
@@ -193,6 +188,7 @@ public class ReportsTest {
 
 		kieSession.insert(patient);
 		
+		kieSession.insert(new Report());
 		int firedRules = kieSession.fireAllRules();
 		assertEquals(0, firedRules);
 		assertEquals(0, patientReport.size());
@@ -216,6 +212,7 @@ public class ReportsTest {
 
 		kieSession.insert(patient);
 		
+		kieSession.insert(new Report());
 		int firedRules = kieSession.fireAllRules();
 		assertEquals(1, firedRules);
 		assertEquals(1, patientReport.size());
@@ -236,6 +233,7 @@ public class ReportsTest {
 
 		kieSession.insert(patient);
 		
+		kieSession.insert(new Report());
 		int firedRules = kieSession.fireAllRules();
 		assertEquals(0, firedRules);
 		assertEquals(0, patientReport.size());

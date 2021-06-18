@@ -63,6 +63,11 @@ private KieSession kieSession;
 		kieSession.insert(new MealEvent("username", 1.00));
 		firedRules = kieSession.fireAllRules();	
 		
+		assertEquals(0, firedRules);
+		
+		kieSession.insert(new MealEvent("username", 90.00));
+		firedRules = kieSession.fireAllRules();	
+		
 		assertEquals(1, firedRules);
 	}
 }

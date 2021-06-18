@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { GenderCount } from 'src/app/model/gender-count.model';
 import { InjuryCount } from 'src/app/model/injury-count.model';
 import { InjuryType } from 'src/app/model/injury-type.model';
 import { Patient } from 'src/app/model/patient.model';
@@ -21,6 +22,11 @@ export class ReportsComponent implements OnInit {
   injuryCount: number = 0;
 
   patientTableView: boolean = true;
+  noPatientTableView: boolean = false;
+
+  genderCount: boolean = false;
+  maleInjuries: number = 0;
+  femaleInjuries: number = 0;
 
   constructor(
     private doctorService: DoctorService,
@@ -51,6 +57,7 @@ export class ReportsComponent implements OnInit {
     }
 
     let injuryCount: InjuryCount;
+    let interval: GenderCount;
     const report = this.reportForm.value.report;
     switch (report) {
       case "ABUSE":
@@ -60,6 +67,8 @@ export class ReportsComponent implements OnInit {
               response.length === 0 ? this.noResult = true : this.noResult = false;
               this.dataSource = response;
               this.patientTableView = true;
+              this.noPatientTableView = false;
+              this.genderCount = false;
             }
           )
         break;
@@ -70,6 +79,8 @@ export class ReportsComponent implements OnInit {
               response.length === 0 ? this.noResult = true : this.noResult = false;
               this.dataSource = response;
               this.patientTableView = true;
+              this.noPatientTableView = false;
+              this.genderCount = false;
             }
           )
         break;
@@ -80,6 +91,8 @@ export class ReportsComponent implements OnInit {
               response.length === 0 ? this.noResult = true : this.noResult = false;
               this.dataSource = response;
               this.patientTableView = true;
+              this.noPatientTableView = false;
+              this.genderCount = false;
             }
           )
         break;
@@ -98,6 +111,8 @@ export class ReportsComponent implements OnInit {
               this.injuryCount = response;
               this.noResult = false;
               this.patientTableView = false;
+              this.noPatientTableView = true;
+              this.genderCount = false;
             }
           )
         break;
@@ -116,6 +131,32 @@ export class ReportsComponent implements OnInit {
               this.injuryCount = response;
               this.noResult = false;
               this.patientTableView = false;
+              this.noPatientTableView = true;
+              this.genderCount = false;
+            }
+          )
+        break;
+      case "GENDER":
+        interval =
+          new GenderCount(
+            this.reportForm.value.startDate,
+            this.reportForm.value.endDate
+          );
+        this.doctorService.getInjuryCountByGender(interval)
+          .subscribe(
+            response => {
+              response.forEach(element => {
+                if(element.gender == "MALE"){
+                  this.maleInjuries = element.count
+                }
+                else{
+                  this.femaleInjuries = element.count
+                }
+              });
+              this.genderCount = true;
+              this.noResult = false;
+              this.patientTableView = false;
+              this.noPatientTableView = false;
             }
           )
         break;

@@ -6,6 +6,8 @@ import { environment } from "src/environments/environment";
 import { Meal } from "../model/meal.model";
 import { Patient } from "../model/patient.model";
 import { InjuryCount } from "../model/injury-count.model";
+import { GenderCount } from "../model/gender-count.model";
+import { TemplateDTO } from "../model/template-dto.model";
 
 @Injectable({
     providedIn: 'root',
@@ -58,6 +60,12 @@ export class DoctorService {
 
     getInjuryCountByInjuryType(injuryCount: InjuryCount): Observable<number> {
         return this.http.post<number>(environment.apiEndpoint + 'doctor/injury-count-by-type', injuryCount, {
+            headers: this.headers
+        });
+    }
+
+    getInjuryCountByGender(interval: GenderCount): Observable<TemplateDTO[]> {
+        return this.http.post<TemplateDTO[]>(environment.apiEndpoint + 'doctor/injury-count-by-gender', interval, {
             headers: this.headers
         });
     }

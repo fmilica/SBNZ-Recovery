@@ -1,7 +1,9 @@
 package com.sbnz.recovery.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +23,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.sbnz.recovery.dto.AppliedTherapyDTO;
 import com.sbnz.recovery.dto.DailyMealDTO;
+import com.sbnz.recovery.dto.GenderCountDTO;
 import com.sbnz.recovery.dto.IngredientDTO;
 import com.sbnz.recovery.dto.InjuryCountDTO;
 import com.sbnz.recovery.dto.MealDTO;
 import com.sbnz.recovery.dto.PatientDTO;
+import com.sbnz.recovery.dto.TemplateDTO;
 import com.sbnz.recovery.helper.AppliedTherapyMapper;
 import com.sbnz.recovery.helper.DailyMealMapper;
 import com.sbnz.recovery.helper.IngredientMapper;
@@ -304,5 +308,17 @@ public class DoctorController {
         }
 
 		return new ResponseEntity<Integer>(total, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@PostMapping("/injury-count-by-gender")
+	public ResponseEntity<List<TemplateDTO>> getInjuryCountByGender(@RequestBody GenderCountDTO countGender) {
+		List<TemplateDTO> result = new ArrayList<TemplateDTO>();
+		try {
+			result = doctorService.findInjuryCountByGenderAndInterval(countGender);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+		return new ResponseEntity<List<TemplateDTO>>(result, HttpStatus.OK);
 	}
 }

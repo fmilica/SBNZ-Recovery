@@ -1,11 +1,27 @@
 package com.sbnz.recovery.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.maven.shared.invoker.DefaultInvocationRequest;
+import org.apache.maven.shared.invoker.DefaultInvoker;
+import org.apache.maven.shared.invoker.InvocationRequest;
+import org.apache.maven.shared.invoker.Invoker;
+import org.apache.maven.shared.invoker.MavenInvocationException;
+import org.drools.template.ObjectDataCompiler;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 import org.kie.api.runtime.rule.QueryResults;
@@ -14,9 +30,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.sbnz.recovery.dto.GenderCountDTO;
 import com.sbnz.recovery.dto.InjuryCountDTO;
 import com.sbnz.recovery.dto.MealDTO;
 import com.sbnz.recovery.dto.PatientDTO;
+import com.sbnz.recovery.dto.TemplateDTO;
 import com.sbnz.recovery.exceptions.ExistingFieldValueException;
 import com.sbnz.recovery.exceptions.NonExistingIdException;
 import com.sbnz.recovery.model.AppliedTherapy;
@@ -30,7 +48,9 @@ import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Report;
 import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.model.enums.AssignType;
+import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.events.MealEvent;
+import com.sbnz.recovery.model.templates.GenderIntervalTemplateModel;
 import com.sbnz.recovery.repository.AppliedTherapyRepository;
 import com.sbnz.recovery.repository.DailyMealRepository;
 import com.sbnz.recovery.repository.IllnessRepository;
@@ -299,4 +319,46 @@ public class DoctorService {
 		//return mealRepository.findAll(); 
 	}
 	
+	
+	public List<TemplateDTO> findInjuryCountByGenderAndInterval(GenderCountDTO countGender) throws IOException, MavenInvocationException {
+		List<GenderIntervalTemplateModel> data = new ArrayList<GenderIntervalTemplateModel>();
+		data.add(new GenderIntervalTemplateModel(countGender.getStartDate(), countGender.getEndDate(), Gender.FEMALE));
+		data.add(new GenderIntervalTemplateModel(countGender.getStartDate(), countGender.getEndDate(), Gender.MALE));
+		
+		InputStream template = new FileInputStream("../drools-spring-kjar/src/main/resources/templates/interval-count.drt");
+		
+		ObjectDataCompiler converter = new ObjectDataCompiler();
+		String drl = converter.compile(data, template);
+		
+		FileOutputStream drlFile = new FileOutputStream(new File(
+				"../drools-spring-kjar/src/main/resources/rules/interval-count.drl"));
+		drlFile.write(drl.getBytes());
+		drlFile.close();
+		
+		// recompile drools-spring-kjar
+		InvocationRequest request = new DefaultInvocationRequest();
+		request.setPomFile(new File("../drools-spring-kjar/pom.xml"));
+		request.setGoals(Collections.singletonList("install"));
+
+		Invoker invoker = new DefaultInvoker();
+		invoker.setMavenHome(new File(System.getenv("MAVEN_HOME")));
+		invoker.execute(request);
+		
+		//kompajliraj i uradi sve
+		Map<Integer, Double> result = new HashMap<Integer, Double>();
+		rulesSession.setGlobal("result", result);
+		rulesSession.getAgenda().getAgendaGroup("template-rules").setFocus();
+		rulesSession.fireAllRules();
+		
+		List<TemplateDTO> dtos = new ArrayList<TemplateDTO>();
+		for (Entry<Integer, Double> entry : result.entrySet()) {
+			int key = (int) entry.getKey();
+			Gender gender = Gender.FEMALE;
+			if(key == 0) {
+				gender = Gender.MALE;
+			}
+			dtos.add(new TemplateDTO(gender, entry.getValue()));
+		}
+		return dtos;
+	}
 }

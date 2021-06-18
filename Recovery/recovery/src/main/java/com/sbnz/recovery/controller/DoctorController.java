@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,24 +64,6 @@ public class DoctorController {
 		this.appliedTherapyMapper = new AppliedTherapyMapper();
 		this.dailyMealMapper = new DailyMealMapper();
 	}
-	
-//	@PreAuthorize("hasRole('ROLE_DOCTOR')")
-//	@PostMapping("/create-therapy")
-//	public ResponseEntity<TherapyDTO> createTherapy(@RequestBody TherapyDTO therapyDto) {
-//
-//		Therapy therapy = theraphyMapper.toEntity(therapyDto);
-//
-//		log.debug("Create therapy: " + therapy);
-//		
-//		
-//		try {
-//            therapy = doctorService.createTherapy(therapy);
-//        }catch (Exception e){
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-//        }
-//
-//		return new ResponseEntity<TherapyDTO>(theraphyMapper.toDto(therapy), HttpStatus.OK);
-//	}
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@PostMapping("/create-ingredient")
@@ -204,25 +187,6 @@ public class DoctorController {
 	}
 	
 
-	//mozda i ovo treba
-	//@PreAuthorize("hasRole('ROLE_DOCTOR')")
-	/*@PostMapping("/{patient-id}/add-therapy")
-	public ResponseEntity<TherapyDTO> addTherapy(@PathVariable("patient-id") Long patientId, 
-			@RequestBody TherapyDTO therapyDto) {
-		
-		Therapy therapy = therapyMapper.toEntity(therapyDto);
-
-		log.debug("Add therapy: " + therapy);
-		
-		try {
-            therapy = doctorService.addTherapy(patientId, therapy);
-        }catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-
-		return new ResponseEntity<TherapyDTO>(therapyMapper.toDto(therapy), HttpStatus.OK);
-	}*/
-	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@PostMapping("/{patient-id}/add-meal")
 	public ResponseEntity<MealDTO> addMeal(@PathVariable("patient-id") Long patientId, 
@@ -249,6 +213,19 @@ public class DoctorController {
 		
 		try {
 			meals = doctorService.findAllDailyMeals(patientId);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+		return new ResponseEntity<DailyMealDTO>(dailyMealMapper.toDto(meals), HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@GetMapping("/get-current-daily-meals")
+	public ResponseEntity<DailyMealDTO> getAllDailyMealsCurrent() {
+		DailyMeal meals = new DailyMeal();
+        Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		try {
+			meals = doctorService.findAllDailyMeals(patient.getId());
         }catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

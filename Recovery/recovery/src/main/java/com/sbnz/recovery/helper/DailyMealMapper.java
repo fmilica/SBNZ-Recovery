@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.sbnz.recovery.dto.DailyMealDTO;
-import com.sbnz.recovery.dto.MealDTO;
 import com.sbnz.recovery.model.DailyMeal;
-import com.sbnz.recovery.model.Meal;
 
 public class DailyMealMapper implements MapperInterface<DailyMeal, DailyMealDTO>{
 
@@ -21,6 +19,9 @@ public class DailyMealMapper implements MapperInterface<DailyMeal, DailyMealDTO>
 
 	@Override
 	public DailyMealDTO toDto(DailyMeal entity) {
+		if (entity == null) {
+			return null;
+		}
 		return new DailyMealDTO(entity.getId(), entity.getDay(), mealMapper.toDtoList(entity.getMeals()));
 	}
 
@@ -32,8 +33,14 @@ public class DailyMealMapper implements MapperInterface<DailyMeal, DailyMealDTO>
 
 	@Override
 	public List<DailyMealDTO> toDtoList(List<DailyMeal> entityList) {
-		// TODO Auto-generated method stub
-		return null;
+		if (entityList == null) {
+			return null;
+		}
+		List<DailyMealDTO> dtoList = new ArrayList<DailyMealDTO>();
+		for (DailyMeal dailyMeal : entityList) {
+			dtoList.add(toDto(dailyMeal));
+		}
+		return dtoList;
 	}
 	
 	public List<DailyMealDTO> toDtoList(Set<DailyMeal> entityList) {

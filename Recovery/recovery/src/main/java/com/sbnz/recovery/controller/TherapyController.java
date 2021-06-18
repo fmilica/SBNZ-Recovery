@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.sbnz.recovery.dto.AppliedTherapyDTO;
 import com.sbnz.recovery.dto.TherapyDTO;
 import com.sbnz.recovery.dto.ViewTherapyDTO;
+import com.sbnz.recovery.helper.AppliedTherapyMapper;
 import com.sbnz.recovery.helper.TherapyMapper;
 import com.sbnz.recovery.helper.ViewTherapyMapper;
+import com.sbnz.recovery.model.AppliedTherapy;
+import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Therapy;
 import com.sbnz.recovery.service.TherapyService;
 
@@ -30,12 +35,14 @@ public class TherapyController {
 	private TherapyService therapyService;
 	private final TherapyMapper therapyMapper;
 	private final ViewTherapyMapper viewTherapyMapper;
+	private final AppliedTherapyMapper appliedTherapyMapper;
 	
 	@Autowired
 	public TherapyController(TherapyService therapyService) {
 		this.therapyService = therapyService;
 		this.therapyMapper = new TherapyMapper();
 		this.viewTherapyMapper = new ViewTherapyMapper();
+		this.appliedTherapyMapper = new AppliedTherapyMapper();
 	}
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
@@ -64,6 +71,20 @@ public class TherapyController {
         }
 
         return new ResponseEntity<>(viewTherapyMapper.toDtoList(therapies), HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@GetMapping(value = "/current/daily-applied")
+	public ResponseEntity<List<AppliedTherapyDTO>> filterTherapies() {
+        List<AppliedTherapy> appliedTherapies;
+		try {
+            Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			appliedTherapies = therapyService.findAppliedForCurrent(patient.getId());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
+        return new ResponseEntity<>(appliedTherapyMapper.toDtoList(appliedTherapies), HttpStatus.OK);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")

@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (response) => {
           this.toastr.success('Logged in successfully!');
-          // postavljanje u local storage
+          // postavljanje u session storage
           this.authService.setLoggedInUser(response);
           // reset forme
           this.loginForm.reset();
@@ -58,6 +58,8 @@ export class LoginComponent implements OnInit {
         (error) => {
           if (error.status === 400) {
             this.toastr.error('Incorrect email or password.');
+          } else if (error.status === 403) {
+            this.toastr.error('Too many unsuccesfull logins!');
           } else {
             this.toastr.error('503 Server Unavailable');
           }

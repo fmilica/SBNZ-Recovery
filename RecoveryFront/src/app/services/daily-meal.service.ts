@@ -18,4 +18,8 @@ export class DailyMealService {
   getAllDailyMeals(patientId: number): Observable<DailyMeal> {
     return this.http.get<DailyMeal>(environment.apiEndpoint + 'doctor/' + patientId + '/get-daily-meals');
   }
+
+  getAllDailyMealsCurrent(): Observable<DailyMeal> {
+    return this.http.get<DailyMeal>(environment.apiEndpoint + 'doctor/get-current-daily-meals');
+  }
 }

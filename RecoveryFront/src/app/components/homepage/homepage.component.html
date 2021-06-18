@@ -9,50 +9,7 @@
         </mat-nav-list>
         <mat-nav-list *ngIf="role==='ROLE_PATIENT'">
             <app-menu-list-item *ngFor="let item of navPatientData" [item]="item"></app-menu-list-item>
-            <!-- <a mat-list-item [routerLink]="'about-patient'" routerLinkActive="active-link">
-                About Me
-            </a> -->
         </mat-nav-list>
-        <!-- <mat-nav-list *ngIf="role==='ROLE_DOCTOR'">
-            <a mat-list-item [routerLink]="'view-ingredients'" routerLinkActive="active-link">
-                View Ingredients
-            </a>
-            <a mat-list-item [routerLink]="'create-ingredient'" routerLinkActive="active-link">
-                Create Ingredient
-            </a>
-            <a mat-list-item [routerLink]="'view-meals'" routerLinkActive="active-link">
-                View Meals
-            </a>
-            <a mat-list-item [routerLink]="'create-meal'" routerLinkActive="active-link">
-                Create Meal
-            </a>
-            <a mat-list-item [routerLink]="'view-therapies'" routerLinkActive="active-link">
-                View Therapies
-            </a>
-            <a mat-list-item [routerLink]="'create-therapy'" routerLinkActive="active-link">
-                Create Therapy
-            </a>
-            <a mat-list-item [routerLink]="'view-patients'" routerLinkActive="active-link">
-                View Patients
-            </a>
-            <a mat-list-item [routerLink]="'reports'" routerLinkActive="active-link">
-                Reports
-            </a>
-        </mat-nav-list>
-        <mat-nav-list *ngIf="role==='ROLE_PATIENT'">
-            <a mat-list-item [routerLink]="'medical-history'" routerLinkActive="active-link">
-                Medical History
-            </a>
-            <a mat-list-item [routerLink]="'nutrition'" routerLinkActive="active-link">
-                Nutrition
-            </a>
-            <a mat-list-item [routerLink]="'therapy'" routerLinkActive="active-link">
-                Therapy
-            </a>
-            <a mat-list-item [routerLink]="'add-injury'" routerLinkActive="active-link">
-                Add Injury
-            </a>
-        </mat-nav-list> -->
     </mat-drawer>
     <mat-drawer-content>
         <mat-toolbar>

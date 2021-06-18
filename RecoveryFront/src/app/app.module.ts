@@ -47,6 +47,9 @@ import { PatientTableComponent } from './components/tables/patient-table/patient
 import { AssignMealComponent } from './components/assign-meal/assign-meal.component';
 import { MenuListItemComponent } from './components/menu-list-item/menu-list-item.component';
 import { AboutPatientComponent } from './components/about-patient/about-patient.component';
+import { DailyMealTableComponent } from './components/daily-meal-table/daily-meal-table.component';
+import { PatientTodoComponent } from './components/patient-todo/patient-todo.component';
+import { DailyTherapyTableComponent } from './components/daily-therapy-table/daily-therapy-table.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +73,10 @@ import { AboutPatientComponent } from './components/about-patient/about-patient.
     PatientTableComponent,
     AssignMealComponent,
     MenuListItemComponent,
-    AboutPatientComponent
+    AboutPatientComponent,
+    DailyMealTableComponent,
+    PatientTodoComponent,
+    DailyTherapyTableComponent
   ],
   imports: [
     BrowserModule,

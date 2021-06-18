@@ -69,8 +69,9 @@ public class AuthController {
 			// Vrati token kao odgovor na uspesnu autentifikaciju
 			return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn, username, verified));
 		} catch (Exception e) {
-			//e.printStackTrace();
-			authService.loginFailed(authenticationRequest.getEmail());
+			if (authService.loginFailed(authenticationRequest.getEmail())) {
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			};
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 

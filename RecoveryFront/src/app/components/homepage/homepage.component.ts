@@ -118,14 +118,9 @@ export class HomepageComponent implements OnInit {
       route: 'homepage/daily',
       children: [
         {
-          displayName: 'Todays Meals',
+          displayName: 'See Today',
           iconName: 'group',
-          route: 'homepage/daily/view-meals',
-        },
-        {
-          displayName: 'Todays Therapies',
-          iconName: 'speaker_notes',
-          route: 'homepage/daily/create-meal',
+          route: 'homepage/daily/patient-todo',
         },
       ]
     },

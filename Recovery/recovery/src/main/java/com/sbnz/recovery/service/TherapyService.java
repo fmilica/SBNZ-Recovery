@@ -1,5 +1,6 @@
 package com.sbnz.recovery.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,6 +105,10 @@ public class TherapyService {
 		}
 		
 		return therapies;
+	}
+	
+	public List<AppliedTherapy> findAppliedForCurrent(Long patientId) {
+		return appliedTherapyRepository.findAllByApplicationDateAndInjuryPatientId(LocalDate.now(), patientId);
 	}
 	
 	public Therapy createTherapy(Therapy therapy) throws ExistingFieldValueException, NonExistingIdException {

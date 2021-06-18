@@ -188,10 +188,10 @@ public class DoctorService {
 		return meal;
 	}
 	
-	public DailyMeal findAllDailyMeals(Long patientId){
+	public DailyMeal findAllDailyMeals(Long patientId) {
 		return dailyMealRepository.findOneByPatientIdAndDay(patientId, new Date());
 	}
-
+	
   // reports
 	public List<Patient> findPotentialAbuse() {
 		List<Patient> patientReport = new ArrayList<Patient>();

@@ -69,9 +69,13 @@ public class AuthService {
 		}
 	}*/
 	
-	public void loginFailed(String username) {
+	public boolean loginFailed(String username) {
 		LoginEvent event = new LoginEvent(username);
 		cepSession.insert(event);
-		cepSession.fireAllRules();
+		int fired = cepSession.fireAllRules();
+		if (fired != 0) {
+			return true;
+		}
+		return false;
 	}
 }

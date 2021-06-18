@@ -1,0 +1,36 @@
+<div class="jumbotron bg-transparent col-md-12 p-5 bg-white rounded tableSide">
+    <mat-card class="shadow">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image">
+            </div>
+            <mat-card-title>Today's therapies</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-3">
+            <div class="m-3">
+                <div class="ng-container row justify-content-md-center">
+                    <div class="col-md-11">
+                        <table mat-table [dataSource]="dataSource">
+                            <!-- No data row -->
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" colspan="6">No prior therapies.</td>
+                            </tr>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                            <ng-container matColumnDef="dayTherapy">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Day </th>
+                                <td mat-cell *matCellDef="let row"> {{row.applicationDate | date}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="therapyName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Therapy Name </th>
+                                <td mat-cell *matCellDef="let row"> {{row.therapy.name}} </td>
+                            </ng-container>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

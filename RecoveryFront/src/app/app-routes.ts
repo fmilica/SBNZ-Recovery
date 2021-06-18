@@ -17,6 +17,7 @@ import { PatientViewComponent } from "./components/patient-view/patient-view.com
 import { ReportsComponent } from "./components/reports/reports.component";
 import { AssignMealComponent } from "./components/assign-meal/assign-meal.component";
 import { AboutPatientComponent } from "./components/about-patient/about-patient.component";
+import { PatientTodoComponent } from "./components/patient-todo/patient-todo.component";
 
 export const routes: Routes = [
     {
@@ -53,6 +54,12 @@ export const routes: Routes = [
             {
                 path: 'patient/medical-history',
                 component: MedicalHistoryComponent,
+                canActivate: [RoleGuard],
+                data: { expectedRoles: 'ROLE_PATIENT' },
+            },
+            {
+                path: 'daily/patient-todo',
+                component: PatientTodoComponent,
                 canActivate: [RoleGuard],
                 data: { expectedRoles: 'ROLE_PATIENT' },
             },

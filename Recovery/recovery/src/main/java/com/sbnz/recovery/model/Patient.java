@@ -78,9 +78,6 @@ public class Patient extends User {
 		this.anamnesis = anamnesis;
 		this.medicalHistory = new HashSet<Injury>();
 		this.dailyMeals = new HashSet<DailyMeal>();
-
-		//this.therapies = new ArrayList<AppliedTherapy>();
-
 	}
 
 	public Patient(String username, String password, String name, String surname, Gender gender, Date dateOfBirth,

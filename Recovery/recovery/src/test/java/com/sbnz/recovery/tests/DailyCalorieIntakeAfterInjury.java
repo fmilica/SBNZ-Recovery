@@ -13,6 +13,7 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
+import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
@@ -31,7 +32,6 @@ public class DailyCalorieIntakeAfterInjury {
 		KieContainer kContainer = ks
 				.newKieContainer(ks.newReleaseId("com.sbnz", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
 		kieSession = kContainer.newKieSession("rulesSession");
-		kieSession.setGlobal("currentPatient", currentPatient);
 		kieSession.getAgenda().getAgendaGroup("calories-after-injury").setFocus();
 	}
 
@@ -41,15 +41,19 @@ public class DailyCalorieIntakeAfterInjury {
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<>());
-	
+		patient.setId(1L);
 		patient.setBmr(1484.0);
 		patient.setRegularDailyCaloryIntake(2040.5);
 		patient.setPhysicalActivityAfterInjury(PhysicalActivity.SEDENTARY);
 		kieSession.insert(patient);
+
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
 		
 		int firedRules = kieSession.fireAllRules();
 		assertEquals(1, firedRules);
 		assertEquals(0.9 * patient.getRegularDailyCaloryIntake(), patient.getDailyCaloryIntakeAfterInjury(), 0.9);
+		assertEquals(true, chosen.isResolved());
 	}
 	
 	@Test
@@ -58,15 +62,19 @@ public class DailyCalorieIntakeAfterInjury {
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.EXTRA_ACTIVE, new HashSet<>());
-	
+		patient.setId(1L);
 		patient.setBmr(1484.0);
 		patient.setRegularDailyCaloryIntake(2040.5);
 		patient.setPhysicalActivityAfterInjury(PhysicalActivity.SEDENTARY);
 		kieSession.insert(patient);
+
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
 		
 		int firedRules = kieSession.fireAllRules();
 		assertEquals(1, firedRules);
 		assertEquals(0.6 * patient.getRegularDailyCaloryIntake(), patient.getDailyCaloryIntakeAfterInjury(), 0.9);
+		assertEquals(true, chosen.isResolved());
 	}
 	
 	@Test
@@ -75,14 +83,18 @@ public class DailyCalorieIntakeAfterInjury {
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.VERY_ACTIVE, new HashSet<>());
-	
+		patient.setId(1L);
 		patient.setBmr(1484.0);
 		patient.setRegularDailyCaloryIntake(2040.5);
 		patient.setPhysicalActivityAfterInjury(PhysicalActivity.LIGHT_ACTIVE);
 		kieSession.insert(patient);
+
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
 		
 		int firedRules = kieSession.fireAllRules();
 		assertEquals(1, firedRules);
 		assertEquals(0.8 * patient.getRegularDailyCaloryIntake(), patient.getDailyCaloryIntakeAfterInjury(), 0.9);
+		assertEquals(true, chosen.isResolved());
 	}
 }

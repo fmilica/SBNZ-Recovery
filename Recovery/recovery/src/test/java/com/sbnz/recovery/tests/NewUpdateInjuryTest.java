@@ -15,6 +15,7 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
+import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.Injury;
 import com.sbnz.recovery.model.InjuryRequirement;
@@ -58,7 +59,6 @@ public class NewUpdateInjuryTest {
 		KieContainer kContainer = ks
 				.newKieContainer(ks.newReleaseId("com.sbnz", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
 		kieSession = kContainer.newKieSession("rulesSession");
-		kieSession.setGlobal("currentPatient", currentPatient);
 		kieSession.insert(injuryReqUpperBody);
 		kieSession.insert(injuryReqLowerBody);
 	}
@@ -68,38 +68,53 @@ public class NewUpdateInjuryTest {
 		Date dateOfBirth = format.parse("1998/10/10");
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<>());
+		patient.setId(1L);
 		// bolesti
 		patient.addIllness(lbp);
 		
 		kieSession.insert(patient);
+
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
 		
 		kieSession.getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(4, firedRules);
+		assertEquals(5, firedRules);
+		assertEquals(true, chosen.isResolved());
 		
 		// dodavanje povrede
 		Injury injury1 = new Injury("I1", LocalDate.of(2021, 5, 1), null, "desc", fracture, InjuryBodyPart.ARM);
+		injury1.setId(1L);
 		injury1.setPatient(patient);
 		
 		kieSession.insert(injury1);
+
+		chosen = new ChosenPatient(1L, 1L);
+		kieSession.insert(chosen);
 		
 		kieSession.getAgenda().getAgendaGroup("new-injury").setFocus();
 		firedRules = kieSession.fireAllRules();
 		
 		assertEquals(7, firedRules);
 		assertEquals(PhysicalActivity.MODERATE, patient.getPhysicalActivityAfterInjury());
+		assertEquals(true, chosen.isResolved());
 		
 		// dodavanje povrede
 		Injury injury2 = new Injury("I2", LocalDate.of(2021, 5, 1), null, "desc", fracture, InjuryBodyPart.LEG);
+		injury2.setId(2L);
 		injury2.setPatient(patient);
 		
 		kieSession.insert(injury2);
+
+		chosen = new ChosenPatient(1L, 2L);
+		kieSession.insert(chosen);
 		
 		kieSession.getAgenda().getAgendaGroup("new-injury").setFocus();
 		firedRules = kieSession.fireAllRules();
 		
 		assertEquals(7, firedRules);
 		assertEquals(PhysicalActivity.SEDENTARY, patient.getPhysicalActivityAfterInjury());
+		assertEquals(true, chosen.isResolved());
 	}
 	
 	@Test
@@ -107,6 +122,7 @@ public class NewUpdateInjuryTest {
 		Date dateOfBirth = format.parse("1998/10/10");
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<>());
+		patient.setId(1L);
 		// bolesti
 		patient.addIllness(lbp);
 		// povreda
@@ -117,14 +133,20 @@ public class NewUpdateInjuryTest {
 		patient.addInjury(injury2);
 		
 		kieSession.insert(patient);
+
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
 		
 		kieSession.getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
 		int firedRules = kieSession.fireAllRules();
 		assertEquals(6, firedRules);
 		
 		// finalizacija povrede
-		kieSession.setGlobal("injuryId", injuryId);
 		kieSession.getAgenda().getAgendaGroup("finalize-injury").setFocus();
+		
+		chosen = new ChosenPatient(1L, 1L);
+		kieSession.insert(chosen);
+		
 		firedRules = kieSession.fireAllRules();
 		
 		assertEquals(7, firedRules);

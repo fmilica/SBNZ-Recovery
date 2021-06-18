@@ -13,6 +13,7 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
+import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
@@ -31,7 +32,6 @@ public class BmrAndRegularDailyCaloriIntakeTest {
 		KieContainer kContainer = ks
 				.newKieContainer(ks.newReleaseId("com.sbnz", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
 		kieSession = kContainer.newKieSession("rulesSession");
-		kieSession.setGlobal("currentPatient", currentPatient);
 		kieSession.getAgenda().getAgendaGroup("bmr-regular-calorie").setFocus();
 	}
 
@@ -41,13 +41,18 @@ public class BmrAndRegularDailyCaloriIntakeTest {
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<>());
-	
+		patient.setId(1L);
+		
 		kieSession.insert(patient);
 		
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
+		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(4, firedRules);
+		assertEquals(5, firedRules);
 		assertEquals(1484.0, patient.getBmr(), 0.9);
 		assertEquals(2040.5, patient.getRegularDailyCaloryIntake(), 0.9);
+		assertEquals(true, chosen.isResolved());
 	}
 	
 	@Test
@@ -56,12 +61,17 @@ public class BmrAndRegularDailyCaloriIntakeTest {
 		
 		Patient patient = new Patient("username", "password", "name", "surname",
 				Gender.MALE, dateOfBirth, 172, 68, PhysicalActivity.SEDENTARY, new HashSet<>());
-	
+		patient.setId(1L);
+
 		kieSession.insert(patient);
 		
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
+		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(4, firedRules);
+		assertEquals(5, firedRules);
 		assertEquals(1650.0, patient.getBmr(), 0.9);
 		assertEquals(1980.0, patient.getRegularDailyCaloryIntake(), 0.9);
+		assertEquals(true, chosen.isResolved());
 	}
 }

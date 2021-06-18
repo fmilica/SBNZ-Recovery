@@ -15,6 +15,7 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
+import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.Injury;
 import com.sbnz.recovery.model.InjuryRequirement;
@@ -72,7 +73,6 @@ public class NewActivityLevelTest {
 		KieContainer kContainer = ks
 				.newKieContainer(ks.newReleaseId("com.sbnz", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
 		kieSession = kContainer.newKieSession("rulesSession");
-		kieSession.setGlobal("currentPatient", currentPatient);
 		kieSession.getAgenda().getAgendaGroup("new-activity-level").setFocus();
 		kieSession.insert(muscleStrainOld);
 		kieSession.insert(muscleStrainMiddle);
@@ -91,14 +91,18 @@ public class NewActivityLevelTest {
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
-		
+		patient.setId(1L);
 		patient.addInjury(injury);
 		
 		kieSession.insert(patient);
+
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(2, firedRules);
+		assertEquals(3, firedRules);
 		assertEquals(PhysicalActivity.SEDENTARY, patient.getPhysicalActivityAfterInjury());
+		assertEquals(true, chosen.isResolved());
 	}
 	
 	@Test
@@ -109,14 +113,18 @@ public class NewActivityLevelTest {
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
-		
+		patient.setId(1L);
 		patient.addInjury(injury);
 		
 		kieSession.insert(patient);
 		
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
+
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(2, firedRules);
+		assertEquals(3, firedRules);
 		assertEquals(PhysicalActivity.SEDENTARY, patient.getPhysicalActivityAfterInjury());
+		assertEquals(true, chosen.isResolved());
 	}
 	
 	@Test
@@ -127,14 +135,17 @@ public class NewActivityLevelTest {
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
-		
+		patient.setId(1L);
 		patient.addInjury(injury);
 		
 		kieSession.insert(patient);
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(2, firedRules);
+		assertEquals(3, firedRules);
 		assertEquals(PhysicalActivity.MODERATE, patient.getPhysicalActivityAfterInjury());
+		assertEquals(true, chosen.isResolved());
 	}
 	
 	@Test
@@ -145,14 +156,18 @@ public class NewActivityLevelTest {
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
-		
+		patient.setId(1L);
 		patient.addInjury(injury);
 		
 		kieSession.insert(patient);
+
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(2, firedRules);
+		assertEquals(3, firedRules);
 		assertEquals(PhysicalActivity.LIGHT_ACTIVE, patient.getPhysicalActivityAfterInjury());
+		assertEquals(true, chosen.isResolved());
 	}
 	
 	@Test
@@ -163,14 +178,18 @@ public class NewActivityLevelTest {
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
-		
+		patient.setId(1L);
 		patient.addInjury(injury);
 		
 		kieSession.insert(patient);
+
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(2, firedRules);
+		assertEquals(3, firedRules);
 		assertEquals(PhysicalActivity.SEDENTARY, patient.getPhysicalActivityAfterInjury());
+		assertEquals(true, chosen.isResolved());
 	}
 	
 	@Test
@@ -181,14 +200,18 @@ public class NewActivityLevelTest {
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
-		
+		patient.setId(1L);
 		patient.addInjury(injury);
 		
 		kieSession.insert(patient);
+
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(2, firedRules);
+		assertEquals(3, firedRules);
 		assertEquals(PhysicalActivity.SEDENTARY, patient.getPhysicalActivityAfterInjury());
+		assertEquals(true, chosen.isResolved());
 	}
 	
 	@Test
@@ -199,14 +222,18 @@ public class NewActivityLevelTest {
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
-		
+		patient.setId(1L);
 		patient.addInjury(injury);
 		
 		kieSession.insert(patient);
+
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(2, firedRules);
+		assertEquals(3, firedRules);
 		assertEquals(PhysicalActivity.MODERATE, patient.getPhysicalActivityAfterInjury());
+		assertEquals(true, chosen.isResolved());
 	}
 	
 	@Test
@@ -217,14 +244,18 @@ public class NewActivityLevelTest {
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
-		
+		patient.setId(1L);
 		patient.addInjury(injury);
 		
 		kieSession.insert(patient);
+
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(2, firedRules);
+		assertEquals(3, firedRules);
 		assertEquals(PhysicalActivity.LIGHT_ACTIVE, patient.getPhysicalActivityAfterInjury());
+		assertEquals(true, chosen.isResolved());
 	}
 	
 	@Test
@@ -236,15 +267,19 @@ public class NewActivityLevelTest {
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.FEMALE, dateOfBirth, 172, 68, PhysicalActivity.LIGHT_ACTIVE, new HashSet<Illness>());
-		
+		patient.setId(1L);
 		patient.addInjury(injury);
 		patient.addInjury(liverInjury);
 		
 		kieSession.insert(patient);
+
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(2, firedRules);
+		assertEquals(3, firedRules);
 		assertEquals(PhysicalActivity.SEDENTARY, patient.getPhysicalActivityAfterInjury());
+		assertEquals(true, chosen.isResolved());
 	}
 	
 	@Test
@@ -253,11 +288,15 @@ public class NewActivityLevelTest {
 		
 		Patient patient = new Patient(currentPatient, "password", "name", "surname",
 				Gender.MALE, dateOfBirth, 172, 68, PhysicalActivity.SEDENTARY, new HashSet<>());
-	
+		patient.setId(1L);
 		kieSession.insert(patient);
+
+		ChosenPatient chosen = new ChosenPatient(1L);
+		kieSession.insert(chosen);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(1, firedRules);
+		assertEquals(2, firedRules);
 		assertEquals(null, patient.getPhysicalActivityAfterInjury());
+		assertEquals(true, chosen.isResolved());
 	}
 }

@@ -27,11 +27,11 @@ import com.sbnz.recovery.tests.TemplateGenderIntervalTest;
 	MealTest.class,
 	NewActivityLevelTest.class,
 	NewUpdateInjuryTest.class,
+	QueriesTest.class,
 	RankMealTest.class,
 	RankTherapyTest.class,
 	ReportsTest.class,
-	TemplateGenderIntervalTest.class,
-	QueriesTest.class
+	TemplateGenderIntervalTest.class
 })
 public class AllTestsSuite {
 

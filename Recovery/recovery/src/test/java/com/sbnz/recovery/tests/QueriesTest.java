@@ -225,6 +225,17 @@ public class QueriesTest {
 	}
 	
 	@Test
+	public void getAllMealsByIllnessTestNoMeals() throws ParseException {
+		QueryResults results = kieSession.getQueryResults("getAllMealsByIllness", diabetes);
+		List<Meal> meals = new ArrayList<>();
+		
+		for (QueryResultsRow row : results) {
+			meals = (List<Meal>) row.get("$meals");
+		}
+		assertEquals(0, meals.size());
+	}
+	
+	@Test
 	public void getAllMealsByIllnessTest() throws ParseException {
 		QueryResults results = kieSession.getQueryResults("getAllMealsByIllness", lbp);
 		List<Meal> meals = new ArrayList<>();

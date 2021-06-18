@@ -13,6 +13,18 @@ export class HomepageComponent implements OnInit {
   role = '';
   navDoctorData: NavItem[] = [
     {
+      displayName: 'Patients',
+      iconName: 'recent_actors',
+      route: 'homepage/patient',
+      children: [
+        {
+          displayName: 'View Patients',
+          iconName: 'group',
+          route: 'homepage/patient/view-patients',
+        },
+      ]
+    },
+    {
       displayName: 'Ingredients',
       iconName: 'recent_actors',
       route: 'homepage/ingredient',
@@ -64,18 +76,6 @@ export class HomepageComponent implements OnInit {
       ]
     },
     {
-      displayName: 'Patients',
-      iconName: 'recent_actors',
-      route: 'homepage/patient',
-      children: [
-        {
-          displayName: 'View Patients',
-          iconName: 'group',
-          route: 'homepage/patient/view-patients',
-        },
-      ]
-    },
-    {
       displayName: 'Reports',
       iconName: 'recent_actors',
       route: 'homepage/reports',
@@ -93,39 +93,39 @@ export class HomepageComponent implements OnInit {
     {
       displayName: 'Medical History',
       iconName: 'recent_actors',
-      route: 'homepage',
+      route: 'homepage/patient',
       children: [
         {
-          displayName: 'Current status',
+          displayName: 'About Me',
           iconName: 'group',
-          route: 'homepage/medical-history',
+          route: 'homepage/patient/about-patient',
         },
         {
           displayName: 'View Medical History',
           iconName: 'group',
-          route: 'homepage/medical-history',
+          route: 'homepage/patient/medical-history',
         },
         {
           displayName: 'Add Injury',
           iconName: 'speaker_notes',
-          route: 'homepage/add-injury',
+          route: 'homepage/patient/add-injury',
         },
       ]
     },
     {
       displayName: 'Daily ToDo',
       iconName: 'recent_actors',
-      route: 'homepage',
+      route: 'homepage/daily',
       children: [
         {
           displayName: 'Todays Meals',
           iconName: 'group',
-          route: 'homepage/view-meals',
+          route: 'homepage/daily/view-meals',
         },
         {
           displayName: 'Todays Therapies',
           iconName: 'speaker_notes',
-          route: 'homepage/create-meal',
+          route: 'homepage/daily/create-meal',
         },
       ]
     },

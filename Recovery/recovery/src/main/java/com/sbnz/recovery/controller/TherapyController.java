@@ -82,12 +82,15 @@ public class TherapyController {
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping(value = "/assign/{patientId}")
 	public ResponseEntity<Void> assignTherapy(@PathVariable("patientId") Long patientId) {
-        try {
-        	therapyService.assignTherapy(patientId);
+        boolean success;
+		try {
+        	success = therapyService.assignTherapy(patientId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+		if (success) {
+	        return new ResponseEntity<>(HttpStatus.OK);
+		}
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

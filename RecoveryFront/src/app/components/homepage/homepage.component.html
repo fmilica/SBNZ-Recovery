@@ -9,9 +9,9 @@
         </mat-nav-list>
         <mat-nav-list *ngIf="role==='ROLE_PATIENT'">
             <app-menu-list-item *ngFor="let item of navPatientData" [item]="item"></app-menu-list-item>
-            <a mat-list-item [routerLink]="'about-patient'" routerLinkActive="active-link">
-                About Patient
-            </a>
+            <!-- <a mat-list-item [routerLink]="'about-patient'" routerLinkActive="active-link">
+                About Me
+            </a> -->
         </mat-nav-list>
         <!-- <mat-nav-list *ngIf="role==='ROLE_DOCTOR'">
             <a mat-list-item [routerLink]="'view-ingredients'" routerLinkActive="active-link">

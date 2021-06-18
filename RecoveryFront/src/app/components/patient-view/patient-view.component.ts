@@ -52,11 +52,14 @@ export class PatientViewComponent implements OnInit {
   }
 
   assignTherapy(): void {
-    // console.log(this.patient);
     this.therapyService
       .assignTherapy(this.patient.id).subscribe(
         response => {
-          this.toastr.success("Succesfully assign therapy for " + this.patient.name);
+          if (response.status === 200) {
+            this.toastr.success("Succesfully assign therapy for " + this.patient.name);
+          } else if (response.status === 204) {
+            this.toastr.warning("Patient " + this.patient.name + " not suitable for existing therapies.");
+          }
         },
         error => {
           if (error.error.message) {

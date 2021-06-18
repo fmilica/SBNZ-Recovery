@@ -28,7 +28,7 @@ rule "Rank therapy for patient"
     	$at: ApplicableTherapy(patientId == $chosenPatientId, 
     		$t: therapy, $therapyName : therapy.name, 
     		$til: therapy.applicableIllness, $tin: therapy.applicableInjury)
-    	$activeInjuries : List() from collect(
+    	$activeInjuries : List(size > 0) from collect(
 				Injury(this.getEndDate() == null) 
 				from $p.medicalHistory
 		)
@@ -57,7 +57,19 @@ rule "Resolve unresolved therapies"
 	when
 		$cp: ChosenPatient(resolved == false)
 	then
-		modify ($cp) { setResolved(true); }
+		//modify ($cp) { setResolved(true); }
+		retract ($cp);
+		System.out.println("Resolved ChosenPatient object");
+end
+
+rule "Resolve unresolved applicable therapies"
+	agenda-group "rank-therapy"
+	salience -1
+	when
+		$ap: ApplicableTherapy()
+	then
+		retract ($ap);
+		System.out.println("Removed ApplicationTherapy object");
 end
 
 rule "Find all applicable therapies for patient"

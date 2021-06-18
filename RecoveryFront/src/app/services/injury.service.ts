@@ -27,4 +27,8 @@ export class InjuryService {
     addInjury(injury: Injury): Observable<Injury> {
         return this.http.post<Injury>(environment.apiEndpoint + 'injury', injury);
     }
+
+    finalizeInjury(injuryId: number): Observable<void> {
+        return this.http.put<void>(environment.apiEndpoint + 'injury/finalize/' + injuryId, null);
+    }
 }

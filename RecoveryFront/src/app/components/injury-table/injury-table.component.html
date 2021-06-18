@@ -74,4 +74,13 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Injured body part </th>
         <td mat-cell *matCellDef="let row"> {{formatInjuryBodyPart(row.injuryBodyPart)}} </td>
     </ng-container>
+
+    <ng-container matColumnDef="finalizeInjury">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Finalize Injury </th>
+        <td mat-cell *matCellDef="let row">
+            <button class="btn btn-color" [disabled]="row.endDate" (click)="finalizeInjury(row.id)">
+                {{row.endDate ? 'Finalized' : 'Finalize'}}
+            </button>
+        </td>
+    </ng-container>
 </table>

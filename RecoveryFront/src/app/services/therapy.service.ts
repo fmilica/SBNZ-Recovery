@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -24,7 +24,8 @@ export class TherapyService {
         return this.http.post<Therapy>(environment.apiEndpoint + 'therapy', therapy);
     }
 
-    assignTherapy(patientId: number): Observable<void> {
-        return this.http.get<void>(environment.apiEndpoint + 'therapy/assign/' + patientId);
+    assignTherapy(patientId: number): Observable<HttpResponse<void>> {
+        return this.http.get<void>(environment.apiEndpoint + 'therapy/assign/' + patientId,
+            { observe: 'response' });
     }
 }

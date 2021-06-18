@@ -48,7 +48,11 @@ export class LoginComponent implements OnInit {
           // reset forme
           this.loginForm.reset();
           // preusmerenje
-          this.router.navigate(['homepage']);
+          if (this.authService.getLoggedInUserAuthority() === 'ROLE_PATIENT') {
+            this.router.navigate(['homepage/patient/about-patient']);
+          } else {
+            this.router.navigate(['homepage/patient/view-patients']);
+          }
           this.authService.role.next(this.authService.getLoggedInUserAuthority());
         },
         (error) => {

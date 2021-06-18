@@ -73,7 +73,7 @@ insert into therapy_injury_type(therapy_id, injury_type_id)
 values (1, 1);
 
 insert into therapy (name, therapy_type, maximum_monthly_application, temperature, intensity)
-values ('Odmaranje', 0, 31, 0.0, 1);
+values ('Odmaranje', 0, 3, 0.0, 1);
 insert into therapy_illness(therapy_id, illness_id)
 values (2, 1);
 insert into therapy_illness(therapy_id, illness_id)

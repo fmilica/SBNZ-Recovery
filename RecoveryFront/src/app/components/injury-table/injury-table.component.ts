@@ -1,5 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { AppliedTherapy } from 'src/app/model/applied-therapy.model';
 import { Injury } from 'src/app/model/injury.model';
 import { InjuryService } from 'src/app/services/injury.service';
@@ -19,16 +20,22 @@ import { InjuryService } from 'src/app/services/injury.service';
 export class InjuryTableComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'startDate', 'endDate', 'description', 'injuryType', 'injuryBodyPart'];
+  displayedColumnsDoctor: string[] = ['name', 'startDate', 'endDate', 'description', 'injuryType', 'injuryBodyPart', 'finalizeInjury'];
   displayedTherapyColumns: string[] = ['applicationDate', 'therapyName', 'therapyType'];
   @Input() dataSource: Injury[] = [];
+  @Input() doctorView: boolean = false;
   expandedElement: any | null;
   chosenInjuryTherapies: AppliedTherapy[] = [];
 
   constructor(
-    private injuryService: InjuryService
+    private injuryService: InjuryService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
+    if (this.doctorView) {
+      this.displayedColumns = this.displayedColumnsDoctor;
+    }
   }
 
   getAppliedTherapies(injuryId: number): void {
@@ -39,6 +46,16 @@ export class InjuryTableComponent implements OnInit {
         },
         error => {
         });
+  }
+
+  finalizeInjury(injuryId: number): void {
+    this.injuryService.finalizeInjury(injuryId).subscribe(
+      response => {
+        this.toastr.success('Gled to see your patient feeling better.', 'Succesfully finalized injury!');
+      },
+      error => {
+      }
+    );
   }
 
   formatInjuryBodyPart(injuryBodyPart: string): string {

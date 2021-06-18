@@ -117,16 +117,21 @@ public class TherapyService {
 		return therapyRepository.save(therapy);
 	}
 	
-	public void assignTherapy(Long patientId) throws NonExistingIdException {
+	public boolean assignTherapy(Long patientId) throws NonExistingIdException {
 		Patient patient = patientRepository.findById(patientId).orElse(null);
 		if (patient == null) {
 			throw new NonExistingIdException("Patient");
 		}
-		rulesSession.insert(new ChosenPatient(patient.getId(), AssignType.THERAPY));
+		ChosenPatient chosenPatient = new ChosenPatient(patient.getId(), AssignType.THERAPY);
+		rulesSession.insert(chosenPatient);
 		rulesSession.getAgenda().getAgendaGroup("find-therapy").setFocus();
 		rulesSession.fireAllRules();
 		rulesSession.getAgenda().getAgendaGroup("rank-therapy").setFocus();
 		rulesSession.fireAllRules();
+		if (!chosenPatient.isResolved()) {
+			// nije dodeljena terapija
+			return false;
+		}
 		// dobavi izmenjenog pacijenta
 		rulesSession.getAgenda().getAgendaGroup("MAIN").setFocus();
 		QueryResults results = rulesSession.getQueryResults("getPatient", patient.getId());
@@ -139,5 +144,6 @@ public class TherapyService {
 			}
 		}
 		patientRepository.save(patient);
+		return true;
 	}
 }

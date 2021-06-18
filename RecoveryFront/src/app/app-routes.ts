@@ -39,13 +39,19 @@ export const routes: Routes = [
         component: HomepageComponent,
         children: [
             {
-                path: 'add-injury',
+                path: 'patient/add-injury',
                 component: AddInjuryComponent,
                 canActivate: [RoleGuard],
                 data: { expectedRoles: 'ROLE_PATIENT' },
             },
             {
-                path: 'medical-history',
+                path: 'patient/about-patient',
+                component: AboutPatientComponent,
+                canActivate: [RoleGuard],
+                data: { expectedRoles: 'ROLE_PATIENT' },
+            },
+            {
+                path: 'patient/medical-history',
                 component: MedicalHistoryComponent,
                 canActivate: [RoleGuard],
                 data: { expectedRoles: 'ROLE_PATIENT' },
@@ -96,7 +102,7 @@ export const routes: Routes = [
                 path: 'patient/patient-view',
                 component: PatientViewComponent,
                 canActivate: [RoleGuard],
-                data: { expectedRoles: 'ROLE_DOCTOR|ROLE_PATIENT' },
+                data: { expectedRoles: 'ROLE_DOCTOR' },
             },
             {
                 path: 'reports',
@@ -109,12 +115,6 @@ export const routes: Routes = [
                 component: AssignMealComponent,
                 canActivate: [RoleGuard],
                 data: { expectedRoles: 'ROLE_DOCTOR' },
-            },
-            {
-                path: 'about-patient',
-                component: AboutPatientComponent,
-                canActivate: [RoleGuard],
-                data: { expectedRoles: 'ROLE_PATIENT' },
             },
         ],
         canActivate: [RoleGuard],

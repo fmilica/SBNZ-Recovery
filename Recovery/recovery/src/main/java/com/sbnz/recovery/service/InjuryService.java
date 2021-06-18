@@ -86,4 +86,24 @@ public class InjuryService {
 		
 		return injury;
 	}
+	
+	public void finalizeInjury(Long injuryId) throws NonExistingIdException {
+		Injury injury = injuryRepository.findById(injuryId).orElse(null);
+		if (injury == null) {
+			throw new NonExistingIdException("Injury");
+		}
+		
+		rulesSession.getAgenda().getAgendaGroup("finalize-injury").setFocus();
+		rulesSession.insert(new ChosenPatient(injury.getPatient().getId(), injuryId));
+		rulesSession.fireAllRules();
+		
+		// dobavi izmenjenog pacijenta
+		Patient patient = null;
+		rulesSession.getAgenda().getAgendaGroup("MAIN").setFocus();
+		QueryResults results = rulesSession.getQueryResults("getPatient", injury.getPatient().getId());
+		for (QueryResultsRow row : results) {
+			patient = (Patient) row.get("$patient");
+		}
+		patientRepository.save(patient);
+	}
 }

@@ -16,11 +16,13 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
+import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.Ingredient;
 import com.sbnz.recovery.model.IngredientAmount;
 import com.sbnz.recovery.model.Meal;
 import com.sbnz.recovery.model.Patient;
+import com.sbnz.recovery.model.enums.AssignType;
 import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
 
@@ -85,14 +87,13 @@ public class RankMealTest {
 		// bolesti
 		patient.addIllness(ill1);
 
+		kieSession.insert(new ChosenPatient(patient.getId(), AssignType.MEAL));
 		kieSession.insert(meal1);
 		kieSession.insert(meal2);
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
-		assertEquals(2, firedRules);
+		assertEquals(3, firedRules);
 		assertEquals(2, patientMeals.size());
-//		assertEquals(meal1.getName(), patientMeals.get(0).getName());
-//		assertEquals(meal2.getName(), patientMeals.get(1).getName());
 	}
 }

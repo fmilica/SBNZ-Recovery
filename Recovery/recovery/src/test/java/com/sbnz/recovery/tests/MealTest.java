@@ -26,16 +26,16 @@ public class MealTest {
 	
 	@Before
 	public void setUp() {
-		diabetes = new Illness(1L, "DIABETES");
-		hbp = new Illness(2L, "HIGH_BLOOD_PRESSURE");
-		lbp = new Illness(3L, "LOW_BLOOD_PRESSURE");
+		diabetes = new Illness(1L, "Diabetes");
+		hbp = new Illness(2L, "High blood pressure");
+		lbp = new Illness(3L, "Low blood pressure");
 		KieServices ks = KieServices.Factory.get();
 		KieContainer kContainer = ks
 				.newKieContainer(ks.newReleaseId("com.sbnz", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
 		kieSession = kContainer.newKieSession("rulesSession");
-		kieSession.setGlobal("diabetes", diabetes);
-		kieSession.setGlobal("hbp", hbp);
-		kieSession.setGlobal("lbp", lbp);
+		kieSession.insert(diabetes);
+		kieSession.insert(lbp);
+		kieSession.insert(hbp);
 	}
 	
 	@Test

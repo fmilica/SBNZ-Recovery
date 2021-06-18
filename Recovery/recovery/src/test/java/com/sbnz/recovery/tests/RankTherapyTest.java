@@ -15,11 +15,13 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
 import com.sbnz.recovery.model.AppliedTherapy;
+import com.sbnz.recovery.model.ChosenPatient;
 import com.sbnz.recovery.model.Illness;
 import com.sbnz.recovery.model.Injury;
 import com.sbnz.recovery.model.InjuryType;
 import com.sbnz.recovery.model.Patient;
 import com.sbnz.recovery.model.Therapy;
+import com.sbnz.recovery.model.enums.AssignType;
 import com.sbnz.recovery.model.enums.Gender;
 import com.sbnz.recovery.model.enums.InjuryBodyPart;
 import com.sbnz.recovery.model.enums.PhysicalActivity;
@@ -95,9 +97,11 @@ public class RankTherapyTest {
 		injury3.addAppliedTherapy(new AppliedTherapy(LocalDate.of(2021, 5, 5), therapy1));
 		injury3.addAppliedTherapy(new AppliedTherapy(LocalDate.of(2021, 5, 6), therapy1));
 		patient.addInjury(injury3);
+		ChosenPatient chosenPatient = new ChosenPatient(patient.getId(), AssignType.THERAPY);
 
 		kieSession.insert(therapy1);
 		kieSession.insert(therapy2);
+		kieSession.insert(chosenPatient);
 		kieSession.insert(patient);
 		
 		int firedRules = kieSession.fireAllRules();
@@ -106,7 +110,7 @@ public class RankTherapyTest {
 		
 		kieSession.getAgenda().getAgendaGroup("rank-therapy").setFocus();
 		firedRules = kieSession.fireAllRules();
-		assertEquals(2, firedRules);
+		assertEquals(3, firedRules);
 	}
 	
 }

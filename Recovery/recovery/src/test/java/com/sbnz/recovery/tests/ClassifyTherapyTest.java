@@ -28,22 +28,22 @@ public class ClassifyTherapyTest {
 
 	@Before
 	public void setUp() {
-		fracture = new InjuryType(1L, "FRACTURE");
-		muscle = new InjuryType(2L, "MUSCLE_STRAIN");
-		internal = new InjuryType(3L, "INTERNAL");
-		diabetes = new Illness(1L, "DIABETES");
-		hbp = new Illness(2L, "HIGH_BLOOD_PRESSURE");
-		lbp = new Illness(3L, "LOW_BLOOD_PRESSURE");
+		fracture = new InjuryType(1L, "Fracture");
+		muscle = new InjuryType(2L, "Muscle strain");
+		internal = new InjuryType(3L, "Internal");
+		diabetes = new Illness(1L, "Diabetes");
+		hbp = new Illness(2L, "High blood pressure");
+		lbp = new Illness(3L, "Low blood pressure");
 		KieServices ks = KieServices.Factory.get();
 		KieContainer kContainer = ks
 				.newKieContainer(ks.newReleaseId("com.sbnz", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
 		kieSession = kContainer.newKieSession("rulesSession");
-		kieSession.setGlobal("fracture", fracture);
-		kieSession.setGlobal("muscle", muscle);
-		kieSession.setGlobal("internal", internal);
-		kieSession.setGlobal("diabetes", diabetes);
-		kieSession.setGlobal("hbp", hbp);
-		kieSession.setGlobal("lbp", lbp);
+		kieSession.insert(fracture);
+		kieSession.insert(muscle);
+		kieSession.insert(internal);
+		kieSession.insert(diabetes);
+		kieSession.insert(hbp);
+		kieSession.insert(lbp);
 		kieSession.getAgenda().getAgendaGroup("classify-therapy").setFocus();
 	}
 

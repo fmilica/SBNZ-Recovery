@@ -1,8 +1,12 @@
 package com.sbnz.recovery.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -57,17 +61,20 @@ public class AuthService {
 		return patientRepository.save(patient);
 	}
 
-	/* GOVNO OD OVCE
-	public void loginSuccess(User user) {
-		// postavljanje kao globalnog trenutno ulogovanog korisnika
-		try {
-			Patient patient = (Patient) user;
-			patient = patientRepository.getOne(patient.getId());
-			rulesSession.setGlobal("currentPatient", user.getUsername());
-		} catch (ClassCastException e) {
-			
+	public boolean checkSusUser(String username) {
+		QueryResults results = cepSession.getQueryResults("getSuspiciousUserEventByUsername", username);
+		List<Object> susUsers = new ArrayList<>();
+		
+		for (QueryResultsRow row : results) {
+			Object susUser = (Object) row.get("$susUser");
+			susUsers.add(susUser);
 		}
-	}*/
+		
+		if (susUsers.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
 	
 	public boolean loginFailed(String username) {
 		LoginEvent event = new LoginEvent(username);

@@ -1,0 +1,7 @@
+package cep;
+
+import com.sbnz.recovery.model.*;
+
+query "getSuspiciousUserEventByUsername"(String susUsername)
+	$susUser: SuspiciousUserEvent(username == susUsername)
+end;

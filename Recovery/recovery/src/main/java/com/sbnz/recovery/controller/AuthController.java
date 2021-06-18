@@ -61,6 +61,11 @@ public class AuthController {
 
 			// Kreiraj token za tog korisnika
 			User user = (User) authentication.getPrincipal();
+			
+			boolean sus = authService.checkSusUser(user.getUsername());
+			if (sus) {
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			}
 
 			String username = user.getUsername();
 			String jwt = tokenUtils.generateToken(user.getUsername());
@@ -69,7 +74,8 @@ public class AuthController {
 			// Vrati token kao odgovor na uspesnu autentifikaciju
 			return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn, username, verified));
 		} catch (Exception e) {
-			if (authService.loginFailed(authenticationRequest.getEmail())) {
+			if (authService.loginFailed(authenticationRequest.getEmail()) 
+					|| authService.checkSusUser(authenticationRequest.getEmail())) {
 				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 			};
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

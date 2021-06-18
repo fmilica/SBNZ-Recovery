@@ -14,75 +14,75 @@ export class HomepageComponent implements OnInit {
   navDoctorData: NavItem[] = [
     {
       displayName: 'Patients',
-      iconName: 'recent_actors',
+      iconName: 'person',
       route: 'homepage/patient',
       children: [
         {
           displayName: 'View Patients',
-          iconName: 'group',
+          iconName: 'groups',
           route: 'homepage/patient/view-patients',
         },
       ]
     },
     {
       displayName: 'Ingredients',
-      iconName: 'recent_actors',
+      iconName: 'restaurant',
       route: 'homepage/ingredient',
       children: [
         {
           displayName: 'View Ingredients',
-          iconName: 'group',
+          iconName: 'view_list',
           route: 'homepage/ingredient/view-ingredients',
         },
         {
           displayName: 'Create Ingredient',
-          iconName: 'speaker_notes',
+          iconName: 'add_circle_outline',
           route: 'homepage/ingredient/create-ingredient',
         },
       ]
     },
     {
       displayName: 'Meals',
-      iconName: 'recent_actors',
+      iconName: 'menu_book',
       route: 'homepage/meal',
       children: [
         {
           displayName: 'View Meals',
-          iconName: 'group',
+          iconName: 'view_list',
           route: 'homepage/meal/view-meals',
         },
         {
           displayName: 'Create Meal',
-          iconName: 'speaker_notes',
+          iconName: 'add_circle_outline',
           route: 'homepage/meal/create-meal',
         },
       ]
     },
     {
       displayName: 'Therapies',
-      iconName: 'recent_actors',
+      iconName: 'healing',
       route: 'homepage/therapy',
       children: [
         {
           displayName: 'View Therapies',
-          iconName: 'group',
+          iconName: 'view_list',
           route: 'homepage/therapy/view-therapies',
         },
         {
           displayName: 'Create Therapy',
-          iconName: 'speaker_notes',
+          iconName: 'add_circle_outline',
           route: 'homepage/therapy/create-therapy',
         },
       ]
     },
     {
       displayName: 'Reports',
-      iconName: 'recent_actors',
+      iconName: 'bar_chart',
       route: 'homepage/reports',
       children: [
         {
           displayName: 'Create Report',
-          iconName: 'group',
+          iconName: 'description',
           route: 'homepage/reports',
         },
       ]
@@ -92,34 +92,34 @@ export class HomepageComponent implements OnInit {
   navPatientData = [
     {
       displayName: 'Medical History',
-      iconName: 'recent_actors',
+      iconName: 'home',
       route: 'homepage/patient',
       children: [
         {
           displayName: 'About Me',
-          iconName: 'group',
+          iconName: 'person',
           route: 'homepage/patient/about-patient',
         },
         {
           displayName: 'View Medical History',
-          iconName: 'group',
+          iconName: 'local_hospital',
           route: 'homepage/patient/medical-history',
         },
         {
           displayName: 'Add Injury',
-          iconName: 'speaker_notes',
+          iconName: 'personal_injury',
           route: 'homepage/patient/add-injury',
         },
       ]
     },
     {
       displayName: 'Daily ToDo',
-      iconName: 'recent_actors',
+      iconName: 'today',
       route: 'homepage/daily',
       children: [
         {
           displayName: 'See Today',
-          iconName: 'group',
+          iconName: 'healing',
           route: 'homepage/daily/patient-todo',
         },
       ]

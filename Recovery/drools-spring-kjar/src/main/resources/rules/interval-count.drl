@@ -13,8 +13,8 @@ when
 		Patient($injuries: medicalHistory, gender == Gender.MALE) and
 		$injuryPerPatient: Number() from accumulate(
 			Injury($i: this, $injuryDate: startDate, 
-				$injuryDate.isAfter(DateUtility.parseLocalDate("2021-01-06")),
-				$injuryDate.isBefore(DateUtility.parseLocalDate("2021-06-30"))) from $injuries,
+				$injuryDate.isAfter(DateUtility.parseLocalDate("1998-08-18")),
+				$injuryDate.isBefore(DateUtility.parseLocalDate("2023-07-13"))) from $injuries,
 			count($i)
 		),
 		sum($injuryPerPatient)
@@ -31,8 +31,8 @@ when
 		Patient($injuries: medicalHistory, gender == Gender.FEMALE) and
 		$injuryPerPatient: Number() from accumulate(
 			Injury($i: this, $injuryDate: startDate, 
-				$injuryDate.isAfter(DateUtility.parseLocalDate("2021-01-06")),
-				$injuryDate.isBefore(DateUtility.parseLocalDate("2021-06-30"))) from $injuries,
+				$injuryDate.isAfter(DateUtility.parseLocalDate("1998-08-18")),
+				$injuryDate.isBefore(DateUtility.parseLocalDate("2023-07-13"))) from $injuries,
 			count($i)
 		),
 		sum($injuryPerPatient)

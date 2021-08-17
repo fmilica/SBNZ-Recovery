@@ -60,10 +60,14 @@ export class MealTableComponent implements OnInit {
     this.mealService.addMeal(meal, this.patient.id).subscribe(
       response => {
         this.toastr.success('Successfully added meal!');
-        this.countCalories.emit(meal.totalCalories)
+        this.countCalories.emit(meal.totalCalories);
       },
       error => {
-        this.toastr.error(error.error.message)
+        if (error.error.message === "DailyMeal with given Meal already exists.") {
+          this.toastr.error("Chosen meal already assigned for today.");
+        } else {
+          this.toastr.error(error.error.message);
+        }
       });
   }
 

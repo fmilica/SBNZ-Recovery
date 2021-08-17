@@ -32,10 +32,10 @@
                         <input id="amount-input-{{i}}" matInput placeholder="Ex. 50.00" formControlName="amount{{i}}"
                             (change)="setAmount(i, $event)">
                     </mat-form-field>
-                    <button type="button" (click)="removevalue(i)" id="remove-{{i}}">Remove</button>
+                    <button type="button" class="btn-color" (click)="removevalue(i)" id="remove-{{i}}">Remove</button>
                 </div>
                 <div class="form-group">
-                    <button type="button" (click)="addvalue()">ADD</button>
+                    <button type="button" class="btn-color" (click)="addvalue()">ADD</button>
                 </div>
                 <div class="form-group">
                     <mat-form-field id="description-form-field" appearance="fill" class="form-field">

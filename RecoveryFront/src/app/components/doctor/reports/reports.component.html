@@ -1,0 +1,61 @@
+<app-homepage>
+<div class="jumbotron pt-3 col-md-10 m-auto mt-5 bg-white shadow jumbotron-border rounded">
+    <!--Report form-->
+    <form [formGroup]="reportForm" (ngSubmit)="getReport()" class="w-100">
+        <mat-form-field appearance="outline" class="col-md-5"
+            *ngIf='reportForm.value.report === "AGE-GROUP" || reportForm.value.report === "INJURY-TYPE" || reportForm.value.report === "GENDER"'>
+            <mat-label>Start date</mat-label>
+            <input formControlName="startDate" type="date" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-md-5"
+            *ngIf='reportForm.value.report === "AGE-GROUP" || reportForm.value.report === "INJURY-TYPE" || reportForm.value.report === "GENDER"'>
+            <mat-label>End date</mat-label>
+            <input formControlName="endDate" type="date" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-md-5" *ngIf='reportForm.value.report === "INJURY-TYPE"'>
+            <mat-label>Select Injury Type</mat-label>
+            <mat-select formControlName="injuryType">
+                <mat-option *ngFor="let injuryType of allInjuryTypes" [value]="injuryType.id">
+                    {{injuryType.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-md-5" *ngIf='reportForm.value.report === "AGE-GROUP"'>
+            <mat-label>Lower age boundry</mat-label>
+            <input formControlName="lowerAge" type="number" min="1" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-md-5" *ngIf='reportForm.value.report === "AGE-GROUP"'>
+            <mat-label>Upper age boundry</mat-label>
+            <input formControlName="upperAge" type="number" min="1" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-md-5">
+            <mat-label>Select Report</mat-label>
+            <mat-select formControlName="report">
+                <mat-option value="ABUSE">Potential abuse</mat-option>
+                <mat-option value="ATROPHY">Potential atrophy</mat-option>
+                <mat-option value="EATING">Potential eating disorder</mat-option>
+                <mat-option value="AGE-GROUP">Injury count by age group</mat-option>
+                <mat-option value="INJURY-TYPE">Injury count by injury type</mat-option>
+                <mat-option value="GENDER">Frequent injured gender</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button [disabled]="reportForm.invalid" mat-raised-button class="btn btn-color m-2">Report</button>
+    </form>
+
+    <div class="m-3 row panel">
+        <app-patient-table *ngIf="patientTableView" [dataSource]="dataSource">
+        </app-patient-table>
+        <div *ngIf="noPatientTableView" class="m-5">
+            <h1>Total injuries: <b>{{injuryCount}}</b></h1>
+        </div>
+        <div *ngIf="genderCount" class="m-5">
+            <h1>Male injuries: <b>{{maleInjuries}}</b></h1>
+            <h1>Female injuries: <b>{{femaleInjuries}}</b></h1>
+        </div>
+    </div>
+    <div class="text-center mt-3" *ngIf="noResult">
+        <h3 class="w-25 m-auto p-3 sorry-message">Fortunately, no patients fit the report criteria.
+        </h3>
+    </div>
+</div>
+</app-homepage>

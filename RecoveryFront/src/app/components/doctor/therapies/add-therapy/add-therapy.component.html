@@ -1,0 +1,70 @@
+<app-homepage>
+<div class="jumbotron bg-transparent col-md-10 m-auto p-5 bg-white rounded">
+    <mat-card class="shadow">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image">
+                <!-- <img src="assets/img/food-icon.png" alt="Food Icon" class="food-icon" /> -->
+            </div>
+            <mat-card-title>Add New Therapy</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-3">
+            <form [formGroup]="addTherapyForm" #addTherapyDirective="ngForm" (ngSubmit)="onSubmit(addTherapyDirective)"
+                class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Therapy Name</mat-label>
+                            <input type="text" matInput formControlName="name">
+                            <mat-error *ngIf="addTherapyForm.get('name')?.invalid">
+                                {{getRequiredFieldErrorMessage('name')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Therapy type</mat-label>
+                            <mat-select id="location" formControlName="therapyType">
+                                <mat-option value="REST">Rest</mat-option>
+                                <mat-option value="ELECTRICITY">Electricity</mat-option>
+                                <mat-option value="KINESIOTHERAPY">Kinesiotherapy</mat-option>
+                                <mat-option value="MAGNET">Magnet</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="addTherapyForm.get('therapyType')?.invalid">
+                                {{getRequiredFieldErrorMessage('therapyType')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Maximum monthly applications</mat-label>
+                            <input type="number" min="1" max="31" matInput formControlName="maximumMonthlyApplication">
+                            <mat-error *ngIf="addTherapyForm.get('maximumMonthlyApplication')?.invalid">
+                                {{getRequiredFieldErrorMessage('maximumMonthlyApplication')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Therapy temperature</mat-label>
+                            <input type="number" min="-100" max="100" matInput formControlName="temperature">
+                            <mat-error *ngIf="addTherapyForm.get('temperature')?.invalid">
+                                {{getRequiredFieldErrorMessage('temperature')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Therapy intensity</mat-label>
+                            <input type="number" min="1" max="10" matInput formControlName="intensity">
+                            <mat-error *ngIf="addTherapyForm.get('intensity')?.invalid">
+                                {{getRequiredFieldErrorMessage('intensity')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <button id="login-btn" class="btn btn-color text-center" type="submit"
+                    [disabled]="addTherapyForm.invalid">
+                    Add Therapy
+                </button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
+</app-homepage>

@@ -1,0 +1,28 @@
+<app-homepage>
+<div class="jumbotron bg-transparent col-md-10 m-auto p-5 bg-white rounded">
+    <mat-card class="shadow">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image">
+                <!-- <img src="assets/img/food-icon.png" alt="Food Icon" class="food-icon" /> -->
+            </div>
+            <mat-card-title>{{getPatientName()}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-3">
+            <button (click)="assignTherapy()" class="btn btn-color text-center m-3" type="button">
+                Assign Therapy
+            </button>
+            <button (click)="assignMeals()" class="btn btn-color text-center" type="button">
+                Assign Meals
+            </button>
+            <div class="m-3">
+                <app-injury-table [dataSource]="injuryDataSource" [doctorView]="true">
+                </app-injury-table>
+            </div>
+            <!-- <div *ngIf="applyMeals" class="m-3">
+                <app-meal-table [dataSource]="mealDataSource" [assignPatientMeal]="true" [patientId]="patient.id">
+                </app-meal-table>
+            </div> -->
+        </mat-card-content>
+    </mat-card>
+</div>
+</app-homepage>

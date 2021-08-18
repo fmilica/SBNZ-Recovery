@@ -1,23 +1,23 @@
-import { Routes } from "@angular/router";
-import { AddInjuryComponent } from "./components/add-injury/add-injury.component";
-import { HomepageComponent } from "./components/homepage/homepage.component";
-import { LoginComponent } from "./components/login/login.component";
-import { MedicalHistoryComponent } from "./components/medical-history/medical-history.component";
-import { RegisterComponent } from "./components/register/register.component";
+/* import { Routes } from "@angular/router";
+import { AddInjuryComponent } from "./components/patient/add-injury/add-injury.component";
+import { HomepageComponent } from "./components/common/homepage/homepage.component";
+import { LoginComponent } from "./components/common/login/login.component";
+import { MedicalHistoryComponent } from "./components/patient/medical-history/medical-history.component";
+import { RegisterComponent } from "./components/common/register/register.component";
 import { LoginGuard } from "./guards/login-guard.service";
 import { RoleGuard } from "./guards/role-guard.service";
-import { CreateIngredientComponent } from "./components/create-ingredient/create-ingredient.component";
-import { CreateMealComponent } from "./components/create-meal/create-meal.component";
-import { ViewIngredientsComponent } from "./components/view-ingredients/view-ingredients.component";
-import { AddTherapyComponent } from "./components/add-therapy/add-therapy.component";
-import { ViewMealsComponent } from "./components/view-meals/view-meals.component";
-import { ViewTherapiesComponent } from "./components/view-therapies/view-therapies.component";
-import { ViewPatientsComponent } from "./components/view-patients/view-patients.component";
-import { PatientViewComponent } from "./components/patient-view/patient-view.component";
-import { ReportsComponent } from "./components/reports/reports.component";
-import { AssignMealComponent } from "./components/assign-meal/assign-meal.component";
-import { AboutPatientComponent } from "./components/about-patient/about-patient.component";
-import { PatientTodoComponent } from "./components/patient-todo/patient-todo.component";
+import { CreateIngredientComponent } from "./components/doctor/meals/create-ingredient/create-ingredient.component";
+import { CreateMealComponent } from "./components/doctor/meals/create-meal/create-meal.component";
+import { ViewIngredientsComponent } from "./components/doctor/meals/view-ingredients/view-ingredients.component";
+import { AddTherapyComponent } from "./components/doctor/therapies/add-therapy/add-therapy.component";
+import { ViewMealsComponent } from "./components/doctor/meals/view-meals/view-meals.component";
+import { ViewTherapiesComponent } from "./components/doctor/therapies/view-therapies/view-therapies.component";
+import { ViewPatientsComponent } from "./components/doctor/patients/view-patients/view-patients.component";
+import { PatientViewComponent } from "./components/doctor/patients/patient-view/patient-view.component";
+import { ReportsComponent } from "./components/doctor/reports/reports.component";
+import { AssignMealComponent } from "./components/doctor/meals/assign-meal/assign-meal.component";
+import { AboutPatientComponent } from "./components/patient/about-patient/about-patient.component";
+import { PatientTodoComponent } from "./components/patient/patient-todo/patient-todo.component";
 
 export const routes: Routes = [
     {
@@ -131,4 +131,4 @@ export const routes: Routes = [
         path: '**',
         component: LoginComponent,
     }
-];
+]; */

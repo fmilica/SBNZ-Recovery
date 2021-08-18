@@ -1,0 +1,11 @@
+<app-homepage>
+<mat-progress-bar class="progress-bar" mode="indeterminate" *ngIf="dataSource.length===0">
+</mat-progress-bar>
+<div class="table-title">View Patients</div>
+<div class="ng-container row justify-content-md-center">
+    <div class="col-md-11">
+        <app-patient-table [dataSource]="dataSource">
+        </app-patient-table>
+    </div>
+</div>
+</app-homepage>

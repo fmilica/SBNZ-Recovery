@@ -1,0 +1,53 @@
+<app-homepage>
+<div class="jumbotron bg-transparent col-md-10 m-auto p-5 bg-white rounded">
+    <mat-card class="shadow">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image">
+            </div>
+            <mat-card-title>Patient Details: <i>{{getFullName()}}</i></mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-3 fontSize">
+            <table style="table-layout:fixed;">
+                <tbody>
+                    <tr>
+                        <td class="left-col">Date of birth:</td>
+                        <td class="right-col">{{patientDetails.dateOfBirth | date:'dd-MM-yyyy'}}</td>
+                    </tr>
+                    <tr>
+                        <td class="left-col">Gender:</td>
+                        <td class="right-col">{{patientDetails.gender | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td class="left-col">Height:</td>
+                        <td class="right-col">{{patientDetails.height}}</td>
+                    </tr>
+                    <tr>
+                        <td class="left-col">Weight:</td>
+                        <td class="right-col">{{patientDetails.weight}}</td>
+                    </tr>
+                    <tr>
+                        <td class="left-col">Physical Activity:</td>
+                        <td class="right-col">{{getPhysicalActivity(patientDetails.physicalActivity)}}</td>
+                    </tr>
+                    <tr>
+                        <td class="left-col">Anamnesis:</td>
+                        <td class="right-col">{{getFullAmnessis()}}</td>
+                    </tr>
+                    <tr>
+                        <td class="left-col">Physical Activity After Injury:</td>
+                        <td class="right-col">{{getPhysicalActivity(patientDetails.physicalActivityAfterInjury)}}</td>
+                    </tr>
+                    <tr>
+                        <td class="left-col">Regular Daily Calory Intake:</td>
+                        <td class="right-col">{{patientDetails.regularDailyCaloryIntake}}</td>
+                    </tr>
+                    <tr>
+                        <td class="left-col">Daily Calory Intake After Injury:</td>
+                        <td class="right-col">{{patientDetails.dailyCaloryIntakeAfterInjury}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-card-content>
+    </mat-card>
+</div>
+</app-homepage>

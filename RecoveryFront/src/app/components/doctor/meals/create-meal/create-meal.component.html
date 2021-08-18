@@ -1,0 +1,57 @@
+<app-homepage>
+<div class="jumbotron bg-transparent col-md-10 m-auto p-5 bg-white rounded">
+    <mat-card class="shadow">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image">
+            </div>
+            <mat-card-title>Create Meal</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-3">
+            <form id="create-meal-form" [formGroup]="newMealForm" #createMealDirective="ngForm"
+                (ngSubmit)="onSubmit(createMealDirective)">
+                <div class="form-group">
+                    <mat-form-field id="name-meal-form-field" appearance="fill" class="form-field">
+                        <mat-label>Name</mat-label>
+                        <input id="name-meal-input" matInput placeholder="Ex. Risotto" formControlName="nameMeal">
+                        <mat-error id="name-meal-error" *ngIf="newMealForm.get('nameMeal')?.invalid">
+                            {{getFieldErrorMessage('nameMeal')}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-group" *ngFor="let value of values; let i = index">
+                    <mat-form-field id="name-form-field-{{i}}}" appearance="fill" class="form-field">
+                        <mat-label>Name</mat-label>
+                        <mat-select #seletIngredient formControlName="name{{i}}"
+                            (selectionChange)="setIngredient(i, seletIngredient.value)" id="name-input-{{i}}">
+                            <div *ngFor="let option of options">
+                                <mat-option id="option.ingredient.id" value="{{option.ingredient.id}}"
+                                    [disabled]="option.allowed">{{option.ingredient.name}}</mat-option>
+                            </div>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field id="amount-form-field-{{i}}" appearance="fill" class="form-field">
+                        <mat-label>Amount</mat-label>
+                        <input id="amount-input-{{i}}" matInput placeholder="Ex. 50.00" formControlName="amount{{i}}"
+                            (change)="setAmount(i, $event)">
+                    </mat-form-field>
+                    <button type="button" class="btn-color" (click)="removevalue(i)" id="remove-{{i}}">Remove</button>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn-color" (click)="addvalue()">ADD</button>
+                </div>
+                <div class="form-group">
+                    <mat-form-field id="description-form-field" appearance="fill" class="form-field">
+                        <mat-label>Description</mat-label>
+                        <input id="description-input" matInput placeholder="Ex. This meal contains..."
+                            formControlName="description">
+                        <mat-error id="description-error" *ngIf="newMealForm.get('description')?.invalid">
+                            {{getFieldErrorMessage('description')}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <button id="create-meal" class="btn btn-color" [disabled]="newMealForm.invalid">
+                    Create Meal
+                </button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
+</app-homepage>

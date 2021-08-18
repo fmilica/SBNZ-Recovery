@@ -11,14 +11,14 @@ const routes: Routes = [
   {
     path: 'doctor',
     loadChildren: () => import('./components/doctor/doctor.module').then(m => m.DoctorModule),
-    // canActivate: [RoleGuard],
-    // data: { expectedRoles: 'ROLE_DOCTOR' },
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'ROLE_DOCTOR' },
   },
   {
     path: 'patient',
     loadChildren: () => import('./components/patient/patient.module').then(m => m.PatientModule),
-    // canActivate: [RoleGuard],
-    // data: { expectedRoles: 'ROLE_PATIENT' },
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'ROLE_PATIENT' },
   }
 ];
 
